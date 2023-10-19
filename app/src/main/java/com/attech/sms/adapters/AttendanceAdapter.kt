@@ -2,11 +2,9 @@ package com.attech.sms.adapters
 
 import android.annotation.SuppressLint
 import android.graphics.Color
-import android.graphics.Color.red
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.attech.sms.R
 import com.attech.sms.databinding.ItemAttendanceBinding
 import com.attech.sms.models.AttendanceData
 import java.text.SimpleDateFormat
@@ -24,11 +22,12 @@ class AttendanceAdapter(private val attendanceList: List<AttendanceData>) :
         @SuppressLint("SetTextI18n")
         fun bind(attendanceData: AttendanceData) {
             val dayOfWeek = getDayOfWeek(attendanceData.date)
-            
-            binding.dayTextView.text = dayOfWeek
-            binding.dateTextView.text = attendanceData.date
-            binding.statusTextView.text = attendanceData.status
 
+            binding.apply {
+                dayTextView.text = dayOfWeek
+                dateTextView.text = attendanceData.date
+                statusTextView.text = attendanceData.status
+            }
             checkStatus(attendanceData, binding)
         }
     }
@@ -39,17 +38,19 @@ class AttendanceAdapter(private val attendanceList: List<AttendanceData>) :
     }
 
     private fun checkStatus(attendanceData: AttendanceData, binding: ItemAttendanceBinding) {
-        if (attendanceData.status.equals("Absent", ignoreCase = true)) {
-            binding.statusTextView.setBackgroundColor(Color.RED)
-        } else {
-            binding.statusTextView.setBackgroundColor(Color.TRANSPARENT)
-        }
+        binding.statusTextView.setBackgroundColor(
+            if (attendanceData.status.equals("Absent", ignoreCase = true)) {
+                Color.RED
+            } else {
+                Color.TRANSPARENT
+            }
+        )
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AttendanceViewHolder {
-        val binding =
-            ItemAttendanceBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return AttendanceViewHolder(binding)
+        return AttendanceViewHolder(ItemAttendanceBinding.
+        inflate(LayoutInflater.from(parent.context), parent, false)
+        )
     }
 
     override fun onBindViewHolder(holder: AttendanceViewHolder, position: Int) {
@@ -64,18 +65,9 @@ class AttendanceAdapter(private val attendanceList: List<AttendanceData>) :
     private fun getDayOfWeek(date: String): String {
         // Get the day of the week from the date string
         val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-        val formattedDate: Date = inputFormat.parse(date)
+        val formattedDate: Date = inputFormat.parse(date)!!
         val calendar = Calendar.getInstance()
         calendar.time = formattedDate
-        return calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault())
-    }
-
-    companion object{
-        private val ITEM_TYPE_DEFAULT = 0
-        private val ITEM_TYPE_ATTENDANCE = 1
-        private val ITEM_TYPE_COURSES = 2
-        private val ITEM_TYPE_MARKS = 3
-        private val ITEM_TYPE_FEE = 4
-
+        return calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault())!!
     }
 }

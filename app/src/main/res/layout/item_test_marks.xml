@@ -1,0 +1,58 @@
+<!-- res/layout/item_test_mark.xml -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="?android:attr/selectableItemBackground">
+
+    <TextView
+        android:id="@+id/textSubject"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Subject: Math"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/royal_blue" />
+
+    <TextView
+        android:id="@+id/textTestName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Test Name: Midterm Exam"
+        android:textSize="16sp"
+        android:textColor="@color/royal_blue" />
+
+    <TextView
+        android:id="@+id/textTeacher"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Teacher: Mr. Smith"
+        android:textSize="16sp"
+        android:textColor="@color/royal_blue" />
+
+    <TextView
+        android:id="@+id/textTotalMarks"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Total Marks: 100"
+        android:textSize="16sp"
+        android:textColor="@color/royal_blue" />
+
+    <TextView
+        android:id="@+id/textPercentage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Percentage: 85%"
+        android:textSize="16sp"
+        android:textColor="@color/royal_blue" />
+
+    <TextView
+        android:id="@+id/textDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Date: 2023-10-15"
+        android:textSize="16sp"
+        android:textColor="@color/royal_blue" />
+</LinearLayout>

@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -30,7 +29,7 @@ class DashboardFragment : Fragment(), OnItemClick {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentDashboardBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -44,12 +43,14 @@ class DashboardFragment : Fragment(), OnItemClick {
     }
 
     private fun setObservers() {
-        studentViewModel.dashboardItemsLiveData.observe(viewLifecycleOwner){
-            dashboardAdapter.submitList(it)
-        }
+        studentViewModel.apply {
+            dashboardItemsLiveData.observe(viewLifecycleOwner) {
+                dashboardAdapter.submitList(it)
+            }
 
-        studentViewModel.newsItemsLiveData.observe(viewLifecycleOwner){
-            newsAdapter.submitList(it)
+            newsItemsLiveData.observe(viewLifecycleOwner) {
+                newsAdapter.submitList(it)
+            }
         }
     }
 
@@ -70,21 +71,20 @@ class DashboardFragment : Fragment(), OnItemClick {
     }
 
     private fun setRecyclerView() {
-        binding.homeScreenLayout
-            .dashboardRecyclerView
-            .layoutManager = GridLayoutManager(requireActivity(), 3)
+        binding.homeScreenLayout.apply {
+            dashboardRecyclerView.layoutManager = GridLayoutManager(requireActivity(), 3)
 
-        setTimerToScroll(
-            LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL,
-                false
-            ).also { binding.homeScreenLayout.viewPagerDashboard.layoutManager = it }
-        )
+            setTimerToScroll(
+                LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL,
+                    false
+                ).also { viewPagerDashboard.layoutManager = it }
+            )
 
-        dashboardAdapter = DashboardAdapter(this)
-        newsAdapter = NewsAdapter()
-        binding.homeScreenLayout.viewPagerDashboard.adapter = newsAdapter
-        binding.homeScreenLayout.dashboardRecyclerView.adapter = dashboardAdapter
-
+            dashboardAdapter = DashboardAdapter(this@DashboardFragment)
+            newsAdapter = NewsAdapter()
+            viewPagerDashboard.adapter = newsAdapter
+            dashboardRecyclerView.adapter = dashboardAdapter
+        }
     }
 
     override fun onDestroy() {
@@ -93,12 +93,7 @@ class DashboardFragment : Fragment(), OnItemClick {
     }
 
     override fun clickListener(position: Int, value: String) {
-        when (value) {
-            "Attendance" -> openFragment(value)
-            "Courses" -> openFragment(value)
-            "Marks" -> openFragment(value)
-            "Fee" -> openFragment(value)
-        }
+        openFragment(value)
     }
 
     private fun openFragment(title: String) {

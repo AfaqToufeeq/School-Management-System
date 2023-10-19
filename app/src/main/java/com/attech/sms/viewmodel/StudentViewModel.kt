@@ -9,4 +9,5 @@ import com.attech.sms.repository.StudentRepository
 class StudentViewModel(repository: StudentRepository) : ViewModel() {
     val dashboardItemsLiveData: LiveData<List<DashboardItem>> = repository.getDashboardItems()
     val newsItemsLiveData: LiveData<List<NewsItem>> = repository.getNewsItems()
+
 }
