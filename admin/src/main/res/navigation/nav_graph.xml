@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_dashboardFragment_to_addNewsFragment"
             app:destination="@id/addNewsFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_viewTeachersFragment"
+            app:destination="@id/viewTeachersFragment" />
     </fragment>
     <fragment
         android:id="@+id/addTeacherFragment"
@@ -57,6 +60,15 @@
         tools:layout="@layout/fragment_add_news" >
         <action
             android:id="@+id/action_addNewsFragment_to_dashboardFragment"
+            app:popUpTo="@id/dashboardFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/viewTeachersFragment"
+        android:name="com.app.admin.ui.fragments.ViewTeachersFragment"
+        android:label="ViewTeachersFragment"
+        tools:layout="@layout/fragment_view_teachers">
+        <action
+            android:id="@+id/action_viewTeachersFragment_to_dashboardFragment"
             app:popUpTo="@id/dashboardFragment" />
     </fragment>
 
