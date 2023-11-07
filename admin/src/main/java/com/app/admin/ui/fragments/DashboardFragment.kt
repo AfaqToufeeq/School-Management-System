@@ -98,20 +98,20 @@ class DashboardFragment : Fragment(), OnItemClick {
         openFragment(value)
     }
 
-        private fun openFragment(title: String) {
-            val bundle = Bundle().apply {
-                putString(MAIN_MENU, title)
-            }
+    private fun openFragment(title: String) {
+        val bundle = Bundle().apply {
+            putString(MAIN_MENU, title)
+        }
 
-            findNavController().apply {
-                when (title) {
-                    "Add Teachers" -> navigate(R.id.action_dashboardFragment_to_addTeacherFragment, bundle)
-                    "Add Students" -> navigate(R.id.action_dashboardFragment_to_addStudentFragment, bundle)
-                    "Add Finance" -> navigate(R.id.action_dashboardFragment_to_addFinanceFragment, bundle)
-                    "Add Events" -> navigate(R.id.action_dashboardFragment_to_addNewsFragment, bundle)
-                    "View Teachers" -> navigate(R.id.action_dashboardFragment_to_viewTeachersFragment, bundle)
-                }
+        findNavController().apply {
+            when (title) {
+                "Add Teachers" -> navigate(R.id.action_dashboardFragment_to_addTeacherFragment, bundle)
+                "Add Students" -> navigate(R.id.action_dashboardFragment_to_addStudentFragment, bundle)
+                "Add Finance" -> navigate(R.id.action_dashboardFragment_to_addFinanceFragment, bundle)
+                "Add Events" -> navigate(R.id.action_dashboardFragment_to_addNewsFragment, bundle)
+                "View Teachers" -> navigate(R.id.action_dashboardFragment_to_viewTeachersFragment, bundle)
             }
+        }
 
     }
 }
