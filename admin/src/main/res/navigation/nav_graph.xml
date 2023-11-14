@@ -25,6 +25,12 @@
         <action
             android:id="@+id/action_dashboardFragment_to_viewTeachersFragment"
             app:destination="@id/viewTeachersFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_studentListFragment"
+            app:destination="@id/studentListFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_blankFragment"
+            app:destination="@id/blankFragment" />
     </fragment>
     <fragment
         android:id="@+id/addTeacherFragment"
@@ -32,7 +38,7 @@
         android:label="fragment_add_teacher"
         tools:layout="@layout/fragment_add_teacher">
         <action android:id="@+id/action_addTeacherFragment_to_dashboardFragment"
-        app:popUpTo="@id/dashboardFragment" />
+            app:popUpTo="@id/dashboardFragment" />
 
     </fragment>
     <fragment
@@ -71,5 +77,20 @@
             android:id="@+id/action_viewTeachersFragment_to_dashboardFragment"
             app:popUpTo="@id/dashboardFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/studentListFragment"
+        android:name="com.app.admin.ui.fragments.StudentListFragment"
+        android:label="fragment_student_list"
+        tools:layout="@layout/fragment_student_list" >
+        <action
+            android:id="@+id/action_studentListFragment_to_dashboardFragment"
+            app:popUpTo="@id/dashboardFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/blankFragment"
+        android:name="com.app.admin.ui.fragments.BlankFragment"
+        android:label="fragment_blank"
+        tools:layout="@layout/fragment_blank" />
 
 </navigation>

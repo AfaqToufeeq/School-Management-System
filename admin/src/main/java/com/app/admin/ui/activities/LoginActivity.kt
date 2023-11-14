@@ -4,13 +4,15 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.viewModels
+import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.app.admin.databinding.ActivityLoginBinding
-import com.app.admin.interfaces.ApiService
 import com.app.admin.network.RetrofitClientInstance
 import com.app.admin.repository.RetrofitRepository
+import com.app.admin.utils.IS_LOGGED_IN
+import com.app.admin.utils.SharedPreferencesManager
+import com.app.admin.utils.Utils.showToast
 import com.app.admin.viewmodel.RetrofitViewModel
 import com.app.admin.viewmodelfactory.RetrofitViewModelFactory
 import kotlinx.coroutines.Dispatchers
@@ -35,29 +37,61 @@ class LoginActivity : AppCompatActivity() {
     private fun init() {
         val repository = RetrofitRepository(RetrofitClientInstance.retrofit)
         viewModel = ViewModelProvider(this, RetrofitViewModelFactory(repository))[RetrofitViewModel::class.java]
+        if (isLoggedIn())  //False
+            navigateToMainActivity()
     }
 
     private fun buttonClicks() {
-        binding.btnLogin.setOnClickListener {
-            val type = "admin"
-            val username = binding.editTextEmail.text.toString()
-            val password = binding.editTextPassword.text.toString()
+        binding.btnLogin.setOnClickListener { login() }
+    }
+
+    private fun login() {
+        val type = "admin"
+        val username = binding.editTextEmail.text.toString()
+        val password = binding.editTextPassword.text.toString()
+
+        if (username.isNotEmpty() && password.isNotEmpty()) {
+            showLoading(true)
 
             lifecycleScope.launch {
                 try {
                     val token = withContext(Dispatchers.IO) {
                         viewModel.login(type, username, password)
                     }
-                    if (!token.token.isNullOrEmpty()) {
-                        Log.d("Login","Success")
-                        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+                    if (token.token.isNotEmpty()) {
+                        saveUserLoggedInState()
+                        navigateToMainActivity()
+                        Log.d("Token",token.token)
+                        showToast(this@LoginActivity,"Login successful")
                     } else {
-                        Log.d("Login","Failed")
+                        showToast(this@LoginActivity,"Login failed")
                     }
                 } catch (e: Exception) {
-                    Log.d("Login","Error $e")
+                    showToast(this@LoginActivity,"Login failed: $e")
+                } finally {
+                    showLoading(false)
                 }
             }
+        } else {
+            showToast(this@LoginActivity, "Please enter both username and password")
         }
     }
+
+    private fun showLoading(show: Boolean) {
+        binding.progressBar.visibility = if (show) View.VISIBLE else View.GONE
+    }
+
+    private fun isLoggedIn(): Boolean {
+        return SharedPreferencesManager.getBoolean(IS_LOGGED_IN, false)
+    }
+
+    private fun saveUserLoggedInState() {
+        SharedPreferencesManager.saveBoolean(IS_LOGGED_IN, true)
+    }
+
+    private fun navigateToMainActivity() {
+        startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+        finish()
+    }
+
 }

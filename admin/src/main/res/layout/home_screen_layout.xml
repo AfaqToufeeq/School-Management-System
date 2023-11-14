@@ -57,7 +57,6 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- Dashboard RecyclerView Card -->
     <androidx.cardview.widget.CardView
         android:id="@+id/dashboardCard"
         android:layout_width="0dp"
@@ -78,7 +77,6 @@
             tools:listitem="@layout/item_dashboard" />
     </androidx.cardview.widget.CardView>
 
-    <!-- News ViewPager Card -->
     <androidx.cardview.widget.CardView
         android:id="@+id/newsCard"
         android:layout_width="0dp"
