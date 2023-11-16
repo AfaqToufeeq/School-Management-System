@@ -101,8 +101,6 @@ v
 Fadmin/src/main/java/com/app/admin/ui/fragments/ViewTeachersFragment.kt,e\5\e5299af160c16da317f40f40735c347cca02c7d8
 j
 :admin/src/main/java/com/app/admin/interfaces/ApiService.kt,8\7\87575b93ab302335c4297749ce3e854ba3810e06
-`
-0admin/src/main/java/com/app/admin/models/User.kt,e\e\eef534c661ee8dd71f8b2cc03b7c7d7e2d54e26a
 i
 9admin/src/main/java/com/app/admin/models/LoginResponse.kt,9\9\99d5b359bec6106bc8351d1d6c866b0cb47bc896
 s
@@ -189,3 +187,11 @@ Capp/src/main/java/com/attech/sms/ui/fragments/PastPapersFragment.kt,f\6\f69006
 Lteacher/src/main/java/com/attech/teacher/ui/fragments/UploadMarksFragment.kt,8\8\884653b70e2551f1d3d69abdb6f7478d1549d8ef
 l
 <teacher/src/main/java/com/attech/teacher/models/MarksData.kt,4\1\41526e3e8bf8750aa36bf4849bcd142b15944622
+X
+(gradle/wrapper/gradle-wrapper.properties,f\b\fbe448ebfc3eb2d4e308f6b8b043666f5b57235e
+J
+teacher/proguard-rules.pro,2\2\22c31ce3bdcc4791701116a4060eaf4899cbf4e7
+H
+admin/proguard-rules.pro,a\c\ac19e72b941239fade1729211085225778edf38b
+c
+3admin/src/main/java/com/app/admin/models/Student.kt,7\2\7258c291bb587e414f41ea6b78a28e7d8f498fda

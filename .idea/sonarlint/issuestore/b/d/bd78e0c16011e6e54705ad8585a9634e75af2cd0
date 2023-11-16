@@ -1,2 +1,5 @@
 
+Bkotlin:S125+"Remove this commented out code.(§ÁÏÍÿÿÿÿÿ8À¥ïÍ½1
 :kotlin:S6310="Avoid hardcoded dispatchers.(ˆ¥8ÃÁæ¡½1
+okotlin:S6311="QRemove this dispatcher. It is pointless when used with only suspending functions.(ˆ¥8¢µÄĞ½1
+Nkotlin:S1144W"/Remove this unused private "isLoggedIn" method.(•æÙ°8Ä¥ïÍ½1

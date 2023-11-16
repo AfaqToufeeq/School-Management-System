@@ -1,95 +1,156 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@android:color/background_light"
     tools:context=".ui.fragments.AddStudentFragment">
 
-    <!-- Toolbar -->
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar_layout"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/toolbar"
-        android:layout_margin="16dp"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="4dp">
+        <!-- Toolbar -->
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-        <RelativeLayout
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="16dp">
+            android:layout_below="@id/toolbar"
+            android:layout_margin="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="8dp">
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/studentIcon"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:src="@drawable/student_icon"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="16dp"/>
-
-            <Button
-                android:id="@+id/uploadImageButton"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Upload Image"
-                android:background="?attr/colorPrimary"
-                android:textColor="#ffffff"
-                android:layout_below="@id/studentIcon"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="16dp"/>
+                android:padding="16dp">
 
-            <!-- Student Name EditText -->
-            <EditText
-                android:id="@+id/studentNameEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Student Name"
-                android:inputType="text"
-                android:layout_below="@id/uploadImageButton"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="16dp"/>
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/studentIcon"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:src="@drawable/student_icon"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="16dp" />
 
-            <!-- Student Email EditText -->
-            <EditText
-                android:id="@+id/studentEmailEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Student Email"
-                android:inputType="textEmailAddress"
-                android:layout_below="@id/studentNameEditText"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="16dp"/>
+                <Button
+                    android:id="@+id/uploadImageButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Upload Image"
+                    android:background="@drawable/round_button"
+                    android:textColor="#ffffff"
+                    android:layout_below="@id/studentIcon"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="16dp"/>
 
-            <!-- Student Class EditText -->
-            <EditText
-                android:id="@+id/studentClassEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Student Class"
-                android:inputType="text"
-                android:layout_below="@id/studentEmailEditText"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="16dp"/>
+                <!-- First Name EditText -->
+                <EditText
+                    android:id="@+id/firstNameEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="First Name"
+                    android:inputType="text"
+                    android:layout_below="@id/uploadImageButton"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="16dp"/>
 
-            <!-- Add Student Button -->
-            <Button
-                android:id="@+id/addStudentButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Add Student"
-                android:background="?attr/colorPrimary"
-                android:textColor="#ffffff"
-                android:layout_below="@id/studentClassEditText"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="32dp"/>
-        </RelativeLayout>
-    </androidx.cardview.widget.CardView>
-</RelativeLayout>
+                <!-- Last Name EditText -->
+                <EditText
+                    android:id="@+id/lastNameEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Last Name"
+                    android:inputType="text"
+                    android:layout_below="@id/firstNameEditText"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="16dp"/>
+
+                <!-- Roll No EditText -->
+                <EditText
+                    android:id="@+id/rollNoEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Roll No"
+                    android:inputType="text"
+                    android:layout_below="@id/lastNameEditText"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="16dp"/>
+
+                <!-- Contact EditText -->
+                <EditText
+                    android:id="@+id/contactEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Contact"
+                    android:inputType="phone"
+                    android:layout_below="@id/rollNoEditText"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="16dp"/>
+
+                <!-- NIC EditText -->
+                <EditText
+                    android:id="@+id/nicEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="NIC"
+                    android:inputType="text"
+                    android:layout_below="@id/contactEditText"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="16dp"/>
+
+                <!-- Address EditText -->
+                <EditText
+                    android:id="@+id/addressEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Address"
+                    android:inputType="text"
+                    android:layout_below="@id/nicEditText"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="16dp"/>
+
+                <!-- Username EditText -->
+                <EditText
+                    android:id="@+id/usernameEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Username"
+                    android:inputType="text"
+                    android:layout_below="@id/addressEditText"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="16dp"/>
+
+                <!-- Password EditText -->
+                <EditText
+                    android:id="@+id/passwordEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Password"
+                    android:inputType="textPassword"
+                    android:layout_below="@id/usernameEditText"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="16dp"/>
+
+                <!-- Add Student Button -->
+                <Button
+                    android:id="@+id/addStudentButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Add Student"
+                    android:background="@drawable/round_button"
+                    android:textColor="#ffffff"
+                    android:layout_below="@id/passwordEditText"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="32dp"/>
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+    </RelativeLayout>
+</ScrollView>

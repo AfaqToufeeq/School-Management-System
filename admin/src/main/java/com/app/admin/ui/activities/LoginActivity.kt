@@ -40,8 +40,8 @@ class LoginActivity : AppCompatActivity() {
     private fun init() {
         val repository = RetrofitRepository(RetrofitClientInstance.retrofit)
         viewModel = ViewModelProvider(this, RetrofitViewModelFactory(repository))[RetrofitViewModel::class.java]
-        if (isLoggedIn())  //False
-            navigateToMainActivity()
+//        if (isLoggedIn())  //False
+//            navigateToMainActivity()
     }
 
     private fun buttonClicks() {
@@ -70,7 +70,7 @@ class LoginActivity : AppCompatActivity() {
                         showToast(this@LoginActivity,"Login failed")
                     }
                 } catch (e: Exception) {
-                    showToast(this@LoginActivity,"Login failed: $e")
+                    showToast(this@LoginActivity,"Login failed: ${e.message}")
                 } finally {
                     showLoading(false)
                 }

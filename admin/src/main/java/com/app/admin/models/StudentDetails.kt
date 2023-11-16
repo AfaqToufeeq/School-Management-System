@@ -5,7 +5,6 @@ data class StudentListResponse(
     val students: List<StudentDetails>
 )
 
-
 data class StudentDetails(
     val id: Int,
     val firstname: String,
