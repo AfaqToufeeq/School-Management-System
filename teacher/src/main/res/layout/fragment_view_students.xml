@@ -1,9 +1,9 @@
-<!-- res/layout/fragment_view_students.xml -->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@android:color/white">
 
     <include
         android:id="@+id/toolbar"
@@ -17,13 +17,19 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"/>
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/spinner_background"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:textSize="16sp"
+        android:textColor="@color/royal_blue" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_margin="16dp"/>
+        android:layout_margin="16dp"
+        android:background="@drawable/recycler_background" />
 
 </LinearLayout>

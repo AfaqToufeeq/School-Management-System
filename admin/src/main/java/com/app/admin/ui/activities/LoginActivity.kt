@@ -10,7 +10,10 @@ import androidx.lifecycle.lifecycleScope
 import com.app.admin.databinding.ActivityLoginBinding
 import com.app.admin.network.RetrofitClientInstance
 import com.app.admin.repository.RetrofitRepository
+import com.app.admin.utils.AUTH_TOKEN
 import com.app.admin.utils.IS_LOGGED_IN
+import com.app.admin.utils.PickerManager
+import com.app.admin.utils.PickerManager.token
 import com.app.admin.utils.SharedPreferencesManager
 import com.app.admin.utils.Utils.showToast
 import com.app.admin.viewmodel.RetrofitViewModel
@@ -59,7 +62,7 @@ class LoginActivity : AppCompatActivity() {
                         viewModel.login(type, username, password)
                     }
                     if (token.token.isNotEmpty()) {
-                        saveUserLoggedInState()
+                        saveUserLoggedInState(token.token)
                         navigateToMainActivity()
                         Log.d("Token",token.token)
                         showToast(this@LoginActivity,"Login successful")
@@ -82,11 +85,14 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun isLoggedIn(): Boolean {
+        token = SharedPreferencesManager.getString(AUTH_TOKEN,"")
         return SharedPreferencesManager.getBoolean(IS_LOGGED_IN, false)
     }
 
-    private fun saveUserLoggedInState() {
+    private fun saveUserLoggedInState(token: String) {
         SharedPreferencesManager.saveBoolean(IS_LOGGED_IN, true)
+        SharedPreferencesManager.saveString(AUTH_TOKEN, token)
+        PickerManager.token = token
     }
 
     private fun navigateToMainActivity() {

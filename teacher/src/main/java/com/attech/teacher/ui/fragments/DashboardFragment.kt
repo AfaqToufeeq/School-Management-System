@@ -102,6 +102,7 @@ class DashboardFragment : Fragment(), OnItemClick {
             when (title) {
                 "Mark Attendance" -> navigate(R.id.action_dashboardFragment_to_attendanceFragment, bundle)
                 "View Students" -> navigate(R.id.action_dashboardFragment_to_viewStudentsFragment, bundle)
+                "Upload Marks" -> navigate(R.id.action_dashboardFragment_to_uploadMarksFragment, bundle)
             }
         }
     }

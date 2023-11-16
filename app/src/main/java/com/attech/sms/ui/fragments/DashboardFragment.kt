@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.attech.sms.R
@@ -14,6 +15,7 @@ import com.attech.sms.adapters.NewsAdapter
 import com.attech.sms.callbacks.OnItemClick
 import com.attech.sms.databinding.FragmentDashboardBinding
 import com.attech.sms.repository.StudentRepository
+import com.attech.sms.utils.MAIN_MENU
 import com.attech.sms.viewmodel.StudentViewModel
 import com.attech.sms.viewmodelfactory.StudentViewModelFactory
 import java.util.*
@@ -97,10 +99,19 @@ class DashboardFragment : Fragment(), OnItemClick {
     }
 
     private fun openFragment(title: String) {
-        val fragment = AttendanceFragment.newInstance(title)
-        val transaction = requireActivity().supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.fragment_container, fragment)
-        transaction.addToBackStack(null)
-        transaction.commit()
+        val bundle = Bundle().apply {
+            putString(MAIN_MENU, title)
+        }
+
+        findNavController().apply {
+            when (title) {
+                "Attendance" -> navigate(R.id.action_dashboardFragment_to_attendanceFragment, bundle)
+                "Courses" -> navigate(R.id.action_dashboardFragment_to_attendanceFragment, bundle)
+                "Past Papers" -> navigate(R.id.action_dashboardFragment_to_pastPapersFragment, bundle)
+                "Performance" -> navigate(R.id.action_dashboardFragment_to_attendanceFragment, bundle)
+                "Marks" -> navigate(R.id.action_dashboardFragment_to_testMarksFragment, bundle)
+                "Fee Status" -> navigate(R.id.action_dashboardFragment_to_attendanceFragment, bundle)
+            }
+        }
     }
 }

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/dashboardFragment">
+
+    <fragment
+        android:id="@+id/dashboardFragment"
+        android:name="com.attech.sms.ui.fragments.DashboardFragment"
+        android:label="fragment_dashboard"
+        tools:layout="@layout/fragment_dashboard" >
+        <action
+            android:id="@+id/action_dashboardFragment_to_attendanceFragment"
+            app:destination="@id/attendanceFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_feeStatusDialogFragment"
+            app:destination="@id/feeStatusDialogFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_testMarksFragment"
+            app:destination="@id/testMarksFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_pastPapersFragment"
+            app:destination="@id/pastPapersFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/attendanceFragment"
+        android:name="com.attech.sms.ui.fragments.AttendanceFragment"
+        android:label="AttendanceFragment" >
+        <action
+            android:id="@+id/action_attendanceFragment_to_dashboardFragment"
+            app:popUpTo="@id/dashboardFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/feeStatusDialogFragment"
+        android:name="com.attech.sms.ui.fragments.FeeStatusDialogFragment"
+        android:label="FeeStatusDialogFragment" >
+        <action
+            android:id="@+id/action_feeStatusDialogFragment_to_dashboardFragment"
+            app:popUpTo="@id/dashboardFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/testMarksFragment"
+        android:name="com.attech.sms.ui.fragments.TestMarksFragment"
+        android:label="TestMarksFragment" >
+        <action
+            android:id="@+id/action_testMarksFragment_to_dashboardFragment"
+            app:popUpTo="@id/dashboardFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/pastPapersFragment"
+        android:name="com.attech.sms.ui.fragments.PastPapersFragment"
+        android:label="fragment_past_papers"
+        tools:layout="@layout/fragment_past_papers" >
+        <action
+            android:id="@+id/action_pastPapersFragment_to_dashboardFragment"
+            app:popUpTo="@id/dashboardFragment" />
+    </fragment>
+</navigation>

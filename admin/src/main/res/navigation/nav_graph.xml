@@ -28,9 +28,6 @@
         <action
             android:id="@+id/action_dashboardFragment_to_studentListFragment"
             app:destination="@id/studentListFragment" />
-        <action
-            android:id="@+id/action_dashboardFragment_to_blankFragment"
-            app:destination="@id/blankFragment" />
     </fragment>
     <fragment
         android:id="@+id/addTeacherFragment"
@@ -87,10 +84,5 @@
             android:id="@+id/action_studentListFragment_to_dashboardFragment"
             app:popUpTo="@id/dashboardFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/blankFragment"
-        android:name="com.app.admin.ui.fragments.BlankFragment"
-        android:label="fragment_blank"
-        tools:layout="@layout/fragment_blank" />
 
 </navigation>

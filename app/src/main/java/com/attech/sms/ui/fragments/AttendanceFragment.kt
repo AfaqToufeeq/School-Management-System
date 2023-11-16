@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.attech.sms.R
 import com.attech.sms.adapters.AttendanceAdapter
@@ -23,16 +24,6 @@ class AttendanceFragment : Fragment(), OnItemClick {
     private var binding: FragmentAttendanceBinding? = null
     private var selectedDate: String = ""
     private var title: String = ""
-
-    companion object {
-        fun newInstance(title: String): AttendanceFragment {
-            val fragment = AttendanceFragment()
-            val args = Bundle()
-            args.putString(MAIN_MENU, title)
-            fragment.arguments = args
-            return fragment
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -163,10 +154,14 @@ class AttendanceFragment : Fragment(), OnItemClick {
     }
 
     private fun openFragment(title: String) {
-        val fragment = TestMarksFragment.newInstance(title)
-        val transaction = requireActivity().supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.fragment_container, fragment)
-        transaction.addToBackStack(null)
-        transaction.commit()
+        val bundle = Bundle().apply {
+            putString(MAIN_MENU, title)
+        }
+
+        findNavController().apply {
+            when (title) {
+                "Marks" -> navigate(R.id.action_dashboardFragment_to_testMarksFragment, bundle)
+            }
+        }
     }
 }

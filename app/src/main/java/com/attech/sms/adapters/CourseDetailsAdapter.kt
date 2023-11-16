@@ -27,11 +27,7 @@ class CourseDetailsAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CourseDetailsViewHolder {
-        val binding = ItemCourseDetailsBinding.inflate(
-            LayoutInflater.from(parent.context),
-            parent,
-            false
-        )
+        val binding = ItemCourseDetailsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return CourseDetailsViewHolder(binding)
     }
 

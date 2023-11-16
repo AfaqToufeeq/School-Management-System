@@ -30,11 +30,9 @@ class StudentRepository {
         return mutableListOf(
             DashboardItem(R.drawable.attendance, "Attendance"),
             DashboardItem(R.drawable.attendance, "Courses"),
-            DashboardItem(R.drawable.exam, "Performance"),
             DashboardItem(R.drawable.exam, "Marks"),
-//            DashboardItem(R.drawable.homework, "Assignment"),
             DashboardItem(R.drawable.baseline_attach_money_24, "Fee Status"),
-            DashboardItem(R.drawable.homework, "Notice")
+            DashboardItem(R.drawable.homework, "Past Papers")
         )
     }
 
@@ -43,6 +41,10 @@ class StudentRepository {
             NewsItem(R.drawable.logo, "School Science Fair", "Join us at the annual School Science Fair on October 10th. Students will showcase their exciting science projects.", "Oct 10, 2023"),
             NewsItem(R.drawable.logo, "Parent-Teacher Conferences", "Parent-Teacher conferences are scheduled for November 15th and 16th. It's a great opportunity to discuss your child's progress.", "Nov 15, 2023"),
         )
+    }
+
+    fun getWebPageUrl(): String {
+        return "https://teachingbd24.com/hsc-board-question-archives/"
     }
 
     fun getAttendanceLiveData(): LiveData<List<AttendanceData>> {

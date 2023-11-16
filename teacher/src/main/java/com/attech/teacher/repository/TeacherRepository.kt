@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.attech.teacher.R
 import com.attech.teacher.models.Class
 import com.attech.teacher.models.DashboardItem
+import com.attech.teacher.models.MarksData
 import com.attech.teacher.models.NewsItem
 import com.attech.teacher.models.Student
 
@@ -33,6 +34,19 @@ class TeacherRepository {
         Class(1, "Class A", listOf(Student(1, "Student 1", "Class A", "Roll 1"), Student(2, "Student 2", "Class A", "Roll 2"))),
         Class(2, "Class B", listOf(Student(3, "Student 3", "Class B", "Roll 3"), Student(4, "Student 4", "Class B", "Roll 4")))
     )
+
+    fun uploadMarks(className: String?, marksData: MarksData): Boolean {
+        val selectedClass = classes.find { it.className == className }
+        selectedClass?.let { cls ->
+            val studentToUpdate = cls.students.find { it.id == marksData.studentId }
+            studentToUpdate?.let { student ->
+                // Update the marks for the specific student
+                student.marksList.add(marksData)
+                return true // Upload successful
+            }
+        }
+        return false // Upload failed
+    }
 
     private fun getDashBoardItemsData(): List<DashboardItem> {
         return mutableListOf(

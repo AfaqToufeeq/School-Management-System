@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.attech.teacher.models.DashboardItem
+import com.attech.teacher.models.MarksData
 import com.attech.teacher.models.NewsItem
 import com.attech.teacher.models.Student
 import com.attech.teacher.repository.TeacherRepository
@@ -26,6 +27,9 @@ class TeacherViewModel(private val repository: TeacherRepository) : ViewModel() 
 
     private val _attendance = MutableLiveData<List<Student>>()
     val attendance: LiveData<List<Student>> get() = _attendance
+
+    private val _uploadSuccess = MutableLiveData<Boolean>()
+    val uploadSuccess: LiveData<Boolean> get() = _uploadSuccess
 
 
     init {
@@ -57,4 +61,15 @@ class TeacherViewModel(private val repository: TeacherRepository) : ViewModel() 
         // For example, you can log the attendance status or perform any necessary actions
         Log.d("Attendance", "Student ${updatedStudent.name} attendance updated: ${updatedStudent.isPresent}")
     }
+
+    fun uploadMarks(marksData: MarksData) {
+        val className = selectedClass.value
+        if (!className.isNullOrEmpty()) {
+            val isSuccess = repository.uploadMarks(className, marksData)
+            _uploadSuccess.value = isSuccess
+        } else {
+            _uploadSuccess.value = false
+        }
+    }
+
 }

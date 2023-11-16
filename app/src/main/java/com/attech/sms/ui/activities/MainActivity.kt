@@ -17,13 +17,5 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        fragmentNavigation(DashboardFragment())
-    }
-
-    private fun fragmentNavigation(fragment: Fragment){
-        val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.fragment_container, fragment)
-        transaction.addToBackStack(null)
-        transaction.commit()
     }
 }

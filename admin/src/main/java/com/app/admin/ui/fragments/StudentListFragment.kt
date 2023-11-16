@@ -12,6 +12,7 @@ import com.app.admin.adapters.StudentAdapter
 import com.app.admin.databinding.FragmentStudentListBinding
 import com.app.admin.network.RetrofitClientInstance
 import com.app.admin.repository.RetrofitRepository
+import com.app.admin.utils.PickerManager.token
 import com.app.admin.utils.USER_TYPE
 import com.app.admin.viewmodel.RetrofitViewModel
 import com.app.admin.viewmodelfactory.RetrofitViewModelFactory
@@ -57,7 +58,7 @@ class StudentListFragment : Fragment() {
 
     private fun setObserver() {
         with(viewModel) {
-            fetchStudents(USER_TYPE, "zQRwz3oKvWKcNOZTJBSu79k2XXFVpSUS")
+            fetchStudents(USER_TYPE, token!!)
             students.observe(viewLifecycleOwner) { students ->
                 studentAdapter.submitList(students)
             }

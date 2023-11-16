@@ -11,5 +11,6 @@ data class Student(
     val name: String,
     val className: String,
     var rollNumber: String,
-    var isPresent: Boolean = false
+    var isPresent: Boolean = false,
+    val marksList: MutableList<MarksData> = mutableListOf()
 )

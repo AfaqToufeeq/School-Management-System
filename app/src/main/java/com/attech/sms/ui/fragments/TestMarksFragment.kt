@@ -1,7 +1,6 @@
 package com.attech.sms.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -45,10 +44,8 @@ class TestMarksFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("checkMarks","as")
         binding.toolbar.smsText.text = title
         val testMarks = createSampleTestMarks()
-        Log.d("checkMarks","test $testMarks")
         val adapter = TestMarksAdapter(testMarks)
         binding.recyclerViewTestMarks.adapter = adapter
         binding.recyclerViewTestMarks.layoutManager = LinearLayoutManager(requireContext())
