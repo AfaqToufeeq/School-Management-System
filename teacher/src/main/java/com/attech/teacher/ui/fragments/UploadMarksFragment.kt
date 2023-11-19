@@ -43,7 +43,7 @@ class UploadMarksFragment : Fragment() {
     }
 
     private fun init() {
-        binding.toolbar.smsText.text = argumentTitle
+        binding.smsText.text = argumentTitle
 
         // Populate the spinner with class names
         viewModel.classes.observe(viewLifecycleOwner) { classes ->
@@ -82,7 +82,7 @@ class UploadMarksFragment : Fragment() {
     }
 
     private fun events() {
-        binding.toolbar.leftIcon.setOnClickListener { findNavController().popBackStack() }
+        binding.leftIcon.setOnClickListener { findNavController().popBackStack() }
     }
 
 }

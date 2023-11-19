@@ -41,7 +41,7 @@ class AddFinanceFragment : Fragment() {
     }
 
     private fun init() {
-        binding.toolbar.smsText.text = argumentTitle
+        binding.smsText.text = argumentTitle
         pickSingleMediaLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
@@ -55,7 +55,7 @@ class AddFinanceFragment : Fragment() {
 
     private fun events() {
         binding.apply {
-            toolbar.leftIcon.setOnClickListener { findNavController().popBackStack() }
+            leftIcon.setOnClickListener { findNavController().popBackStack() }
 
             uploadImageButton.setOnClickListener {
                 pickSingleMediaLauncher.launch(

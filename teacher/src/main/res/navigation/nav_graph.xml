@@ -33,7 +33,8 @@
     <fragment
         android:id="@+id/viewStudentsFragment"
         android:name="com.attech.teacher.ui.fragments.ViewStudentsFragment"
-        android:label="ViewStudentsFragment" >
+        android:label="ViewStudentsFragment"
+        tools:layout="@layout/fragment_view_students">
         <action
             android:id="@+id/action_viewStudentsFragment_to_dashboardFragment"
             app:popUpTo="@id/dashboardFragment" />
@@ -41,7 +42,8 @@
     <fragment
         android:id="@+id/uploadMarksFragment"
         android:name="com.attech.teacher.ui.fragments.UploadMarksFragment"
-        android:label="UploadMarksFragment" >
+        android:label="UploadMarksFragment"
+        tools:layout="@layout/fragment_upload_marks">
         <action
             android:id="@+id/action_uploadMarksFragment_to_dashboardFragment"
             app:popUpTo="@id/dashboardFragment" />

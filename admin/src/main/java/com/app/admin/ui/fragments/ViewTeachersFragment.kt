@@ -42,7 +42,7 @@ class ViewTeachersFragment : Fragment() {
 
     private fun init() {
         binding.apply {
-            binding.toolbar.smsText.text = argumentTitle
+            binding.smsText.text = argumentTitle
             teacherRecyclerView.layoutManager = LinearLayoutManager(context)
 
             teacherList = listOf(
@@ -62,7 +62,7 @@ class ViewTeachersFragment : Fragment() {
 
     private fun events() {
         binding.apply {
-            toolbar.leftIcon.setOnClickListener { findNavController().popBackStack() }
+            leftIcon.setOnClickListener { findNavController().popBackStack() }
         }
     }
 }

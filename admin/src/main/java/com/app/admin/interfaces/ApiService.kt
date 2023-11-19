@@ -1,19 +1,12 @@
 package com.app.admin.interfaces
 
-import com.app.admin.models.Student
-import com.app.admin.models.StudentDetails
-import com.app.admin.models.StudentResponse
-import com.app.admin.models.TokenResponse
-import okhttp3.ResponseBody
+import com.app.admin.models.StudentDetailsResponse
+import com.app.admin.models.LoginResponse
 import retrofit2.Call
 import retrofit2.Response
-import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
-import retrofit2.http.Header
-import retrofit2.http.Headers
 import retrofit2.http.POST
-import retrofit2.http.Query
 
 
 interface ApiService {
@@ -23,7 +16,7 @@ interface ApiService {
         @Field("type") type: String,
         @Field("username") username: String,
         @Field("password") password: String
-    ): TokenResponse
+    ): LoginResponse
 
 
     //Fetch list of students
@@ -32,7 +25,7 @@ interface ApiService {
     suspend fun getStudents(
         @Field("type") type: String,
         @Field("token") token: String
-    ): Response<List<StudentDetails>>
+    ): Response<List<StudentDetailsResponse>>
 
 //    @POST("api/addStudent")
 //    suspend fun addStudent(
@@ -49,12 +42,6 @@ interface ApiService {
 //    ): Response<StudentResponse>
 
 
-//    @POST("api/addStudent")
-//    suspend fun addStudent(
-//        @Body student: Student
-//    ): Response<StudentResponse>
-//
-
     @POST("api/addStudent")
     @FormUrlEncoded
     fun addStudent(
@@ -68,5 +55,5 @@ interface ApiService {
         @Field("address") address: String,
         @Field("username") username: String,
         @Field("password") password: String
-    ): Call<StudentResponse>
+    ): Call<StudentDetailsResponse>
 }

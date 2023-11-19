@@ -4,17 +4,18 @@ import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.app.admin.databinding.ListItemStudentBinding
-import com.app.admin.models.StudentDetails
+import com.app.admin.models.StudentDetailsResponse
 
 class StudentAdapter : RecyclerView.Adapter<StudentAdapter.StudentViewHolder>() {
-    private var students = listOf<StudentDetails>()
+    private var students = listOf<StudentDetailsResponse>()
     
     inner class StudentViewHolder(private val binding: ListItemStudentBinding) : RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
-        fun bind(student: StudentDetails) {
+        fun bind(student: StudentDetailsResponse) {
             binding.apply {
                 textViewStudentName.text = "${student.firstname} ${student.lastname}"
                 textViewRollNumber.text = student.rollno
@@ -29,14 +30,15 @@ class StudentAdapter : RecyclerView.Adapter<StudentAdapter.StudentViewHolder>() 
                 textViewUsername.text = "Username: ${student.username}"
                 textViewPassword.text = "Password: ${student.password}"
 
-                root.setOnClickListener {
-                    toggleDetails(expandableLayout)
-                }
+                root.setOnClickListener { toggleDetails(expandableLayout, arrowIcon) }
+                arrowIcon.setOnClickListener { toggleDetails(expandableLayout, arrowIcon) }
             }
         }
 
-        private fun toggleDetails(layout: LinearLayout) {
-            layout.visibility = if (layout.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+        private fun toggleDetails(layout: LinearLayout, arrowIcon: ImageView) {
+            val newVisibility = if (layout.visibility == View.VISIBLE) View.GONE else View.VISIBLE
+            layout.visibility = newVisibility
+            arrowIcon.rotation = if (newVisibility == View.VISIBLE) -90f else 0f
         }
     }
 
@@ -51,7 +53,7 @@ class StudentAdapter : RecyclerView.Adapter<StudentAdapter.StudentViewHolder>() 
 
     override fun getItemCount(): Int = students.size
 
-    fun submitList(newStudents: List<StudentDetails>) {
+    fun submitList(newStudents: List<StudentDetailsResponse>) {
         students = newStudents
         notifyDataSetChanged()
     }

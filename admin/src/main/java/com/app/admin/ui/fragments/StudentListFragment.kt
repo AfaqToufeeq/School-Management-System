@@ -12,6 +12,7 @@ import com.app.admin.adapters.StudentAdapter
 import com.app.admin.databinding.FragmentStudentListBinding
 import com.app.admin.network.RetrofitClientInstance
 import com.app.admin.repository.RetrofitRepository
+import com.app.admin.utils.MAIN_MENU
 import com.app.admin.utils.PickerManager.token
 import com.app.admin.utils.USER_TYPE
 import com.app.admin.viewmodel.RetrofitViewModel
@@ -22,6 +23,11 @@ class StudentListFragment : Fragment() {
     private var argumentTitle: String? = null
     private val studentAdapter = StudentAdapter()
     private lateinit var viewModel: RetrofitViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        argumentTitle = requireArguments().getString(MAIN_MENU)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,7 +48,7 @@ class StudentListFragment : Fragment() {
 
     private fun init() {
         binding.apply {
-            toolbar.smsText.text = argumentTitle
+            smsText.text = argumentTitle
             studentsRecyclerView.layoutManager = LinearLayoutManager(requireActivity())
             val repository = RetrofitRepository(RetrofitClientInstance.retrofit)
             viewModel = ViewModelProvider(requireActivity(), RetrofitViewModelFactory(repository))[RetrofitViewModel::class.java]
@@ -52,7 +58,7 @@ class StudentListFragment : Fragment() {
 
     private fun events() {
         binding.apply {
-            toolbar.leftIcon.setOnClickListener { findNavController().popBackStack() }
+            leftIcon.setOnClickListener { findNavController().popBackStack() }
         }
     }
 

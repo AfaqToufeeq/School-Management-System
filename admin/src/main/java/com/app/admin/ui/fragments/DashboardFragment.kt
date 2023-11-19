@@ -67,13 +67,13 @@ class DashboardFragment : Fragment(), OnItemClick {
             requireActivity().runOnUiThread {
                 val currentPosition = layoutManager.findFirstVisibleItemPosition()
                 val nextPosition = if (currentPosition < layoutManager.itemCount - 1) currentPosition + 1 else 0
-                binding.homeScreenLayout.viewPagerDashboard.smoothScrollToPosition(nextPosition)
+                binding.viewPagerDashboard.smoothScrollToPosition(nextPosition)
             }
         }
     }
 
     private fun setRecyclerView() {
-        binding.homeScreenLayout.apply {
+        binding.apply {
             dashboardRecyclerView.layoutManager = GridLayoutManager(requireActivity(), 3)
 
             setTimerToScroll(

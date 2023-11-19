@@ -9,6 +9,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.attech.teacher.adapters.StudentAdapter
 import com.attech.teacher.databinding.FragmentViewStudentsBinding
@@ -40,7 +41,7 @@ class ViewStudentsFragment : Fragment() {
     }
 
     private fun initializeViews() {
-        binding.toolbar.smsText.text = arguments?.getString(MAIN_MENU)
+        binding.smsText.text = arguments?.getString(MAIN_MENU)
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         studentAdapter = StudentAdapter()
@@ -79,6 +80,6 @@ class ViewStudentsFragment : Fragment() {
     }
 
     private fun setEventListeners() {
-        binding.toolbar.leftIcon.setOnClickListener { requireActivity().onBackPressed() }
+        binding.leftIcon.setOnClickListener { findNavController().popBackStack() }
     }
 }

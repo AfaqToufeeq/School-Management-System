@@ -45,7 +45,7 @@ class AddNewsFragment : Fragment() {
     }
 
     private fun init() {
-        binding.toolbar.smsText.text = argumentTitle
+        binding.smsText.text = argumentTitle
         pickSingleMediaLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
                 if (it.resultCode != Activity.RESULT_OK) {
@@ -59,7 +59,7 @@ class AddNewsFragment : Fragment() {
 
     private fun events() {
         binding.apply {
-           toolbar.leftIcon.setOnClickListener { findNavController().popBackStack() }
+           leftIcon.setOnClickListener { findNavController().popBackStack() }
 
             uploadImageButton.setOnClickListener {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {

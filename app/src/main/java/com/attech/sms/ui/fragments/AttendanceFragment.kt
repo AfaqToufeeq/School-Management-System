@@ -48,7 +48,7 @@ class AttendanceFragment : Fragment(), OnItemClick {
     }
 
     private fun init() {
-        binding!!.toolbar.smsText.text = title
+        binding!!.smsText.text = title
         binding!!.recyclerViewAttendance.apply {
             layoutManager = LinearLayoutManager(requireActivity())
         }
@@ -85,9 +85,9 @@ class AttendanceFragment : Fragment(), OnItemClick {
     }
 
     private fun buttonClicks() {
-        binding!!.datePickerButton.setOnClickListener {
-            showDatePicker()
-        }
+        binding!!.datePickerButton.setOnClickListener { showDatePicker() }
+
+        binding!!.leftIcon.setOnClickListener { findNavController().popBackStack() }
     }
 
     private fun showDatePicker() {

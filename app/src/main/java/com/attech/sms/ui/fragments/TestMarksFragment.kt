@@ -44,7 +44,7 @@ class TestMarksFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.toolbar.smsText.text = title
+        binding.smsText.text = title
         val testMarks = createSampleTestMarks()
         val adapter = TestMarksAdapter(testMarks)
         binding.recyclerViewTestMarks.adapter = adapter

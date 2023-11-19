@@ -2,7 +2,7 @@ package com.app.admin.models
 
 import com.google.gson.annotations.SerializedName
 
-data class TokenResponse(
+data class LoginResponse(
     @SerializedName("token")
     val token: String
 )

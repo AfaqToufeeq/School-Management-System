@@ -51,7 +51,7 @@ class AttendanceFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun initializeViews() {
-        binding.toolbar.smsText.text = arguments?.getString(MAIN_MENU)
+        binding.smsText.text = arguments?.getString(MAIN_MENU)
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         attendanceAdapter = AttendanceAdapter { updatedStudent ->
@@ -98,12 +98,10 @@ class AttendanceFragment : Fragment() {
             }
         }
 
-//        // Load classes when the fragment is created
-//        viewModel.loadClasses()
     }
 
     private fun setEventListeners() {
-        binding.toolbar.leftIcon.setOnClickListener { findNavController().popBackStack() }
+        binding.leftIcon.setOnClickListener { findNavController().popBackStack() }
         binding.btnSubmit.setOnClickListener { viewModel.submitAttendance() }
     }
 }

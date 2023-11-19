@@ -3,50 +3,61 @@ package com.app.admin.repository
 import android.util.Log
 import com.app.admin.interfaces.ApiService
 import com.app.admin.models.Student
-import com.app.admin.models.StudentDetails
-import com.app.admin.models.StudentResponse
-import com.app.admin.models.TokenResponse
-import com.google.gson.Gson
-import com.google.gson.JsonSyntaxException
+import com.app.admin.models.StudentDetailsResponse
+import com.app.admin.models.LoginResponse
+import kotlinx.coroutines.suspendCancellableCoroutine
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.coroutines.resume
 
-class RetrofitRepository (private val apiService: ApiService) {
-    suspend fun login(type: String, username: String, password: String): TokenResponse {
+class RetrofitRepository(private val apiService: ApiService) {
+
+    suspend fun login(type: String, username: String, password: String): LoginResponse {
         return apiService.login(type, username, password)
     }
 
-    suspend fun getStudents(type: String, token: String): Response<List<StudentDetails>> {
+    suspend fun getStudents(type: String, token: String): Response<List<StudentDetailsResponse>> {
         return apiService.getStudents(type, token)
     }
 
-    suspend fun addStudent(type: String, token: String, student: Student) {
-        val response = apiService.addStudent( type = type,
-            token = token,
-            firstname = student.firstname,
-            lastname = student.lastname,
-            rollno = student.rollno,
-            contact = student.contact,
-            nic = student.nic,
-            address = student.address,
-            username = student.username,
-            password = student.password
-        ).enqueue(object : Callback<StudentResponse> {
-            override fun onResponse(call: Call<StudentResponse>, response: Response<StudentResponse>) {
-                if (response.isSuccessful) {
-                    val student = response.body()
+    suspend fun addStudent(type: String, token: String, student: Student): Boolean {
+        return suspendCancellableCoroutine { continuation ->
+            val addStudentCall = apiService.addStudent(
+                type = type,
+                token = token,
+                firstname = student.firstname,
+                lastname = student.lastname,
+                rollno = student.rollno,
+                contact = student.contact,
+                nic = student.nic,
+                address = student.address,
+                username = student.username,
+                password = student.password
+            )
 
-                    Log.d("API_CALL", "Response: ${student.toString()}")
-                } else {
-                    Log.e("API_CALL", "Error code: ${response.code()}, Error body: ${response.errorBody()}")
-
+            addStudentCall.enqueue(object : Callback<StudentDetailsResponse> {
+                override fun onResponse(
+                    call: Call<StudentDetailsResponse>,
+                    response: Response<StudentDetailsResponse>
+                ) {
+                    if (response.isSuccessful) {
+                        continuation.resume(true)
+                    } else {
+                        Log.e("API_CALL", "Error code: ${response.code()}, Error body: ${response.errorBody()}")
+                        continuation.resume(false)
+                    }
                 }
-            }
-            override fun onFailure(call: Call<StudentResponse>, t: Throwable) {
-                // Handle failure
-                Log.e("API_CALL", "Error adding student: ${t.message}", t)
-            }
-        })
+
+                override fun onFailure(call: Call<StudentDetailsResponse>, t: Throwable) {
+                    handleCallFailure(t)
+                    continuation.resume(false)
+                }
+            })
+        }
+    }
+
+    private fun handleCallFailure(t: Throwable, message: String = ":") {
+        Log.e("API_CALL", "Error $message ${t.message}", t)
     }
 }

@@ -47,13 +47,13 @@ class PastPapersFragment : Fragment() {
     }
 
     private fun init() {
-        binding.toolbar.smsText.text = title
+        binding.smsText.text = title
         val repository = StudentRepository()
         viewModel = ViewModelProvider(requireActivity(), StudentViewModelFactory(repository))[StudentViewModel::class.java]
     }
 
     private fun events() {
-        binding.toolbar.leftIcon.setOnClickListener { findNavController().popBackStack() }
+        binding.leftIcon.setOnClickListener { findNavController().popBackStack() }
     }
 
 }

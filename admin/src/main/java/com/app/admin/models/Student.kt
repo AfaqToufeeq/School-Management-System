@@ -1,11 +1,6 @@
 package com.app.admin.models
 
-
-data class StudentListResponse(
-    val students: List<StudentDetails>
-)
-
-data class StudentDetails(
+data class StudentDetailsResponse(
     val id: Int,
     val firstname: String,
     val lastname: String,
@@ -18,4 +13,17 @@ data class StudentDetails(
     val auth_token: String?,
     val is_logged_in: String,
     val status: String
+)
+
+data class Student(
+    val type: String,
+    val token: String,
+    val firstname: String,
+    val lastname: String,
+    val rollno: String,
+    val contact: String,
+    val nic: String,
+    val address: String,
+    val username: String,
+    val password: String
 )
