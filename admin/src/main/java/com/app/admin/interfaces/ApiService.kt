@@ -2,6 +2,7 @@ package com.app.admin.interfaces
 
 import com.app.admin.models.StudentDetailsResponse
 import com.app.admin.models.LoginResponse
+import com.app.admin.models.LogoutResponse
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Field
@@ -17,6 +18,15 @@ interface ApiService {
         @Field("username") username: String,
         @Field("password") password: String
     ): LoginResponse
+
+
+    @POST("api/logout")
+    @FormUrlEncoded
+    suspend fun logout(
+        @Field("type") type: String,
+        @Field("token") token: String,
+    ): LogoutResponse
+
 
 
     //Fetch list of students

@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.app.admin.models.Student
 import com.app.admin.models.StudentDetailsResponse
 import com.app.admin.models.LoginResponse
+import com.app.admin.models.LogoutResponse
 import com.app.admin.repository.RetrofitRepository
 import kotlinx.coroutines.launch
 
@@ -19,9 +20,16 @@ class RetrofitViewModel(private val repository: RetrofitRepository) : ViewModel(
     private val _addStudentResult = MutableLiveData<Boolean?>()
     val addStudentResult: LiveData<Boolean?> get() = _addStudentResult
 
+
+
     suspend fun login(type: String, username: String, password: String): LoginResponse {
         return repository.login(type, username, password)
     }
+
+    suspend fun logout(type: String, token: String): LogoutResponse {
+        return repository.logout(type, token)
+    }
+
 
     fun fetchStudents(type: String, token: String) {
         viewModelScope.launch {

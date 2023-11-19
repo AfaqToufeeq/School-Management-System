@@ -211,3 +211,9 @@ b
 2app/src/main/java/com/attech/sms/models/Student.kt,5\6\56365f118cdea2cfd2d59bc57b7a4fb82d67f535
 p
 @app/src/main/java/com/attech/sms/ui/fragments/ProfileFragment.kt,8\0\80dd5b2c1b8bfa73901115cd26807e8a06db52ef
+i
+9app/src/main/java/com/attech/sms/models/LogoutResponse.kt,e\f\efca62b3c0b17091f383859cbdcd071bad7d43c1
+q
+Aadmin/src/main/java/com/app/admin/ui/fragments/ProfileFragment.kt,0\a\0a20ba5a54fb1f017c2d32d40e8a3d7106619ace
+j
+:admin/src/main/java/com/app/admin/models/LogoutResponse.kt,6\5\654df1853ace72d040a26f02d93d9b8be4650af3

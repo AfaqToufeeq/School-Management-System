@@ -28,6 +28,9 @@
         <action
             android:id="@+id/action_dashboardFragment_to_studentListFragment"
             app:destination="@id/studentListFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
     </fragment>
     <fragment
         android:id="@+id/addTeacherFragment"
@@ -84,5 +87,24 @@
             android:id="@+id/action_studentListFragment_to_dashboardFragment"
             app:popUpTo="@id/dashboardFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.app.admin.ui.fragments.ProfileFragment"
+        android:label="ProfileFragment"
+        tools:layout="@layout/fragment_profile">
+        <action
+            android:id="@+id/action_profileFragment_to_dashboardFragment"
+            app:popUpTo="@id/dashboardFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_loginActivity"
+            app:destination="@id/loginActivity"
+            app:popUpTo="@+id/profileFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
+    <activity
+        android:id="@+id/loginActivity"
+        android:name="com.app.admin.ui.activities.LoginActivity"
+        android:label="activity_login"
+        tools:layout="@layout/activity_login" />
 
 </navigation>

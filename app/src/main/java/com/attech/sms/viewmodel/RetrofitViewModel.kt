@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.attech.sms.models.LoginResponse
+import com.attech.sms.models.LogoutResponse
 import com.attech.sms.models.Student
 import com.attech.sms.models.StudentDetailsResponse
 import com.attech.sms.repository.RetrofitRepository
@@ -18,8 +19,13 @@ class RetrofitViewModel(private val repository: RetrofitRepository) : ViewModel(
     val students: LiveData<List<StudentDetailsResponse>> get() = _students
 
 
+
     suspend fun login(type: String, username: String, password: String): LoginResponse {
         return repository.login(type, username, password)
+    }
+
+    suspend fun logout(type: String, token: String): LogoutResponse {
+        return repository.logout(type, token)
     }
 
     fun fetchStudents(type: String, token: String) {

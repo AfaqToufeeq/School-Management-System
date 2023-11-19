@@ -1,6 +1,7 @@
 package com.attech.sms.interfaces
 
 import com.attech.sms.models.LoginResponse
+import com.attech.sms.models.LogoutResponse
 import com.attech.sms.models.StudentDetailsResponse
 import retrofit2.Call
 import retrofit2.Response
@@ -19,6 +20,14 @@ interface ApiService {
     ): LoginResponse
 
 
+    @POST("api/logout")
+    @FormUrlEncoded
+    suspend fun logout(
+        @Field("type") type: String,
+        @Field("token") token: String,
+    ): LogoutResponse
+
+
     //Fetch list of students
     @POST("api/getStudents")
     @FormUrlEncoded
@@ -26,20 +35,6 @@ interface ApiService {
         @Field("type") type: String,
         @Field("token") token: String
     ): Response<List<StudentDetailsResponse>>
-
-//    @POST("api/addStudent")
-//    suspend fun addStudent(
-//        @Header("type") type: String,
-//        @Header("token") token: String,
-//        @Query("firstname") firstName: String,
-//        @Query("lastname") lastName: String,
-//        @Query("rollno") rollNo: String,
-//        @Query("contact") contact: String,
-//        @Query("nic") nic: String,
-//        @Query("address") address: String,
-//        @Query("username") username: String,
-//        @Query("password") password: String
-//    ): Response<StudentResponse>
 
 
     @POST("api/addStudent")

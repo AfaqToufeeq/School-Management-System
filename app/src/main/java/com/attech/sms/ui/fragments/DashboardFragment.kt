@@ -1,7 +1,6 @@
 package com.attech.sms.ui.fragments
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -52,6 +51,14 @@ class DashboardFragment : Fragment(), OnItemClick {
         init()
         setObservers()
         setRecyclerView()
+        events()
+    }
+
+    private fun events() {
+        binding.profileCL.setOnClickListener {
+            findNavController().navigate(R.id.action_dashboardFragment_to_profileFragment,
+                Bundle().apply { putString(MAIN_MENU, "Profile View")})
+        }
     }
 
     private fun init() {

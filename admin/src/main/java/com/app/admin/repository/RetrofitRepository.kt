@@ -5,6 +5,7 @@ import com.app.admin.interfaces.ApiService
 import com.app.admin.models.Student
 import com.app.admin.models.StudentDetailsResponse
 import com.app.admin.models.LoginResponse
+import com.app.admin.models.LogoutResponse
 import kotlinx.coroutines.suspendCancellableCoroutine
 import retrofit2.Call
 import retrofit2.Callback
@@ -19,6 +20,10 @@ class RetrofitRepository(private val apiService: ApiService) {
 
     suspend fun getStudents(type: String, token: String): Response<List<StudentDetailsResponse>> {
         return apiService.getStudents(type, token)
+    }
+
+    suspend fun logout(type: String, token: String): LogoutResponse {
+        return apiService.logout(type, token)
     }
 
     suspend fun addStudent(type: String, token: String, student: Student): Boolean {
