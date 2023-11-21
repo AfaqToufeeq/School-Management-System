@@ -97,7 +97,6 @@ class AttendanceFragment : Fragment() {
                 attendanceAdapter.setStudents(it)
             }
         }
-
     }
 
     private fun setEventListeners() {

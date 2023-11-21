@@ -45,7 +45,6 @@ class UploadMarksFragment : Fragment() {
     private fun init() {
         binding.smsText.text = argumentTitle
 
-        // Populate the spinner with class names
         viewModel.classes.observe(viewLifecycleOwner) { classes ->
             classes?.let {
                 val classAdapter =
@@ -55,14 +54,12 @@ class UploadMarksFragment : Fragment() {
             }
         }
 
-        // Example of submitting marks
         binding.btnSubmit.setOnClickListener {
             val selectedClass = binding.spinnerClass.selectedItem as? String
             val subject = binding.etSubject.text.toString()
             val marks = binding.etMarks.text.toString().toDouble()
 
             if (selectedClass != null && subject.isNotEmpty()) {
-                // In this example, we're using a placeholder value (1) as the studentId.
                 val marksData = MarksData(1, subject, marks)
                 viewModel.uploadMarks(marksData)
             }

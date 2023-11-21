@@ -37,20 +37,6 @@ interface ApiService {
         @Field("token") token: String
     ): Response<List<StudentDetailsResponse>>
 
-//    @POST("api/addStudent")
-//    suspend fun addStudent(
-//        @Header("type") type: String,
-//        @Header("token") token: String,
-//        @Query("firstname") firstName: String,
-//        @Query("lastname") lastName: String,
-//        @Query("rollno") rollNo: String,
-//        @Query("contact") contact: String,
-//        @Query("nic") nic: String,
-//        @Query("address") address: String,
-//        @Query("username") username: String,
-//        @Query("password") password: String
-//    ): Response<StudentResponse>
-
 
     @POST("api/addStudent")
     @FormUrlEncoded

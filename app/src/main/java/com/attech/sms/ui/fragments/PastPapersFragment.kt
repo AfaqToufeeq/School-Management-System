@@ -49,7 +49,10 @@ class PastPapersFragment : Fragment() {
     private fun init() {
         binding.smsText.text = title
         val repository = StudentRepository()
-        viewModel = ViewModelProvider(requireActivity(), StudentViewModelFactory(repository))[StudentViewModel::class.java]
+        viewModel = ViewModelProvider(
+            requireActivity(),
+            StudentViewModelFactory(repository)
+        )[StudentViewModel::class.java]
     }
 
     private fun events() {
