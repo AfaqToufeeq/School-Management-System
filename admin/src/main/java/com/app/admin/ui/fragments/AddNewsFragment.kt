@@ -1,6 +1,6 @@
 package com.app.admin.ui.fragments
 
-import ImageUtil
+import com.app.admin.utils.ImageUtil
 import android.app.Activity
 import android.content.Intent
 import android.os.Build

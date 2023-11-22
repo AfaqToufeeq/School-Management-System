@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/toolbar"
+        app:titleTextColor="@color/royal_blue">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/left_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_gravity="start"
+            android:src="@drawable/back_icon" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/sms_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textSize="18dp"
+            android:textStyle="bold"
+            android:text="Profile" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageViewProfile"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/profile_icon"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="16dp"/>
+
+        <TextView
+            android:id="@+id/textViewFullName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="John Doe"
+            android:textSize="20sp"
+            android:textColor="#333333"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"/>
+
+        <TextView
+            android:id="@+id/textViewRollNo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Roll No: 12345"
+            android:textSize="16sp"
+            android:textColor="#666666"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"/>
+
+        <TextView
+            android:id="@+id/textViewContact"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Contact: +1 (555) 123-4567"
+            android:textSize="16sp"
+            android:textColor="#666666"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"/>
+
+        <TextView
+            android:id="@+id/textViewNic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NIC: 123456789"
+            android:textSize="16sp"
+            android:textColor="#666666"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"/>
+
+        <TextView
+            android:id="@+id/textViewAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Address: 123 Main St, City"
+            android:textSize="16sp"
+            android:textColor="#666666"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"/>
+
+        <TextView
+            android:id="@+id/textViewUsername"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Username: john_doe"
+            android:textSize="16sp"
+            android:textColor="#666666"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"/>
+
+        <Button
+            android:id="@+id/buttonLogout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Logout"
+            android:textSize="16sp"
+            android:textColor="#FFFFFF"
+            android:background="@drawable/rectangular_btn"
+            android:layout_marginTop="16dp"/>
+    </LinearLayout>
+</LinearLayout>

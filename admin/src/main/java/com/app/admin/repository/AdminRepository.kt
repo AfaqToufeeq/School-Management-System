@@ -10,12 +10,10 @@ import com.app.admin.models.Teacher
 class AdminRepository {
     private val dashboardItemsData = MutableLiveData<List<DashboardItem>>()
     private val newsItemsData = MutableLiveData<List<NewsItem>>()
-    private val teachersData = MutableLiveData<List<Teacher>>()
 
     init {
         dashboardItemsData.value = getDashBoardItemsData()
         newsItemsData.value = getNewsItemsData()
-        teachersData.value = getTeachersData()
     }
 
     fun getDashboardItems(): LiveData<List<DashboardItem>> {
@@ -26,19 +24,6 @@ class AdminRepository {
         return newsItemsData
     }
 
-    fun getTeachers(): LiveData<List<Teacher>> {
-        return teachersData
-    }
-
-    fun addTeacher(teacher: Teacher) {
-        val teacherList = teachersData.value?.toMutableList() ?: mutableListOf()
-        teacherList.add(teacher)
-        teachersData.value = teacherList
-    }
-
-    private fun getTeachersData(): List<Teacher> {
-        return mutableListOf()  // Initially empty; load from your data source
-    }
 
     private fun getDashBoardItemsData(): List<DashboardItem> {
         return mutableListOf(

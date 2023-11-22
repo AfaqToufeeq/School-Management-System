@@ -16,6 +16,7 @@ import com.app.admin.databinding.FragmentAddStudentBinding
 import com.app.admin.models.Student
 import com.app.admin.network.RetrofitClientInstance
 import com.app.admin.repository.RetrofitRepository
+import com.app.admin.utils.ImageUtil
 import com.app.admin.utils.MAIN_MENU
 import com.app.admin.utils.PickerManager.token
 import com.app.admin.utils.USER_TYPE
@@ -29,6 +30,7 @@ class AddStudentFragment : Fragment() {
     private var argumentTitle: String? = null
     private lateinit var pickSingleMediaLauncher: ActivityResultLauncher<Intent>
     private lateinit var viewModel: RetrofitViewModel
+    private var base64ImageString: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,6 +74,9 @@ class AddStudentFragment : Fragment() {
             }
 
             addStudentButton.setOnClickListener {
+               requireActivity().runOnUiThread {
+                   showLoading(true)
+               }
                 addStudent()
             }
         }
@@ -88,7 +93,9 @@ class AddStudentFragment : Fragment() {
     private fun handleMediaPickerResult(result: ActivityResult) {
         if (result.resultCode == Activity.RESULT_OK) {
             val uri = result.data?.data
-            binding.studentIcon.setImageURI(uri)
+            base64ImageString = uri?.let { ImageUtil.convertUriToBase64(requireActivity(), it) }
+            if (base64ImageString!=null)
+                binding.studentIcon.setImageURI(uri)
         } else {
             showToast(requireActivity(), "Failed picking media.")
         }
@@ -116,19 +123,27 @@ class AddStudentFragment : Fragment() {
             nic,
             address,
             username,
-            password
+            password,
+            base64ImageString
         )
 
         viewModel.addStudent(type, authToken, student)
 
         viewModel.addStudentResult.observe(viewLifecycleOwner) { studentResponse ->
             if (studentResponse!!) {
+                showLoading(false)
                 showToast(requireActivity(), "Student added successfully")
                 handleBackPressed()
             } else {
+                showLoading(false)
                 showToast(requireActivity(), "Failed to add student")
             }
+
         }
+    }
+
+    private fun showLoading(show: Boolean) {
+        binding.progressBar.visibility = if (show) View.VISIBLE else View.GONE
     }
 
 }

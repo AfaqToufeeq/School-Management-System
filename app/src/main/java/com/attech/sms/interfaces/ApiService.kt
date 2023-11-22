@@ -49,6 +49,7 @@ interface ApiService {
         @Field("nic") nic: String,
         @Field("address") address: String,
         @Field("username") username: String,
-        @Field("password") password: String
+        @Field("password") password: String,
+        @Field("image") image: String,
     ): Call<StudentDetailsResponse>
 }

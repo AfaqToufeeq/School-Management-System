@@ -7,8 +7,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.app.admin.R
 import com.app.admin.databinding.ListItemStudentBinding
 import com.app.admin.models.StudentDetailsResponse
+import com.app.admin.utils.ImageUtil
 
 class StudentAdapter : RecyclerView.Adapter<StudentAdapter.StudentViewHolder>() {
     private var students = listOf<StudentDetailsResponse>()
@@ -19,6 +21,10 @@ class StudentAdapter : RecyclerView.Adapter<StudentAdapter.StudentViewHolder>() 
             binding.apply {
                 textViewStudentName.text = "${student.firstname} ${student.lastname}"
                 textViewRollNumber.text = student.rollno
+                if (student.image!=null)
+                    studentImageView.setImageBitmap(ImageUtil.decodeBase64ToBitmap(student.image))
+                else
+                    studentImageView.setImageResource(R.drawable.student_icon)
 
                 // Set other details
                 textViewFirstName.text = "First Name: ${student.firstname}"

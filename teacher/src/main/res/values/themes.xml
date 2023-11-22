@@ -15,4 +15,10 @@
         <item name="android:background">@null</item> <!-- Remove background to make it transparent -->
         <item name="android:padding">8dp</item> <!-- Add padding for touch area -->
     </style>
+
+    <!-- Custom ProgressBar  -->
+    <style name="CustomProgressBarStyle">
+        <item name="android:indeterminateTint">@color/royal_blue</item>
+        <item name="android:indeterminateDrawable">@drawable/custom_progress_bar</item>
+    </style>
 </resources>

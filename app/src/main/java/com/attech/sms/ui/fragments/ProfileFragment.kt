@@ -11,6 +11,7 @@ import com.attech.sms.R
 import com.attech.sms.databinding.FragmentProfileBinding
 import com.attech.sms.network.RetrofitClientInstance
 import com.attech.sms.repository.RetrofitRepository
+import com.attech.sms.utils.ImageUtil
 import com.attech.sms.utils.MAIN_MENU
 import com.attech.sms.utils.PickerManager.studentData
 import com.attech.sms.utils.Utils
@@ -61,7 +62,10 @@ class ProfileFragment : Fragment() {
     private fun setData() {
         with(binding) {
             studentData?.let{
-                imageViewProfile.setImageResource(R.drawable.profile_icon)
+                if (it.image!=null)
+                    imageViewProfile.setImageBitmap(ImageUtil.decodeBase64ToBitmap(it.image))
+                else
+                    imageViewProfile.setImageResource(R.drawable.profile_icon)
                 textViewFullName.text = "${it.firstname} ${it.lastname}"
                 textViewRollNo.text = it.rollno
                 textViewContact.text = it.contact

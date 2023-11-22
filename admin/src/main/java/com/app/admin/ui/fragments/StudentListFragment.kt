@@ -49,6 +49,7 @@ class StudentListFragment : Fragment() {
     private fun init() {
         binding.apply {
             smsText.text = argumentTitle
+            showLoading(true)
             studentsRecyclerView.layoutManager = LinearLayoutManager(requireActivity())
             val repository = RetrofitRepository(RetrofitClientInstance.retrofit)
             viewModel = ViewModelProvider(requireActivity(), RetrofitViewModelFactory(repository))[RetrofitViewModel::class.java]
@@ -62,11 +63,19 @@ class StudentListFragment : Fragment() {
         }
     }
 
+    private fun showLoading(show: Boolean) {
+        binding.progressBar.visibility = if (show) View.VISIBLE else View.GONE
+    }
+
+
     private fun setObserver() {
         with(viewModel) {
             fetchStudents(USER_TYPE, token!!)
+
             students.observe(viewLifecycleOwner) { students ->
+                showLoading(false)
                 studentAdapter.submitList(students)
+                binding.studentsRecyclerView.visibility = View.VISIBLE
             }
         }
     }

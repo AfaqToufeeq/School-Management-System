@@ -17,6 +17,7 @@ import com.attech.sms.databinding.FragmentDashboardBinding
 import com.attech.sms.network.RetrofitClientInstance
 import com.attech.sms.repository.RetrofitRepository
 import com.attech.sms.repository.StudentRepository
+import com.attech.sms.utils.ImageUtil
 import com.attech.sms.utils.MAIN_MENU
 import com.attech.sms.utils.PickerManager
 import com.attech.sms.utils.PickerManager.studentData
@@ -64,10 +65,10 @@ class DashboardFragment : Fragment(), OnItemClick {
     private fun init() {
         val repository = StudentRepository()
         studentViewModel = ViewModelProvider(this, StudentViewModelFactory(repository))[StudentViewModel::class.java]
-        binding.apply {
-            val repository = RetrofitRepository(RetrofitClientInstance.retrofit)
-            viewModel = ViewModelProvider(requireActivity(), RetrofitViewModelFactory(repository))[RetrofitViewModel::class.java]
-        }
+
+            val retrofitRepository = RetrofitRepository(RetrofitClientInstance.retrofit)
+            viewModel = ViewModelProvider(requireActivity(), RetrofitViewModelFactory(retrofitRepository))[RetrofitViewModel::class.java]
+
     }
 
     private fun setObservers() {
@@ -87,6 +88,10 @@ class DashboardFragment : Fragment(), OnItemClick {
             students.observe(viewLifecycleOwner) { students ->
                 studentData = students.firstOrNull { it.username == PickerManager.userName }
                 studentData?.let {
+                    if (it.image!=null)
+                        binding.personImageView.setImageBitmap(ImageUtil.decodeBase64ToBitmap(it.image))
+                    else
+                        binding.personImageView.setImageResource(R.drawable.profile_icon)
                     binding.personNameTextView.text = "${it.firstname} ${it.lastname}"
                 }
             }

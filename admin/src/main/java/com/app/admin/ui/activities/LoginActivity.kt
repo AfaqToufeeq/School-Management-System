@@ -15,6 +15,7 @@ import com.app.admin.utils.IS_LOGGED_IN
 import com.app.admin.utils.PickerManager
 import com.app.admin.utils.PickerManager.token
 import com.app.admin.utils.SharedPreferencesManager
+import com.app.admin.utils.USER_TYPE
 import com.app.admin.utils.Utils.showToast
 import com.app.admin.viewmodel.RetrofitViewModel
 import com.app.admin.viewmodelfactory.RetrofitViewModelFactory
@@ -49,7 +50,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun login() {
-        val type = "admin"
         val username = binding.editTextEmail.text.toString()
         val password = binding.editTextPassword.text.toString()
 
@@ -59,10 +59,10 @@ class LoginActivity : AppCompatActivity() {
             lifecycleScope.launch {
                 try {
                     val token = withContext(Dispatchers.IO) {
-                        viewModel.login(type, username, password)
+                        viewModel.login(USER_TYPE, username, password)
                     }
                     if (token.token.isNotEmpty()) {
-                        saveUserLoggedInState(token.token)
+                        saveUserLoggedInState(token.token, username)
                         navigateToMainActivity()
                         Log.d("Token",token.token)
                         showToast(this@LoginActivity,"Login successful")
@@ -89,10 +89,11 @@ class LoginActivity : AppCompatActivity() {
         return SharedPreferencesManager.getBoolean(IS_LOGGED_IN, false)
     }
 
-    private fun saveUserLoggedInState(token: String) {
+    private fun saveUserLoggedInState(token: String, username: String) {
         SharedPreferencesManager.saveBoolean(IS_LOGGED_IN, true)
         SharedPreferencesManager.saveString(AUTH_TOKEN, token)
         PickerManager.token = token
+        PickerManager.userName = username
     }
 
     private fun navigateToMainActivity() {

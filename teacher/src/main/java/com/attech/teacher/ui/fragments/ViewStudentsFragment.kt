@@ -15,6 +15,7 @@ import com.attech.teacher.adapters.StudentAdapter
 import com.attech.teacher.databinding.FragmentViewStudentsBinding
 import com.attech.teacher.repository.TeacherRepository
 import com.attech.teacher.utils.MAIN_MENU
+import com.attech.teacher.utils.PickerManager
 import com.attech.teacher.viewmodel.TeacherViewModel
 import com.attech.teacher.viewmodelfactory.TeacherViewModelFactory
 
@@ -54,7 +55,7 @@ class ViewStudentsFragment : Fragment() {
         binding.spinnerClass.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 val selectedClass = parent?.getItemAtPosition(position) as? String
-                selectedClass?.let { viewModel.onClassSelected(it) }
+                selectedClass?.let { }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -64,12 +65,11 @@ class ViewStudentsFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        viewModel.classes.observe(viewLifecycleOwner) { classes ->
-            classes?.let {
-                val classAdapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item, it)
-                classAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
-                binding.spinnerClass.adapter = classAdapter
-            }
+        val batchCodes = PickerManager.allBatchesList!!.map { it.batchcode }
+        batchCodes?.let {
+            val classAdapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item, it)
+            classAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
+            binding.spinnerClass.adapter = classAdapter
         }
 
         viewModel.attendance.observe(viewLifecycleOwner) { students ->

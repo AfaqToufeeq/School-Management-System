@@ -3,6 +3,7 @@ package com.app.admin.interfaces
 import com.app.admin.models.StudentDetailsResponse
 import com.app.admin.models.LoginResponse
 import com.app.admin.models.LogoutResponse
+import com.app.admin.models.TeacherDetailsResponse
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Field
@@ -28,14 +29,20 @@ interface ApiService {
     ): LogoutResponse
 
 
-
-    //Fetch list of students
     @POST("api/getStudents")
     @FormUrlEncoded
     suspend fun getStudents(
         @Field("type") type: String,
         @Field("token") token: String
     ): Response<List<StudentDetailsResponse>>
+
+
+    @POST("api/getTeachers")
+    @FormUrlEncoded
+    suspend fun getTeachers(
+        @Field("type") type: String,
+        @Field("token") token: String
+    ): Response<List<TeacherDetailsResponse>>
 
 
     @POST("api/addStudent")
@@ -50,6 +57,23 @@ interface ApiService {
         @Field("nic") nic: String,
         @Field("address") address: String,
         @Field("username") username: String,
-        @Field("password") password: String
+        @Field("password") password: String,
+        @Field("image") image: String
     ): Call<StudentDetailsResponse>
+
+
+    @POST("api/addTeacher")
+    @FormUrlEncoded
+    fun addTeacher(
+        @Field("type") type: String,
+        @Field("token") token: String,
+        @Field("firstname") firstname: String,
+        @Field("lastname") lastname: String,
+        @Field("contact") contact: String,
+        @Field("nic") nic: String,
+        @Field("address") address: String,
+        @Field("username") username: String,
+        @Field("password") password: String,
+        @Field("image") image: String
+    ): Call<TeacherDetailsResponse>
 }

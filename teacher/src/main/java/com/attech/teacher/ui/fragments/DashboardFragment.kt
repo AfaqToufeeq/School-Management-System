@@ -1,6 +1,7 @@
 package com.attech.teacher.ui.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,9 +15,19 @@ import com.attech.teacher.adapters.DashboardAdapter
 import com.attech.teacher.adapters.NewsAdapter
 import com.attech.teacher.callbacks.OnItemClick
 import com.attech.teacher.databinding.FragmentDashboardBinding
+import com.attech.teacher.models.BatchesModel
+import com.attech.teacher.network.RetrofitClientInstance
+import com.attech.teacher.repository.RetrofitRepository
 import com.attech.teacher.repository.TeacherRepository
+import com.attech.teacher.utils.ImageUtil
 import com.attech.teacher.utils.MAIN_MENU
+import com.attech.teacher.utils.PickerManager
+import com.attech.teacher.utils.PickerManager.allBatchesList
+import com.attech.teacher.utils.PickerManager.teacherData
+import com.attech.teacher.utils.USER_TYPE
+import com.attech.teacher.viewmodel.RetrofitViewModel
 import com.attech.teacher.viewmodel.TeacherViewModel
+import com.attech.teacher.viewmodelfactory.RetrofitViewModelFactory
 import com.attech.teacher.viewmodelfactory.TeacherViewModelFactory
 import java.util.*
 import kotlin.concurrent.scheduleAtFixedRate
@@ -27,6 +38,8 @@ class DashboardFragment : Fragment(), OnItemClick {
     private lateinit var dashboardAdapter: DashboardAdapter
     private lateinit var newsAdapter: NewsAdapter
     private val timer = Timer()
+    private lateinit var viewModel: RetrofitViewModel
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,6 +55,14 @@ class DashboardFragment : Fragment(), OnItemClick {
         init()
         setObservers()
         setRecyclerView()
+        events()
+    }
+
+    private fun events() {
+        binding.profileCL.setOnClickListener {
+            findNavController().navigate(R.id.action_dashboardFragment_to_profileFragment,
+                Bundle().apply { putString(MAIN_MENU, "Profile View")})
+        }
     }
 
     private fun setObservers() {
@@ -49,11 +70,41 @@ class DashboardFragment : Fragment(), OnItemClick {
             dashboardItemsLiveData.observe(viewLifecycleOwner) { dashboardAdapter.submitList(it) }
             newsItemsLiveData.observe(viewLifecycleOwner) { newsAdapter.submitList(it) }
         }
+
+        with(viewModel) {
+            fetchTeachers(USER_TYPE, PickerManager.token!!)
+            fetchBatches(USER_TYPE, PickerManager.token!!)
+            teachers.observe(viewLifecycleOwner) { teachers ->
+                teacherData = teachers.firstOrNull { it.username == PickerManager.userName }
+                teacherData?.let {
+                    with(binding) {
+                        if (it.image!=null)
+                            personImageView.setImageBitmap(ImageUtil.decodeBase64ToBitmap(it.image))
+                        else
+                            personImageView.setImageResource(R.drawable.profile_icon)
+                        personNameTextView.text = "${it.firstname} ${it.lastname}"
+                    }
+                }
+            }
+
+            allBatches.observe(viewLifecycleOwner) { batches ->
+                if (batches!=null)
+                {
+                    allBatchesList = batches
+                    Log.d("dashboardFragment","Success")
+                }
+                else
+                    Log.d("dashboardFragment","Failed")
+            }
+        }
     }
 
     private fun init() {
         val repository = TeacherRepository()
         studentViewModel = ViewModelProvider(this, TeacherViewModelFactory(repository))[TeacherViewModel::class.java]
+
+        val retrofitRepository = RetrofitRepository(RetrofitClientInstance.retrofit)
+        viewModel = ViewModelProvider(requireActivity(), RetrofitViewModelFactory(retrofitRepository))[RetrofitViewModel::class.java]
     }
 
     private fun setTimerToScroll(layoutManager: LinearLayoutManager) {

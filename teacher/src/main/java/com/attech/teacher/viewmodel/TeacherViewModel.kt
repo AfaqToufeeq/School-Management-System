@@ -33,17 +33,17 @@ class TeacherViewModel(private val repository: TeacherRepository) : ViewModel() 
 
 
     init {
-        loadClasses()
+//        loadClasses()
     }
 
-    private fun loadClasses() {
-        _classes.value = repository.getClasses().map { it.className }
-    }
-
-    fun onClassSelected(className: String) {
-        _selectedClass.value = className
-        _attendance.value = repository.getClassStudents(className)
-    }
+//    private fun loadClasses() {
+//        _classes.value = repository.getClasses().map { it.className }
+//    }
+//
+//    fun onClassSelected(className: String) {
+//        _selectedClass.value = className
+//        _attendance.value = repository.getClassStudents(className)
+//    }
 
     fun onDateSelected(year: Int, month: Int, dayOfMonth: Int) {
         val calendar = Calendar.getInstance()
@@ -59,14 +59,14 @@ class TeacherViewModel(private val repository: TeacherRepository) : ViewModel() 
     fun handleAttendanceUpdate(updatedStudent: Student) {
         // Handle the updated student's attendance here
         // For example, you can log the attendance status or perform any necessary actions
-        Log.d("Attendance", "Student ${updatedStudent.name} attendance updated: ${updatedStudent.isPresent}")
+//        Log.d("Attendance", "Student ${updatedStudent.name} attendance updated: ${updatedStudent.isPresent}")
     }
 
     fun uploadMarks(marksData: MarksData) {
         val className = selectedClass.value
         if (!className.isNullOrEmpty()) {
-            val isSuccess = repository.uploadMarks(className, marksData)
-            _uploadSuccess.value = isSuccess
+//            val isSuccess = repository.uploadMarks(className, marksData)
+//            _uploadSuccess.value = isSuccess
         } else {
             _uploadSuccess.value = false
         }

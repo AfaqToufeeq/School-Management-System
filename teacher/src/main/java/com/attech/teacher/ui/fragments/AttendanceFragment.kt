@@ -68,7 +68,7 @@ class AttendanceFragment : Fragment() {
         binding.spinnerClass.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 val selectedClass = parent?.getItemAtPosition(position) as? String
-                selectedClass?.let { viewModel.onClassSelected(it) }
+//                selectedClass?.let { viewModel.onClassSelected(it) }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {

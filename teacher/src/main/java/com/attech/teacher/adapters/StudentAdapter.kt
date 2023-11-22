@@ -26,12 +26,12 @@ class StudentAdapter : RecyclerView.Adapter<StudentAdapter.ViewHolder>() {
         notifyDataSetChanged()
     }
 
-    inner class ViewHolder(private val binding: ItemStudentBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(private val binding: ItemStudentBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         fun bind(student: Student) {
-            binding.tvStudentName.text = student.name
-            binding.tvStudentClass.text = "Class: ${student.className}"
-            binding.tvStudentRollNum.text = "Roll Number: ${student.rollNumber}"
+            binding.tvStudentName.text = "${student.firstname} ${student.lastname}"
+            binding.tvStudentRollNum.text = "Roll Number: ${student.rollno}"
         }
     }
 }

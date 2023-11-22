@@ -13,12 +13,12 @@
         android:textStyle="bold"
         android:textColor="@color/royal_blue" />
 
-    <TextView
-        android:id="@+id/tvStudentClass"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:textColor="@android:color/darker_gray" />
+<!--    <TextView-->
+<!--        android:id="@+id/tvStudentClass"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:textSize="16sp"-->
+<!--        android:textColor="@android:color/darker_gray" />-->
 
     <TextView
         android:id="@+id/tvStudentRollNum"

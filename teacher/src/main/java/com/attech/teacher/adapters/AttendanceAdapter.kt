@@ -30,11 +30,11 @@ class AttendanceAdapter(private val onAttendanceClickListener: (Student) -> Unit
     inner class ViewHolder(private val binding: ItemAttendanceBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(student: Student) {
-            binding.tvStudentName.text = student.name
-            binding.checkboxAttendance.isChecked = student.isPresent
+            binding.tvStudentName.text = student.firstname
+            binding.checkboxAttendance.isChecked = true
 
             binding.checkboxAttendance.setOnCheckedChangeListener { _, isChecked ->
-                student.isPresent = isChecked
+//                student.isPresent = isChecked
                 onAttendanceClickListener.invoke(student)
             }
         }

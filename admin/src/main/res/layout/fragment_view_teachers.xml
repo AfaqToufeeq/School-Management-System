@@ -1,7 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -34,6 +35,21 @@
         android:layout_marginTop="15dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbar" />
+        android:layout_below="@id/toolbar"
+        tools:listitem="@layout/item_teachers"/>
+
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="@style/CustomProgressBarStyle"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:visibility="visible"
+        android:layout_centerInParent="true"
+        android:elevation="20dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </RelativeLayout>

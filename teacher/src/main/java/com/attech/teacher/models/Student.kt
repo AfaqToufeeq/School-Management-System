@@ -1,16 +1,31 @@
 package com.attech.teacher.models
 
-data class Class(
+data class StudentDetailsResponse(
     val id: Int,
-    val className: String,
-    val students: List<Student>
+    val firstname: String,
+    val lastname: String,
+    val rollno: String,
+    val contact: String,
+    val nic: String,
+    val address: String,
+    val username: String,
+    val password: String,
+    val auth_token: String?,
+    val is_logged_in: String,
+    val status: String,
+    val image: String? = null
 )
 
 data class Student(
-    val id: Int,
-    val name: String,
-    val className: String,
-    var rollNumber: String,
-    var isPresent: Boolean = false,
-    val marksList: MutableList<MarksData> = mutableListOf()
+    val type: String,
+    val token: String,
+    val firstname: String,
+    val lastname: String,
+    val rollno: String,
+    val contact: String,
+    val nic: String,
+    val address: String,
+    val username: String,
+    val password: String,
+    val image: String? = null
 )

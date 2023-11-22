@@ -119,6 +119,7 @@ class DashboardFragment : Fragment(), OnItemClick {
                 "Add Events" -> navigate(R.id.action_dashboardFragment_to_addNewsFragment, bundle)
                 "View Teachers" -> navigate(R.id.action_dashboardFragment_to_viewTeachersFragment, bundle)
                 "View Students" -> navigate(R.id.action_dashboardFragment_to_studentListFragment, bundle)
+                else -> navigate(R.id.action_dashboardFragment_to_addStudentFragment)
             }
         }
     }

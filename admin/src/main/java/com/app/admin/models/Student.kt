@@ -12,7 +12,8 @@ data class StudentDetailsResponse(
     val password: String,
     val auth_token: String?,
     val is_logged_in: String,
-    val status: String
+    val status: String,
+    val image: String? = null
 )
 
 data class Student(
@@ -25,5 +26,6 @@ data class Student(
     val nic: String,
     val address: String,
     val username: String,
-    val password: String
+    val password: String,
+    val image: String? = null
 )
