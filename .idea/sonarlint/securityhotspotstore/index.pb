@@ -239,3 +239,11 @@ k
 ;teacher/src/main/java/com/attech/teacher/utils/ImageUtil.kt,2\b\2b218db4d0154ff793e7c0e096d945a7be9768da
 o
 ?teacher/src/main/java/com/attech/teacher/models/BatchesModel.kt,9\1\91848e177c50082447421f1c44a80e473ae253de
+f
+6admin/src/main/java/com/app/admin/models/Attendance.kt,5\c\5c05af6f5bcfd43fa6a4adde328f6701454bee21
+j
+:teacher/src/main/java/com/attech/teacher/models/Teacher.kt,3\e\3e0bb124833508cb7862430b406363473fa76084
+p
+@teacher/src/main/java/com/attech/teacher/models/CourseTeacher.kt,a\7\a7aa84c41285841e35e6e4715d7d4c08ca9561d8
+r
+Bteacher/src/main/java/com/attech/teacher/models/AttendanceModel.kt,c\1\c154a1c2d7dc8e689792fc936d8b07ca463ca430

@@ -2,7 +2,10 @@ package com.attech.teacher.repository
 
 import android.util.Log
 import com.attech.teacher.interfaces.ApiService
+import com.attech.teacher.models.AttendanceModel
+import com.attech.teacher.models.AttendanceResponse
 import com.attech.teacher.models.BatchesModel
+import com.attech.teacher.models.CourseTeacherResponse
 import com.attech.teacher.models.LoginResponse
 import com.attech.teacher.models.LogoutResponse
 import com.attech.teacher.models.Student
@@ -35,6 +38,30 @@ class RetrofitRepository(private val apiService: ApiService) {
 
     suspend fun getBatches(type: String, token: String): Response<List<BatchesModel>> {
         return apiService.getBatches(type, token)
+    }
+
+    suspend fun getBatchStudents(type: String, token: String, bcode: String): Response<List<StudentDetailsResponse>> {
+        return apiService.getBatchStudents(type, token, bcode)
+    }
+
+    suspend fun getCourseTeacher(type: String, token: String, teacher: Int): Response<List<CourseTeacherResponse>> {
+        return apiService.getCourseTeacher(type, token, teacher)
+    }
+
+    suspend fun markAttendance(attendanceModel: AttendanceModel): Response<AttendanceResponse> {
+        try {
+            return apiService.markAttendance(
+                type = attendanceModel.type,
+                token = attendanceModel.token,
+                bcode = attendanceModel.bcode,
+                course = attendanceModel.course,
+                student = attendanceModel.student,
+                date = attendanceModel.date
+            )
+        } catch (e: Exception) {
+            Log.e("ApiCallError", "HTTP ${e.message}")
+            throw e
+        }
     }
 
     suspend fun addStudent(type: String, token: String, student: Student): Boolean {

@@ -3,6 +3,7 @@ package com.app.admin.ui.fragments
 import com.app.admin.utils.ImageUtil.convertUriToBase64
 import android.app.Activity
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,10 +14,12 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.app.admin.R
 import com.app.admin.databinding.FragmentAddTeacherBinding
 import com.app.admin.models.Teacher
 import com.app.admin.network.RetrofitClientInstance
 import com.app.admin.repository.RetrofitRepository
+import com.app.admin.utils.ImageUtil
 import com.app.admin.utils.MAIN_MENU
 import com.app.admin.utils.PickerManager
 import com.app.admin.utils.USER_TYPE
@@ -49,6 +52,8 @@ class AddTeacherFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val bitmap = BitmapFactory.decodeResource(requireActivity().resources, R.drawable.person)
+        base64ImageString = ImageUtil.bitmapToBase64(bitmap)
 
         initialize()
         setupEvents()

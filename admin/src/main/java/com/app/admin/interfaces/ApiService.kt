@@ -76,4 +76,16 @@ interface ApiService {
         @Field("password") password: String,
         @Field("image") image: String
     ): Call<TeacherDetailsResponse>
+
+
+    @POST("api/markAttandance")
+    @FormUrlEncoded
+    fun markAttendance(
+        @Field("type") type: String,
+        @Field("token") token: String,
+        @Field("batchCode") batchCode: String,
+        @Field("course") course: String,
+        @Field("student") student: String,
+        @Field("date") date: String
+    ): Call<TeacherDetailsResponse>
 }

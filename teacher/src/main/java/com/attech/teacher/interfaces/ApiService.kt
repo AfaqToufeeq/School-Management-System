@@ -1,7 +1,9 @@
 package com.attech.teacher.interfaces
 
 
+import com.attech.teacher.models.AttendanceResponse
 import com.attech.teacher.models.BatchesModel
+import com.attech.teacher.models.CourseTeacherResponse
 import com.attech.teacher.models.LoginResponse
 import com.attech.teacher.models.LogoutResponse
 import com.attech.teacher.models.StudentDetailsResponse
@@ -86,4 +88,36 @@ interface ApiService {
         @Field("type") type: String,
         @Field("token") token: String
     ): Response<List<BatchesModel>>
+
+
+    @POST("api/getBatchStudents")
+    @FormUrlEncoded
+    suspend fun getBatchStudents(
+        @Field("type") type: String,
+        @Field("token") token: String,
+        @Field("bcode") bcode: String
+    ): Response<List<StudentDetailsResponse>>
+
+
+    @POST("api/getCourseTeacher")
+    @FormUrlEncoded
+    suspend fun getCourseTeacher(
+        @Field("type") type: String,
+        @Field("token") token: String,
+        @Field("teacher") teacher: Int
+    ): Response<List<CourseTeacherResponse>>
+
+
+    @POST("api/markAttandance")
+    @FormUrlEncoded
+    suspend fun markAttendance(
+        @Field("type") type: String,
+        @Field("token") token: String,
+        @Field("bcode") bcode: String,
+        @Field("course") course: String,
+        @Field("student") student: Int,
+        @Field("date") date: String,
+    ): Response<AttendanceResponse>
+
+
 }

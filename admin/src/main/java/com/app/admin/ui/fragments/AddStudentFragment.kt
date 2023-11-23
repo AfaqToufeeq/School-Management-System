@@ -2,6 +2,7 @@ package com.app.admin.ui.fragments
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.app.admin.R
 import com.app.admin.databinding.FragmentAddStudentBinding
 import com.app.admin.models.Student
 import com.app.admin.network.RetrofitClientInstance
@@ -47,6 +49,8 @@ class AddStudentFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val bitmap = BitmapFactory.decodeResource(requireActivity().resources, R.drawable.person)
+        base64ImageString = ImageUtil.bitmapToBase64(bitmap)
 
         initialize()
         setupEvents()

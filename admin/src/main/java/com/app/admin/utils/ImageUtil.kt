@@ -50,8 +50,17 @@ object ImageUtil {
         return Base64.encodeToString(byteArray, Base64.DEFAULT)
     }
 
+    fun bitmapToBase64(bitmap: Bitmap): String {
+        val baos = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos)
+        val byteArray = baos.toByteArray()
+        return Base64.encodeToString(byteArray, Base64.DEFAULT)
+    }
+
     fun decodeBase64ToBitmap(base64String: String): Bitmap? {
         val bytes = Base64.decode(base64String, Base64.DEFAULT)
         return BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
     }
+
+
 }

@@ -5,10 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.attech.teacher.databinding.ItemStudentBinding
 import com.attech.teacher.models.Student
+import com.attech.teacher.models.StudentDetailsResponse
 
 class StudentAdapter : RecyclerView.Adapter<StudentAdapter.ViewHolder>() {
 
-    private var students: List<Student> = emptyList()
+    private var students: List<StudentDetailsResponse> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemStudentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -21,7 +22,7 @@ class StudentAdapter : RecyclerView.Adapter<StudentAdapter.ViewHolder>() {
 
     override fun getItemCount(): Int = students.size
 
-    fun setStudents(students: List<Student>) {
+    fun setStudents(students: List<StudentDetailsResponse>) {
         this.students = students
         notifyDataSetChanged()
     }
@@ -29,7 +30,7 @@ class StudentAdapter : RecyclerView.Adapter<StudentAdapter.ViewHolder>() {
     inner class ViewHolder(private val binding: ItemStudentBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(student: Student) {
+        fun bind(student: StudentDetailsResponse) {
             binding.tvStudentName.text = "${student.firstname} ${student.lastname}"
             binding.tvStudentRollNum.text = "Roll Number: ${student.rollno}"
         }

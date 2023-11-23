@@ -23,7 +23,10 @@ import com.attech.teacher.utils.ImageUtil
 import com.attech.teacher.utils.MAIN_MENU
 import com.attech.teacher.utils.PickerManager
 import com.attech.teacher.utils.PickerManager.allBatchesList
+import com.attech.teacher.utils.PickerManager.batchCodes
+import com.attech.teacher.utils.PickerManager.getTeacherCourses
 import com.attech.teacher.utils.PickerManager.teacherData
+import com.attech.teacher.utils.PickerManager.userId
 import com.attech.teacher.utils.USER_TYPE
 import com.attech.teacher.viewmodel.RetrofitViewModel
 import com.attech.teacher.viewmodel.TeacherViewModel
@@ -73,7 +76,6 @@ class DashboardFragment : Fragment(), OnItemClick {
 
         with(viewModel) {
             fetchTeachers(USER_TYPE, PickerManager.token!!)
-            fetchBatches(USER_TYPE, PickerManager.token!!)
             teachers.observe(viewLifecycleOwner) { teachers ->
                 teacherData = teachers.firstOrNull { it.username == PickerManager.userName }
                 teacherData?.let {
@@ -83,19 +85,34 @@ class DashboardFragment : Fragment(), OnItemClick {
                         else
                             personImageView.setImageResource(R.drawable.profile_icon)
                         personNameTextView.text = "${it.firstname} ${it.lastname}"
+                        userId = it.id
                     }
                 }
             }
 
+            fetchBatches(USER_TYPE, PickerManager.token!!)
             allBatches.observe(viewLifecycleOwner) { batches ->
                 if (batches!=null)
                 {
                     allBatchesList = batches
-                    Log.d("dashboardFragment","Success")
+                    Log.d("fetchBatches","Success")
                 }
                 else
-                    Log.d("dashboardFragment","Failed")
+                    Log.d("fetchBatches","Failed")
             }
+
+
+            getCourseTeacher(USER_TYPE, PickerManager.token!!, userId)
+            teacherCourses.observe(viewLifecycleOwner) { teacherCourses ->
+                if (teacherCourses!=null)
+                {
+                    getTeacherCourses = teacherCourses
+                    Log.d("getTeacherCourses","Success")
+                }
+                else
+                    Log.d("getTeacherCourses","Failed")
+            }
+
         }
     }
 
@@ -105,6 +122,7 @@ class DashboardFragment : Fragment(), OnItemClick {
 
         val retrofitRepository = RetrofitRepository(RetrofitClientInstance.retrofit)
         viewModel = ViewModelProvider(requireActivity(), RetrofitViewModelFactory(retrofitRepository))[RetrofitViewModel::class.java]
+
     }
 
     private fun setTimerToScroll(layoutManager: LinearLayoutManager) {
