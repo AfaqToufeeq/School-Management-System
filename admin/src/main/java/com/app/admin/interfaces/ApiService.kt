@@ -1,5 +1,7 @@
 package com.app.admin.interfaces
 
+import com.app.admin.models.FResponce
+import com.app.admin.models.FinanceResponse
 import com.app.admin.models.StudentDetailsResponse
 import com.app.admin.models.LoginResponse
 import com.app.admin.models.LogoutResponse
@@ -60,6 +62,19 @@ interface ApiService {
         @Field("password") password: String,
         @Field("image") image: String
     ): Call<StudentDetailsResponse>
+
+
+    @POST("api/addFinancePerson")
+    @FormUrlEncoded
+    fun addFinancePerson(
+        @Field("type") type: String,
+        @Field("token") token: String,
+        @Field("name") name: String,
+        @Field("email") email: String,
+        @Field("username") username: String,
+        @Field("password") password: String,
+        @Field("role") role: String,
+    ): Response<FResponce>
 
 
     @POST("api/addTeacher")

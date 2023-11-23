@@ -4,6 +4,8 @@ import android.R
 import android.app.DatePickerDialog
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -22,8 +24,10 @@ import com.attech.teacher.models.AttendanceModel
 import com.attech.teacher.models.AttendanceResponse
 import com.attech.teacher.network.RetrofitClientInstance
 import com.attech.teacher.repository.RetrofitRepository
+import com.attech.teacher.utils.LoadingDialog
 import com.attech.teacher.utils.MAIN_MENU
 import com.attech.teacher.utils.PickerManager
+import com.attech.teacher.utils.PickerManager.allBatchesList
 import com.attech.teacher.utils.PickerManager.token
 import com.attech.teacher.utils.USER_TYPE
 import com.attech.teacher.utils.Utils.showToast
@@ -39,6 +43,8 @@ import java.util.Calendar
 
 
 class AttendanceFragment : Fragment() {
+    private var loaderShown = false
+    private lateinit var loadingDialog: LoadingDialog
     private lateinit var binding: FragmentAttendanceBinding
     private var argumentTitle: String? = null
     private lateinit var attendanceAdapter: AttendanceAdapter
@@ -51,6 +57,10 @@ class AttendanceFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         argumentTitle = requireArguments().getString(MAIN_MENU)
+        if (!loaderShown) {
+            showLoader()
+            loaderShown = true
+        }
     }
 
     override fun onCreateView(
@@ -94,19 +104,14 @@ class AttendanceFragment : Fragment() {
     }
 
     private fun setupClassSpinner() {
-        val batchCodes = PickerManager.allBatchesList!!.map { it.batchcode }
+        val batchCodes = allBatchesList!!.map { it.batchcode }
         batchCodes?.let {
             val classAdapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item, it)
             classAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
             binding.spinnerClass.adapter = classAdapter
         }
 
-        val teacherCourses = PickerManager.getTeacherCourses!!.map { it.name }
-        teacherCourses?.let {
-            val classAdapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item, it)
-            classAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
-            binding.spinnerCourses.adapter = classAdapter
-        }
+        loadCourseSpinner()
 
         binding.spinnerClass.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -139,12 +144,23 @@ class AttendanceFragment : Fragment() {
             }
     }
 
+    private fun loadCourseSpinner() {
+        PickerManager.getTeacherCourses?.let { course->
+            val teacherCourses = course.map { it.name }
+            teacherCourses?.let {
+                val classAdapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item, it)
+                classAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
+                binding.spinnerCourses.adapter = classAdapter
+            }
+        }
+    }
+
 
     private fun observeViewModel() {
         viewModel.batchStudents.observe(viewLifecycleOwner) { batches ->
+            Log.d("checBat","batches-> ${batches.size}:: ${batches[0]}")
             if (batches.isNullOrEmpty()) {
                 CoroutineScope(Dispatchers.Main).launch {
-                    showLoading(true)
                     delay(1500)
                     showLoading(false)
                     binding.recyclerView.visibility = View.GONE
@@ -158,10 +174,15 @@ class AttendanceFragment : Fragment() {
                 Log.d("ViewStudentsFragment", "Batches list size: ${batches.size} ")
             }
         }
+
+        Handler(Looper.getMainLooper()).postDelayed({
+//            setupClassSpinner()
+            hideLoader()
+        },4000)
     }
 
     private fun showLoading(show: Boolean) {
-//        binding.progressBar.visibility = if (show) View.VISIBLE else View.GONE
+        binding.progressBar.visibility = if (show) View.VISIBLE else View.GONE
     }
 
     private fun showDatePicker() {
@@ -190,6 +211,15 @@ class AttendanceFragment : Fragment() {
         binding.btnSubmit.setOnClickListener { submission() }
     }
 
+
+    private fun showLoader() {
+        loadingDialog = LoadingDialog(requireActivity())
+        loadingDialog.showLoadingDialog("loading, Please wait...")
+    }
+
+    private fun hideLoader() {
+        loadingDialog.dismissLoadingDialog()
+    }
 
     private fun submission() {
         val selectedCourseID =

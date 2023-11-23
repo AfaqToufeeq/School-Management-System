@@ -108,6 +108,32 @@
         </LinearLayout>
     </LinearLayout>
 
+   <LinearLayout
+       android:id="@+id/Class"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:orientation="horizontal"
+       android:layout_marginTop="15dp"
+       android:layout_marginHorizontal="40dp">
+       <TextView
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_weight="1"
+           android:textSize="18sp"
+           android:layout_gravity="center"
+           android:textStyle="bold"
+           android:text="Batch Code: "/>
+       <TextView
+           android:id="@+id/classBatch"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_weight="1"
+           android:textSize="18sp"
+           android:textStyle="bold"
+           android:gravity="end"
+           android:text="Class 3"/>
+   </LinearLayout>
+
     <!-- RecyclerView -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewAttendance"

@@ -1,4 +1,4 @@
-package com.attech.sms.adapters// TestMarksAdapter.kt
+package com.attech.sms.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -6,8 +6,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.attech.sms.databinding.ItemTestMarksBinding
 import com.attech.sms.models.TestMark
 
-class TestMarksAdapter(private val testMarks: List<TestMark>) :
-    RecyclerView.Adapter<TestMarksAdapter.TestMarkViewHolder>() {
+class TestMarksAdapter : RecyclerView.Adapter<TestMarksAdapter.TestMarkViewHolder>() {
+
+    private var testMarks: List<TestMark> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TestMarkViewHolder {
         val binding = ItemTestMarksBinding.inflate(
@@ -40,5 +41,10 @@ class TestMarksAdapter(private val testMarks: List<TestMark>) :
                 textDate.text = "Date: ${testMark.date}"
             }
         }
+    }
+
+    fun setTestMarksList(testMarksList: List<TestMark>) {
+        testMarks = testMarksList
+        notifyDataSetChanged()
     }
 }

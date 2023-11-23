@@ -8,10 +8,12 @@ import com.attech.teacher.models.BatchesModel
 import com.attech.teacher.models.CourseTeacherResponse
 import com.attech.teacher.models.LoginResponse
 import com.attech.teacher.models.LogoutResponse
+import com.attech.teacher.models.MarksData
 import com.attech.teacher.models.Student
 import com.attech.teacher.models.StudentDetailsResponse
 import com.attech.teacher.models.Teacher
 import com.attech.teacher.models.TeacherDetailsResponse
+import com.attech.teacher.models.UploadMarksResponse
 import kotlinx.coroutines.suspendCancellableCoroutine
 import retrofit2.Call
 import retrofit2.Callback
@@ -57,6 +59,24 @@ class RetrofitRepository(private val apiService: ApiService) {
                 course = attendanceModel.course,
                 student = attendanceModel.student,
                 date = attendanceModel.date
+            )
+        } catch (e: Exception) {
+            Log.e("ApiCallError", "HTTP ${e.message}")
+            throw e
+        }
+    }
+
+
+    suspend fun uploadMarks(marksData: MarksData): Response<UploadMarksResponse> {
+        try {
+
+            return apiService.uploadMarks(
+                type = marksData.type,
+                token = marksData.token,
+                course = marksData.course,
+                student = marksData.student,
+                bcode = marksData.bcode,
+                score = marksData.score
             )
         } catch (e: Exception) {
             Log.e("ApiCallError", "HTTP ${e.message}")

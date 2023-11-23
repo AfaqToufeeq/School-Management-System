@@ -1,28 +1,23 @@
 package com.attech.sms.adapters
 
+import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.attech.sms.callbacks.OnItemClick
 import com.attech.sms.databinding.ItemCourseDetailsBinding
-import com.attech.sms.models.CourseDetails
 
-class CourseDetailsAdapter(
-    private val courseDetailsList: List<CourseDetails>,
-    private val isMarks: Boolean,
-    private val onItemClick: OnItemClick
-) : RecyclerView.Adapter<CourseDetailsAdapter.CourseDetailsViewHolder>() {
+class CourseDetailsAdapter : RecyclerView.Adapter<CourseDetailsAdapter.CourseDetailsViewHolder>() {
+
+    private val courseDetailsList: MutableList<String> = mutableListOf()
 
     inner class CourseDetailsViewHolder(private val binding: ItemCourseDetailsBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(courseDetails: CourseDetails) = with(binding) {
-            btnShowMarks.visibility = if (isMarks) View.VISIBLE else View.GONE
-            textCourseNo.text = "Course No: ${courseDetails.courseNo}"
-            textCourseName.text = "Course Name: ${courseDetails.courseName}"
-            textTeacher.text = "Teacher: ${courseDetails.teacher}"
-            textClass.text = "Class: ${courseDetails.className}"
-            btnShowMarks.setOnClickListener { onItemClick.clickListener(adapterPosition, courseDetails.courseName)}
+
+        fun bind(courseDetails: String) = with(binding) {
+            textCourseNo.text = "${adapterPosition+1}"
+            textCourseName.text = "${courseDetails}"
+//            textTeacher.text = "Teacher: ${courseDetails.teacher}"
+//            textClass.text = "Class: ${courseDetails.className}"
         }
     }
 
@@ -36,4 +31,13 @@ class CourseDetailsAdapter(
     }
 
     override fun getItemCount() = courseDetailsList.size
+
+    fun setCourseDetailsList(list: List<String>) {
+        courseDetailsList.clear()
+        courseDetailsList.addAll(list)
+        notifyDataSetChanged()
+        Log.d("Adapter", "List size: ${courseDetailsList.size}")
+
+    }
+
 }

@@ -49,7 +49,7 @@ class TeacherRepository {
 
     private fun getDashBoardItemsData(): List<DashboardItem> {
         return mutableListOf(
-            DashboardItem(R.drawable.student_male, "View Students"),
+//            DashboardItem(R.drawable.student_male, "View Students"),
             DashboardItem(R.drawable.attendance, "Mark Attendance"),
             DashboardItem(R.drawable.exam, "Upload Marks"),
         )

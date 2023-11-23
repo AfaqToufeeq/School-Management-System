@@ -2,6 +2,9 @@ package com.app.admin.repository
 
 import android.util.Log
 import com.app.admin.interfaces.ApiService
+import com.app.admin.models.FResponce
+import com.app.admin.models.Finance
+import com.app.admin.models.FinanceResponse
 import com.app.admin.models.Student
 import com.app.admin.models.StudentDetailsResponse
 import com.app.admin.models.LoginResponse
@@ -30,6 +33,30 @@ class RetrofitRepository(private val apiService: ApiService) {
 
     suspend fun logout(type: String, token: String): LogoutResponse {
         return apiService.logout(type, token)
+    }
+
+    suspend fun addFinancePerson(finance: Finance): Response<FResponce> {
+        try {
+            val response = apiService.addFinancePerson(
+                type = finance.type,
+                token = finance.token,
+                name = finance.name,
+                email = finance.email,
+                username = finance.username,
+                password = finance.password,
+                role = finance.role
+            )
+
+            if (response.isSuccessful) {
+                Log.d("finance", "finance")
+            } else {
+                Log.d("finance", "Not finance")
+            }
+            return response
+        } catch (e:Exception){
+            e.printStackTrace()
+            throw e
+        }
     }
 
     suspend fun addStudent(type: String, token: String, student: Student): Boolean {
@@ -76,7 +103,6 @@ class RetrofitRepository(private val apiService: ApiService) {
             }
         }
     }
-
 
     suspend fun addTeacher(type: String, token: String, teacher: Teacher): Boolean {
         return suspendCancellableCoroutine { continuation ->

@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_dashboardFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_courseFragment"
+            app:destination="@id/courseFragment" />
     </fragment>
     <fragment
         android:id="@+id/attendanceFragment"
@@ -50,6 +53,9 @@
         tools:layout="@layout/fragment_test_marks">
         <action
             android:id="@+id/action_testMarksFragment_to_dashboardFragment"
+            app:popUpTo="@id/dashboardFragment" />
+        <action
+            android:id="@+id/action_testMarksFragment_to_dashboardFragment2"
             app:popUpTo="@id/dashboardFragment" />
     </fragment>
     <fragment
@@ -80,4 +86,13 @@
         android:name="com.attech.sms.ui.activities.LoginActivity"
         android:label="activity_login"
         tools:layout="@layout/activity_login" />
+    <fragment
+        android:id="@+id/courseFragment"
+        android:name="com.attech.sms.ui.fragments.CourseFragment"
+        android:label="CourseFragment"
+        tools:layout="@layout/fragment_attendance">
+        <action
+            android:id="@+id/action_courseFragment_to_dashboardFragment"
+            app:popUpTo="@id/dashboardFragment" />
+    </fragment>
 </navigation>

@@ -11,10 +11,12 @@ import com.attech.teacher.models.BatchesModel
 import com.attech.teacher.models.CourseTeacherResponse
 import com.attech.teacher.models.LoginResponse
 import com.attech.teacher.models.LogoutResponse
+import com.attech.teacher.models.MarksData
 import com.attech.teacher.models.Student
 import com.attech.teacher.models.StudentDetailsResponse
 import com.attech.teacher.models.Teacher
 import com.attech.teacher.models.TeacherDetailsResponse
+import com.attech.teacher.models.UploadMarksResponse
 import com.attech.teacher.repository.RetrofitRepository
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -53,6 +55,10 @@ class RetrofitViewModel(private val repository: RetrofitRepository) : ViewModel(
 
     suspend fun markAttendance(attendanceModel: AttendanceModel): Response<AttendanceResponse> {
         return repository.markAttendance(attendanceModel)
+    }
+
+    suspend fun uploadMarks(marksData: MarksData): Response<UploadMarksResponse> {
+        return repository.uploadMarks(marksData)
     }
 
 

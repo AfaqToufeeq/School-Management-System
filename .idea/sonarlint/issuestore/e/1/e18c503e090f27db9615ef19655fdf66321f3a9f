@@ -1,3 +1,6 @@
 
-hkotlin:S1192†"HDefine a constant instead of duplicating this literal "Class A" 3 times.(…Á£8†¯ä¶¾1
-Gkotlin:S1874Q"#Deprecated code should not be used.(åºÌØûÿÿÿÿ8ˆ¯ä¶¾1
+Ckotlin:S125Š"Remove this commented out code.(è÷¡¶øÿÿÿÿ8”Ñï¿1
+>kotlin:S125"Remove this commented out code.(–Øœö8—Ñï¿1
+>kotlin:S125š"Remove this commented out code.(¹ ï‘8™Ñï¿1
+;kotlin:S6310q"Avoid hardcoded dispatchers.(âßî™8şÑ°ò¿1
+9kotlin:S1128"Remove this unused import.(¦€§–8‚Â¯ò¿1

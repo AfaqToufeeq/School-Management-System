@@ -24,7 +24,7 @@
                 android:id="@+id/dateTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_weight="1.2"
                 android:text="2023-09-01"
                 android:textStyle="bold"
                 android:gravity="start"
@@ -36,6 +36,16 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Monday"
+                android:gravity="center"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/textCourseName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Course"
+                android:visibility="gone"
                 android:gravity="center"
                 android:textSize="18sp" />
 

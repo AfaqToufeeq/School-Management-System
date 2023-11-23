@@ -9,7 +9,7 @@ object PickerManager {
 
     var token: String? = null
     var userName: String? = null
-    var userId: Int = 1
+    var userId: Int = 0
     var teacherData: TeacherDetailsResponse? = null
     var batchCodes: List<String>? = null
     var allBatchesList : List<BatchesModel>? = null

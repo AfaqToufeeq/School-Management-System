@@ -5,6 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.app.admin.models.FResponce
+import com.app.admin.models.Finance
+import com.app.admin.models.FinanceResponse
 import com.app.admin.models.Student
 import com.app.admin.models.StudentDetailsResponse
 import com.app.admin.models.LoginResponse
@@ -13,6 +16,7 @@ import com.app.admin.models.Teacher
 import com.app.admin.models.TeacherDetailsResponse
 import com.app.admin.repository.RetrofitRepository
 import kotlinx.coroutines.launch
+import retrofit2.Response
 
 class RetrofitViewModel(private val repository: RetrofitRepository) : ViewModel() {
 
@@ -35,6 +39,11 @@ class RetrofitViewModel(private val repository: RetrofitRepository) : ViewModel(
 
     suspend fun logout(type: String, token: String): LogoutResponse {
         return repository.logout(type, token)
+    }
+
+
+    suspend fun addFinancePerson(finance: Finance): Response<FResponce> {
+        return repository.addFinancePerson(finance)
     }
 
 
