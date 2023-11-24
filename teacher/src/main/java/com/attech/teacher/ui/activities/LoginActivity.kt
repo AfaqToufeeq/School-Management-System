@@ -38,12 +38,10 @@ class LoginActivity : AppCompatActivity() {
 
     private fun init() {
         val repository = RetrofitRepository(RetrofitClientInstance.retrofit)
-        viewModel = ViewModelProvider(
-            this,
-            RetrofitViewModelFactory(repository)
-        )[RetrofitViewModel::class.java]
-//        if (isLoggedIn())  //False
-//            navigateToMainActivity()
+        viewModel = ViewModelProvider(this, RetrofitViewModelFactory(repository))[RetrofitViewModel::class.java]
+
+/*        if (isLoggedIn())  //False
+            navigateToMainActivity()*/
     }
 
     private fun buttonClicks() {

@@ -13,7 +13,7 @@ import com.attech.sms.network.RetrofitClientInstance
 import com.attech.sms.repository.RetrofitRepository
 import com.attech.sms.utils.ImageUtil
 import com.attech.sms.utils.MAIN_MENU
-import com.attech.sms.utils.PickerManager.studentData
+import com.attech.sms.utils.PickerManager.liveStudentData
 import com.attech.sms.utils.Utils
 import com.attech.sms.viewmodel.RetrofitViewModel
 import com.attech.sms.viewmodelfactory.RetrofitViewModelFactory
@@ -61,17 +61,20 @@ class ProfileFragment : Fragment() {
 
     private fun setData() {
         with(binding) {
-            studentData?.let{
-                if (it.image!=null)
-                    imageViewProfile.setImageBitmap(ImageUtil.decodeBase64ToBitmap(it.image))
-                else
-                    imageViewProfile.setImageResource(R.drawable.profile_icon)
-                textViewFullName.text = "${it.firstname} ${it.lastname}"
-                textViewRollNo.text = it.rollno
-                textViewContact.text = it.contact
-                textViewNic.text = it.nic
-                textViewAddress.text = it.address
-                textViewUsername.text = it.username
+            liveStudentData.observe(viewLifecycleOwner) {
+                it?.let {
+                    if (it.image!=null)
+                        imageViewProfile.setImageBitmap(ImageUtil.decodeBase64ToBitmap(it.image))
+                    else
+                        imageViewProfile.setImageResource(R.drawable.profile_icon)
+
+                    textViewFullName.text = "${it.firstname} ${it.lastname}"
+                    textViewRollNo.text = it.rollno
+                    textViewContact.text = it.contact
+                    textViewNic.text = it.nic
+                    textViewAddress.text = it.address
+                    textViewUsername.text = it.username
+                }
             }
         }
     }

@@ -8,3 +8,21 @@ data class TestMark(
     val percentage: Double,
     val date: String
 )
+
+
+data class TestMarksResponse(
+    val id :Int,
+    val student: Int,
+    val course: Int,
+    val score: Int,
+    val marked_by: Int
+)
+
+
+data class TestMarksRequest(
+    val type: String,
+    val token: String,
+    val course: Int,
+    val student: Int,
+    val bcode: String,
+)

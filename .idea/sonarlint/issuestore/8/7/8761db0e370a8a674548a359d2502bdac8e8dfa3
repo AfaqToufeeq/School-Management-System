@@ -1,2 +1,6 @@
 
-Lkotlin:S14810"(Remove this unused "uri" local variable.(ÊÜÿ“ýÿÿÿÿ8àÂÛË´1
+Bkotlin:S125y"Remove this commented out code.(‰«íŠûÿÿÿÿ8ô¼Çè¿1
+>kotlin:S125‚"Remove this commented out code.(±ÍÃ´8 †Çè¿1
+<kotlin:S6310–"Avoid hardcoded dispatchers.(âßî™8åžè¿1
+Zkotlin:S1144k"6Remove this unused private "launchMediaPicker" method.(ŠÌÊšûÿÿÿÿ8ì×ç¿1
+9kotlin:S1128"Remove this unused import.(´Ùí8“×ç¿1

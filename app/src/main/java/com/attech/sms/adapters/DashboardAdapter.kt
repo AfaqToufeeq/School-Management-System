@@ -9,8 +9,8 @@ import com.attech.sms.models.DashboardItem
 
 class DashboardAdapter(
     private val clickListener: OnItemClick
-    ) :
-    RecyclerView.Adapter<DashboardAdapter.DashboardViewHolder>() {
+)
+    : RecyclerView.Adapter<DashboardAdapter.DashboardViewHolder>() {
     private var dashBoardItemsList: List<DashboardItem> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DashboardViewHolder {

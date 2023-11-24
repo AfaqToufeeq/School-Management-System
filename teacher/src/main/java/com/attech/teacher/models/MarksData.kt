@@ -1,7 +1,14 @@
 package com.attech.teacher.models
 
 data class MarksData(
-    val studentId: Int,
-    val subject: String,
-    val marks: Double
+    val type: String,
+    val token: String,
+    val course: Int,
+    val student: Int,
+    val bcode: String,
+    val score: Int
+)
+
+data class UploadMarksResponse (
+    val msg: String
 )

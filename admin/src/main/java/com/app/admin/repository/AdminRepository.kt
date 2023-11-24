@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import com.app.admin.R
 import com.app.admin.models.DashboardItem
 import com.app.admin.models.NewsItem
-import com.app.admin.models.Teacher
+
 
 class AdminRepository {
     private val dashboardItemsData = MutableLiveData<List<DashboardItem>>()

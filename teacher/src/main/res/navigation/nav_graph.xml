@@ -50,6 +50,9 @@
         <action
             android:id="@+id/action_uploadMarksFragment_to_dashboardFragment"
             app:popUpTo="@id/dashboardFragment" />
+        <action
+            android:id="@+id/action_uploadMarksFragment_to_uploadDetailedMarks"
+            app:destination="@id/uploadDetailedMarks" />
     </fragment>
     <fragment
         android:id="@+id/profileFragment"
@@ -70,4 +73,14 @@
         android:name="com.attech.teacher.ui.activities.LoginActivity"
         android:label="activity_login"
         tools:layout="@layout/activity_login" />
+
+    <fragment
+        android:id="@+id/uploadDetailedMarks"
+        android:name="com.attech.teacher.ui.fragments.UploadDetailedMarks"
+        android:label="fragment_upload_detailed_marks"
+        tools:layout="@layout/fragment_upload_detailed_marks" >
+        <action
+            android:id="@+id/action_uploadDetailedMarks_to_uploadMarksFragment"
+            app:popUpTo="@id/uploadMarksFragment" />
+    </fragment>
 </navigation>

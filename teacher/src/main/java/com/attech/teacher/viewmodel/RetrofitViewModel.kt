@@ -11,17 +11,19 @@ import com.attech.teacher.models.BatchesModel
 import com.attech.teacher.models.CourseTeacherResponse
 import com.attech.teacher.models.LoginResponse
 import com.attech.teacher.models.LogoutResponse
+import com.attech.teacher.models.MarksData
 import com.attech.teacher.models.Student
 import com.attech.teacher.models.StudentDetailsResponse
-import com.attech.teacher.models.Teacher
+import com.attech.teacher.models.TeacherClasses
+import com.attech.teacher.models.TeacherClassesResponse
 import com.attech.teacher.models.TeacherDetailsResponse
+import com.attech.teacher.models.UploadMarksResponse
 import com.attech.teacher.repository.RetrofitRepository
 import kotlinx.coroutines.launch
 import retrofit2.Response
 
 
 class RetrofitViewModel(private val repository: RetrofitRepository) : ViewModel() {
-
     private val _students = MutableLiveData<List<StudentDetailsResponse>>()
     val students: LiveData<List<StudentDetailsResponse>> get() = _students
 
@@ -40,6 +42,9 @@ class RetrofitViewModel(private val repository: RetrofitRepository) : ViewModel(
     private val _teacherCourses = MutableLiveData<List<CourseTeacherResponse>>()
     val teacherCourses: LiveData<List<CourseTeacherResponse>> get() = _teacherCourses
 
+    private val _teacherClasses= MutableLiveData<TeacherClassesResponse>()
+    val teacherClasses: LiveData<TeacherClassesResponse> get() = _teacherClasses
+
 
 
     suspend fun login(type: String, username: String, password: String): LoginResponse {
@@ -55,6 +60,10 @@ class RetrofitViewModel(private val repository: RetrofitRepository) : ViewModel(
         return repository.markAttendance(attendanceModel)
     }
 
+    suspend fun uploadMarks(marksData: MarksData): Response<UploadMarksResponse> {
+        return repository.uploadMarks(marksData)
+    }
+
 
     fun fetchStudents(type: String, token: String) {
         viewModelScope.launch {
@@ -62,9 +71,6 @@ class RetrofitViewModel(private val repository: RetrofitRepository) : ViewModel(
                 val response = repository.getStudents(type, token)
                 if (response.isSuccessful) {
                     _students.value = response.body() ?: emptyList()
-                    Log.d("Token", "Success ${response.body()}")
-                } else {
-                    Log.d("Token", "Error")
                 }
             } catch (e: Exception) {
                 Log.d("Token", "Error: ${e.message}")
@@ -79,9 +85,6 @@ class RetrofitViewModel(private val repository: RetrofitRepository) : ViewModel(
                 val response = repository.getTeachers(type, token)
                 if (response.isSuccessful) {
                     _teachers.value = response.body() ?: emptyList()
-                    Log.d("Token", "Success ${response.body()}")
-                } else {
-                    Log.d("Token", "Error")
                 }
             } catch (e: Exception) {
                 Log.d("Token", "Error: ${e.message}")
@@ -96,9 +99,6 @@ class RetrofitViewModel(private val repository: RetrofitRepository) : ViewModel(
                 val response = repository.getBatches(type, token)
                 if (response.isSuccessful) {
                     _allBatches.value = response.body() ?: emptyList()
-                    Log.d("Token", "Success ${response.body()}")
-                } else {
-                    Log.d("Token", "Error")
                 }
             } catch (e: Exception) {
                 Log.d("Token", "Error: ${e.message}")
@@ -113,12 +113,9 @@ class RetrofitViewModel(private val repository: RetrofitRepository) : ViewModel(
                 val response = repository.getBatchStudents(type, token, bcode)
                 if (response.isSuccessful) {
                     _batchStudents.value = response.body() ?: emptyList()
-                    Log.d("getBatchStudentsToken", "Success ${response.body()}")
-                } else {
-                    Log.d("getBatchStudentsToken", "Error")
                 }
             } catch (e: Exception) {
-                Log.d("getBatchStudentsToken", "Error: ${e.message}")
+                Log.d("getBatchStudents", "Error: ${e.message}")
             }
         }
     }
@@ -130,12 +127,23 @@ class RetrofitViewModel(private val repository: RetrofitRepository) : ViewModel(
                 val response = repository.getCourseTeacher(type, token, teacher)
                 if (response.isSuccessful) {
                     _teacherCourses.value = response.body() ?: emptyList()
-                    Log.d("getCourseTeacher", "Success ${response.body()}")
-                } else {
-                    Log.d("getCourseTeacher", "Error")
                 }
             } catch (e: Exception) {
                 Log.d("getCourseTeacher", "Error: ${e.message}")
+            }
+        }
+    }
+
+
+    fun getTeacherClasses(teacherClasses: TeacherClasses){
+        viewModelScope.launch {
+            try {
+                val response = repository.getTeacherClasses(teacherClasses)
+                if (response.isSuccessful) {
+                    _teacherClasses.value = response.body()
+                }
+            } catch (e: Exception) {
+                Log.d("Token", "Error: ${e.message}")
             }
         }
     }

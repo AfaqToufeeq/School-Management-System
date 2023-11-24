@@ -1,12 +1,12 @@
 package com.attech.sms.adapters
-import android.content.Context
+
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.attech.sms.models.NewsItem
 import com.attech.sms.databinding.ItemsNewsBinding
 
-class NewsAdapter() : RecyclerView.Adapter<NewsAdapter.ViewHolder>()
+class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ViewHolder>()
 {
     private var newsItems: List<NewsItem> = emptyList()
 

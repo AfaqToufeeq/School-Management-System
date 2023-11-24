@@ -7,28 +7,36 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.attech.sms.databinding.ItemAttendanceBinding
 import com.attech.sms.models.AttendanceData
+import com.attech.sms.models.GetAttendanceModel
+import com.attech.sms.models.GetAttendanceModelResponse
+import com.attech.sms.models.GetCourse
+import com.attech.sms.utils.PickerManager.token
+import com.attech.sms.utils.USER_TYPE
+import com.attech.sms.viewmodel.RetrofitViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
-class AttendanceAdapter(private val attendanceList: List<AttendanceData>) :
+class AttendanceAdapter(
+    private val viewModel: RetrofitViewModel
+) :
     RecyclerView.Adapter<AttendanceAdapter.AttendanceViewHolder>() {
-
-    private var filteredList: List<AttendanceData> = attendanceList
+    private var attendanceList: List<GetAttendanceModelResponse> = emptyList()
+    private var filteredList: List<GetAttendanceModelResponse> = emptyList()
 
 
     inner class AttendanceViewHolder(private val binding: ItemAttendanceBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         @SuppressLint("SetTextI18n")
-        fun bind(attendanceData: AttendanceData) {
+        fun bind(attendanceData: GetAttendanceModelResponse) {
             val dayOfWeek = getDayOfWeek(attendanceData.date)
 
             binding.apply {
                 dayTextView.text = dayOfWeek
                 dateTextView.text = attendanceData.date
-                statusTextView.text = attendanceData.status
+                statusTextView.text = "Present"
+                textCourseName.text = ""
             }
-            checkStatus(attendanceData, binding)
         }
     }
 
@@ -37,15 +45,6 @@ class AttendanceAdapter(private val attendanceList: List<AttendanceData>) :
         notifyDataSetChanged()
     }
 
-    private fun checkStatus(attendanceData: AttendanceData, binding: ItemAttendanceBinding) {
-        binding.statusTextView.setBackgroundColor(
-            if (attendanceData.status.equals("Absent", ignoreCase = true)) {
-                Color.RED
-            } else {
-                Color.TRANSPARENT
-            }
-        )
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AttendanceViewHolder {
         return AttendanceViewHolder(ItemAttendanceBinding.
@@ -60,6 +59,12 @@ class AttendanceAdapter(private val attendanceList: List<AttendanceData>) :
 
     override fun getItemCount(): Int {
         return filteredList.size
+    }
+
+    fun setAttendanceList(list: List<GetAttendanceModelResponse>) {
+        attendanceList = list
+        filteredList = attendanceList
+        notifyDataSetChanged()
     }
 
     private fun getDayOfWeek(date: String): String {

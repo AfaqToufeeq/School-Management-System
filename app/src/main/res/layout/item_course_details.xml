@@ -15,6 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Course No: "
+            android:layout_weight="1"
             android:textSize="18sp" />
 
         <TextView
@@ -22,6 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Course No Value"
+            android:layout_weight="1"
             android:textSize="18sp"
             android:textStyle="bold" />
     </LinearLayout>
@@ -36,6 +38,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Course Name: "
+            android:layout_weight="1"
+
             android:textSize="18sp" />
 
         <TextView
@@ -43,6 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Course Name Value"
+            android:layout_weight="1"
             android:textSize="18sp"
             android:textStyle="bold" />
     </LinearLayout>
@@ -52,6 +57,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Teacher: "
+        android:visibility="gone"
         android:textSize="18sp" />
 
     <TextView
@@ -59,6 +65,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Class: "
+        android:visibility="gone"
         android:textSize="18sp" />
 
     <Button
@@ -66,6 +73,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Show Marks"
+
         android:visibility="gone"
         android:textSize="18sp" />
 </LinearLayout>

@@ -8,10 +8,14 @@ import com.attech.teacher.models.BatchesModel
 import com.attech.teacher.models.CourseTeacherResponse
 import com.attech.teacher.models.LoginResponse
 import com.attech.teacher.models.LogoutResponse
+import com.attech.teacher.models.MarksData
 import com.attech.teacher.models.Student
 import com.attech.teacher.models.StudentDetailsResponse
 import com.attech.teacher.models.Teacher
+import com.attech.teacher.models.TeacherClasses
+import com.attech.teacher.models.TeacherClassesResponse
 import com.attech.teacher.models.TeacherDetailsResponse
+import com.attech.teacher.models.UploadMarksResponse
 import kotlinx.coroutines.suspendCancellableCoroutine
 import retrofit2.Call
 import retrofit2.Callback
@@ -63,6 +67,47 @@ class RetrofitRepository(private val apiService: ApiService) {
             throw e
         }
     }
+
+
+    suspend fun uploadMarks(marksData: MarksData): Response<UploadMarksResponse> {
+        try {
+
+            return apiService.uploadMarks(
+                type = marksData.type,
+                token = marksData.token,
+                course = marksData.course,
+                student = marksData.student,
+                bcode = marksData.bcode,
+                score = marksData.score
+            )
+        } catch (e: Exception) {
+            Log.e("ApiCallError", "HTTP ${e.message}")
+            throw e
+        }
+    }
+
+
+    suspend fun getTeacherClasses(teacherClasses: TeacherClasses): Response<TeacherClassesResponse>{
+        try {
+            val response = apiService.getTeacherClasses(
+                type = teacherClasses.type,
+                token = teacherClasses.token,
+                id = teacherClasses.id
+            )
+
+            if (response.isSuccessful) {
+                Log.d("checkNow","res: ${response.body()}")
+
+            } else {
+                Log.e("API_CALL", "Error code:  Error body: ${response.errorBody()}:: ${response.code()}")
+            }
+            return response
+        } catch (e: Exception) {
+            Log.e("API_CALL", "Error code: ${e.message}, Error body: ${e.toString()}")
+            throw(e)
+        }
+    }
+
 
     suspend fun addStudent(type: String, token: String, student: Student): Boolean {
         return suspendCancellableCoroutine { continuation ->

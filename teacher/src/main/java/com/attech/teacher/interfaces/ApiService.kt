@@ -7,7 +7,9 @@ import com.attech.teacher.models.CourseTeacherResponse
 import com.attech.teacher.models.LoginResponse
 import com.attech.teacher.models.LogoutResponse
 import com.attech.teacher.models.StudentDetailsResponse
+import com.attech.teacher.models.TeacherClassesResponse
 import com.attech.teacher.models.TeacherDetailsResponse
+import com.attech.teacher.models.UploadMarksResponse
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Field
@@ -118,6 +120,29 @@ interface ApiService {
         @Field("student") student: Int,
         @Field("date") date: String,
     ): Response<AttendanceResponse>
+
+
+
+    @POST("api/uploadMarks")
+    @FormUrlEncoded
+    suspend fun uploadMarks(
+        @Field("type") type: String,
+        @Field("token") token: String,
+        @Field("course") course: Int,
+        @Field("student") student: Int,
+        @Field("bcode") bcode: String,
+        @Field("score") score: Int,
+    ): Response<UploadMarksResponse>
+
+
+
+    @POST("api/getTeacherClasses")
+    @FormUrlEncoded
+    suspend fun getTeacherClasses(
+        @Field("type") type: String,
+        @Field("token") token: String,
+        @Field("id") id: Int
+    ): Response<TeacherClassesResponse>
 
 
 }

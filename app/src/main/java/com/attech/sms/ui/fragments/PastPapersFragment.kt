@@ -40,23 +40,27 @@ class PastPapersFragment : Fragment() {
         events()
     }
 
+    private fun init() {
+        showLoading(true)
+        binding.smsText.text = title
+        val repository = StudentRepository()
+        viewModel = ViewModelProvider(requireActivity(), StudentViewModelFactory(repository))[StudentViewModel::class.java]
+    }
+
     private fun setObservers() {
         viewModel.webPageUrl.observe(viewLifecycleOwner) { url ->
             binding.webView.loadUrl(url)
+            showLoading(false)
         }
-    }
-
-    private fun init() {
-        binding.smsText.text = title
-        val repository = StudentRepository()
-        viewModel = ViewModelProvider(
-            requireActivity(),
-            StudentViewModelFactory(repository)
-        )[StudentViewModel::class.java]
     }
 
     private fun events() {
         binding.leftIcon.setOnClickListener { findNavController().popBackStack() }
     }
+
+    private fun showLoading(show: Boolean) {
+        binding.progressBar.visibility = if (show) View.VISIBLE else View.GONE
+    }
+
 
 }

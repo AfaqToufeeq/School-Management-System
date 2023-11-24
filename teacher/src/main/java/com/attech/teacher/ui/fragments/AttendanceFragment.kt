@@ -4,7 +4,8 @@ import android.R
 import android.app.DatePickerDialog
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
+import android.os.Handler
+import android.os.Looper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -22,6 +23,7 @@ import com.attech.teacher.models.AttendanceModel
 import com.attech.teacher.models.AttendanceResponse
 import com.attech.teacher.network.RetrofitClientInstance
 import com.attech.teacher.repository.RetrofitRepository
+import com.attech.teacher.utils.LoadingDialog
 import com.attech.teacher.utils.MAIN_MENU
 import com.attech.teacher.utils.PickerManager
 import com.attech.teacher.utils.PickerManager.token
@@ -29,16 +31,16 @@ import com.attech.teacher.utils.USER_TYPE
 import com.attech.teacher.utils.Utils.showToast
 import com.attech.teacher.viewmodel.RetrofitViewModel
 import com.attech.teacher.viewmodelfactory.RetrofitViewModelFactory
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Response
 import java.util.Calendar
 
-
 class AttendanceFragment : Fragment() {
+    private var teacherCourses: List<String> = emptyList()
+    private var loaderShown = false
+    private lateinit var loadingDialog: LoadingDialog
     private lateinit var binding: FragmentAttendanceBinding
     private var argumentTitle: String? = null
     private lateinit var attendanceAdapter: AttendanceAdapter
@@ -51,6 +53,10 @@ class AttendanceFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         argumentTitle = requireArguments().getString(MAIN_MENU)
+        if (!loaderShown) {
+            showLoader()
+            loaderShown = true
+        }
     }
 
     override fun onCreateView(
@@ -66,48 +72,34 @@ class AttendanceFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initializeViews()
-        setupClassSpinner()
+        setAdapter()
+        spinnerEvents()
         observeViewModel()
         setEventListeners()
+        setHandler()
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun initializeViews() {
         binding.smsText.text = arguments?.getString(MAIN_MENU)
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireActivity())
 
         val retrofitRepository = RetrofitRepository(RetrofitClientInstance.retrofit)
-        viewModel = ViewModelProvider(
-            requireActivity(),
-            RetrofitViewModelFactory(retrofitRepository)
-        )[RetrofitViewModel::class.java]
-
-        attendanceAdapter = AttendanceAdapter { model, position, isChecked ->
-            if (student.contains(model.id)) {
-                student.remove(model.id)
-            } else {
-                student.add(model.id)
-            }
-        }
-        binding.recyclerView.adapter = attendanceAdapter
-
+        viewModel = ViewModelProvider(requireActivity(), RetrofitViewModelFactory(retrofitRepository))[RetrofitViewModel::class.java]
     }
 
-    private fun setupClassSpinner() {
-        val batchCodes = PickerManager.allBatchesList!!.map { it.batchcode }
-        batchCodes?.let {
-            val classAdapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item, it)
-            classAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
-            binding.spinnerClass.adapter = classAdapter
-        }
+    private fun setAdapter() {
+        attendanceAdapter = AttendanceAdapter { model, _, _ ->
+            if (student.contains(model.id)) student.remove(model.id)
+            else student.add(model.id)
 
-        val teacherCourses = PickerManager.getTeacherCourses!!.map { it.name }
-        teacherCourses?.let {
-            val classAdapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item, it)
-            classAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
-            binding.spinnerCourses.adapter = classAdapter
+            if (binding.btnSubmit.visibility == View.GONE)
+                binding.btnSubmit.visibility = View.VISIBLE
         }
+        binding.recyclerView.adapter = attendanceAdapter
+    }
 
+    private fun spinnerEvents() {
         binding.spinnerClass.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
@@ -116,12 +108,13 @@ class AttendanceFragment : Fragment() {
                 id: Long
             ) {
                 selectedClass = (parent?.getItemAtPosition(position) as? String)!!
-                selectedClass?.let { viewModel.getBatchStudents(USER_TYPE, token!!, selectedClass) }
+                selectedClass?.let {
+                    viewModel.getBatchStudents(USER_TYPE, token!!, selectedClass)
+                }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
-
 
         binding.spinnerCourses.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
@@ -132,41 +125,55 @@ class AttendanceFragment : Fragment() {
                     id: Long
                 ) {
                     selectedCourse = (parent?.getItemAtPosition(position) as? String)!!
-                    selectedClass?.let {}
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
             }
     }
 
+    private fun loadCourseSpinner(teacherCourses: List<String>) {
+        teacherCourses?.let {
+            val classAdapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item, it)
+            classAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
+            binding.spinnerCourses.adapter = classAdapter
+        }
+    }
+
+    private fun loadBatchesSpinner(batches: List<String>) {
+        batches?.let {
+            val classAdapter = ArrayAdapter(requireContext(), R.layout.simple_spinner_item, it)
+            classAdapter.setDropDownViewResource(R.layout.simple_spinner_dropdown_item)
+            binding.spinnerClass.adapter = classAdapter
+        }
+    }
+
 
     private fun observeViewModel() {
+        observeBatchStudents()
+        observeTeacherCoursesAndBatches()
+    }
+
+    private fun observeBatchStudents() {
         viewModel.batchStudents.observe(viewLifecycleOwner) { batches ->
-            if (batches.isNullOrEmpty()) {
-                CoroutineScope(Dispatchers.Main).launch {
-                    showLoading(true)
-                    delay(1500)
-                    showLoading(false)
-                    binding.recyclerView.visibility = View.GONE
-                    showToast(requireActivity(), "No Student is registered in this class")
-                }
-                Log.d("ViewStudentsFragment", "Batches list is empty $batches")
-            } else {
-                showLoading(false)
-                binding.recyclerView.visibility = View.VISIBLE
+            if (!batches.isNullOrEmpty()) {
+                loadingDialog.dismissLoadingDialog()
                 attendanceAdapter.setStudents(batches)
-                Log.d("ViewStudentsFragment", "Batches list size: ${batches.size} ")
             }
         }
     }
 
-    private fun showLoading(show: Boolean) {
-//        binding.progressBar.visibility = if (show) View.VISIBLE else View.GONE
+    private fun observeTeacherCoursesAndBatches() {
+        viewModel.teacherClasses.observe(viewLifecycleOwner) { teacherClasses ->
+            teacherClasses?.let {
+                loadBatchesSpinner(it.batches)
+                loadCourseSpinner(it.courses)
+                teacherCourses = it.courses
+            }
+        }
     }
 
     private fun showDatePicker() {
         val calendar = Calendar.getInstance()
-
         val year = calendar[Calendar.YEAR]
         val month = calendar[Calendar.MONTH]
         val day = calendar[Calendar.DAY_OF_MONTH]
@@ -190,6 +197,15 @@ class AttendanceFragment : Fragment() {
         binding.btnSubmit.setOnClickListener { submission() }
     }
 
+
+    private fun showLoader() {
+        loadingDialog = LoadingDialog(requireActivity())
+        loadingDialog.showLoadingDialog("Loading, Please wait...")
+    }
+
+    private fun hideLoader() {
+        loadingDialog.dismissLoadingDialog()
+    }
 
     private fun submission() {
         val selectedCourseID =
@@ -228,11 +244,14 @@ class AttendanceFragment : Fragment() {
     }
 
     private fun logResponse(response: Response<AttendanceResponse>) {
-        if (response.isSuccessful) {
-            showToast(requireActivity(), response.body()!!.msg)
-        } else {
+        if (response.isSuccessful) showToast(requireActivity(), response.body()!!.msg)
+        else
             showToast(requireActivity(), "Some Issues: ${response.errorBody()!!}")
-        }
+    }
 
+    private fun setHandler() {
+        Handler(Looper.getMainLooper()).postDelayed({
+            hideLoader()
+        },2500)
     }
 }

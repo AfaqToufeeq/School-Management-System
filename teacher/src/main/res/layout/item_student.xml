@@ -4,27 +4,44 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="16dp">
-
-    <TextView
-        android:id="@+id/tvStudentName"
+    <!-- Parent View -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:textColor="@color/royal_blue" />
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:background="?android:attr/selectableItemBackground">
 
-<!--    <TextView-->
-<!--        android:id="@+id/tvStudentClass"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:textSize="16sp"-->
-<!--        android:textColor="@android:color/darker_gray" />-->
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/studentImageView"
+            android:layout_width="40dp"
+            android:visibility="gone"
+            android:layout_height="40dp"
+            android:layout_gravity="start"
+            android:layout_marginEnd="7dp"/>
 
-    <TextView
-        android:id="@+id/tvStudentRollNum"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:textColor="@android:color/darker_gray" />
+        <TextView
+            android:id="@+id/textViewStudentName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:text="Student Name"/>
 
+        <TextView
+            android:id="@+id/textViewRollNumber"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="16sp"/>
+
+        <ImageView
+            android:id="@+id/arrowIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:rotation="-90"
+            android:src="@drawable/arrow_icon" />
+    </LinearLayout>
 </LinearLayout>

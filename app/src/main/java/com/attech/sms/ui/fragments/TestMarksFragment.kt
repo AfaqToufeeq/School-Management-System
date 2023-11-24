@@ -1,38 +1,46 @@
 package com.attech.sms.ui.fragments
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.attech.sms.adapters.TestMarksAdapter
 import com.attech.sms.databinding.FragmentTestMarksBinding
-import com.attech.sms.models.TestMark
+import com.attech.sms.models.TestMarksRequest
+import com.attech.sms.network.RetrofitClientInstance
+import com.attech.sms.repository.RetrofitRepository
+import com.attech.sms.utils.LoadingDialog
 import com.attech.sms.utils.MAIN_MENU
+import com.attech.sms.utils.PickerManager.token
+import com.attech.sms.utils.USER_TYPE
+import com.attech.sms.viewmodel.RetrofitViewModel
+import com.attech.sms.viewmodelfactory.RetrofitViewModelFactory
 
 class TestMarksFragment : Fragment() {
 
     private var _binding: FragmentTestMarksBinding? = null
     private val binding get() = _binding!!
-
+    private lateinit var viewModel: RetrofitViewModel
+    private var loaderShown = false
     private var title: String = ""
+    private val testAdapter = TestMarksAdapter()
+    private lateinit var loadingDialog: LoadingDialog
 
-    companion object {
-        fun newInstance(title: String): TestMarksFragment {
-            val fragment = TestMarksFragment()
-            val args = Bundle()
-            args.putString(MAIN_MENU, title)
-            fragment.arguments = args
-            return fragment
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         title = arguments?.getString(MAIN_MENU) ?: ""
+        if (!loaderShown) {
+            showLoader()
+            loaderShown = true
+        }
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,22 +52,66 @@ class TestMarksFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        initializeViews()
+        setAdapter()
+        setObservers()
+        fetchMarksData()
+        setHandler()
+    }
+
+    private fun initializeViews() {
         binding.smsText.text = title
-        val testMarks = createSampleTestMarks()
-        val adapter = TestMarksAdapter(testMarks)
-        binding.recyclerViewTestMarks.adapter = adapter
-        binding.recyclerViewTestMarks.layoutManager = LinearLayoutManager(requireContext())
+        val retrofitRepository = RetrofitRepository(RetrofitClientInstance.retrofit)
+        viewModel = ViewModelProvider(requireActivity(), RetrofitViewModelFactory(retrofitRepository))[RetrofitViewModel::class.java]
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    private fun setAdapter() {
+        with(binding.recyclerViewTestMarks) {
+            layoutManager = LinearLayoutManager(requireActivity())
+            adapter = testAdapter
+        }
     }
 
-    private fun createSampleTestMarks(): List<TestMark> {
-        return listOf(
-            TestMark("Math", "Midterm Exam", "Mr. Smith", 100, 85.0, "2023-10-15"),
-            TestMark("Science", "Quiz", "Ms. Johnson", 20, 18.5, "2023-10-16")
-        )
+    private fun fetchMarksData() {
+        viewModel.getMarks(TestMarksRequest(
+            type = USER_TYPE,
+            token = token!!,
+            course = 1,
+            student = 1,
+            bcode = "Class 5"
+        ))
+    }
+
+    private fun setObservers() {
+        setStudentClassAndCoursesObserver()
+        setTestMarksObserver()
+    }
+
+    private fun setStudentClassAndCoursesObserver() {
+        viewModel.studentClassAndCoursesResponse.observe(viewLifecycleOwner) {
+            it?.let {  binding.classBatch.text = it.batchcode }
+        }
+    }
+
+    private fun setTestMarksObserver() {
+        viewModel.testMarks.observe(viewLifecycleOwner) {
+            Log.d("checkMarks","Score: ${it.score}")
+        }
+    }
+
+    private fun setHandler() {
+        Handler(Looper.getMainLooper()).postDelayed({
+            hideLoader()
+        },2500)
+    }
+
+    private fun showLoader() {
+        loadingDialog = LoadingDialog(requireActivity())
+        loadingDialog.showLoadingDialog("Loading, Please wait...")
+    }
+
+    private fun hideLoader() {
+        loadingDialog.dismissLoadingDialog()
     }
 }

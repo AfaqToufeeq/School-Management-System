@@ -69,7 +69,7 @@ class ViewStudentsFragment : Fragment() {
         binding.smsText.text = arguments?.getString(MAIN_MENU)
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        studentAdapter = StudentAdapter()
+//        studentAdapter = StudentAdapter()
         binding.recyclerView.adapter = studentAdapter
 
         setupClassSpinner()

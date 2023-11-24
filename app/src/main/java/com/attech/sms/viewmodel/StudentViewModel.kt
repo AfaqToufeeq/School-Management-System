@@ -8,8 +8,8 @@ import com.attech.sms.models.NewsItem
 import com.attech.sms.repository.StudentRepository
 
 class StudentViewModel(private val repository: StudentRepository) : ViewModel() {
-    val dashboardItemsLiveData: LiveData<List<DashboardItem>> = repository.getDashboardItems()
-    val newsItemsLiveData: LiveData<List<NewsItem>> = repository.getNewsItems()
+    val dashboardItemsLiveData: LiveData<List<DashboardItem>> = repository.dashboardItemsLiveData
+    val newsItemsLiveData: LiveData<List<NewsItem>> = repository.newsItemsLiveData
 
     private val _webPageUrl = MutableLiveData<String>()
     val webPageUrl: LiveData<String> get() = _webPageUrl
