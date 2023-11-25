@@ -107,11 +107,20 @@ interface ApiService {
 
     @POST("api/getCourseTeacher")
     @FormUrlEncoded
-    suspend fun getCourseTeacher(
+    suspend fun getTeacherCourses(
         @Field("type") type: String,
         @Field("token") token: String,
         @Field("teacher") teacher: Int
     ): Response<List<CourseTeacherResponse>>
+
+
+    @POST("api/getCourseTeacher")
+    @FormUrlEncoded
+    suspend fun getCourseTeachers(
+        @Field("type") type: String,
+        @Field("token") token: String,
+        @Field("course") teacher: Int
+    ): Response<List<TeacherDetailsResponse>>
 
 
     @POST("api/markAttandance")

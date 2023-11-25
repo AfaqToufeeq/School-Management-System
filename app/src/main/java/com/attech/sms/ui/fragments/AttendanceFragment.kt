@@ -70,7 +70,6 @@ class AttendanceFragment : Fragment(), OnItemClick {
         buttonClicks()
         setObservers()
         setHandler()
-
     }
 
     private fun initializeViews() {
@@ -88,24 +87,6 @@ class AttendanceFragment : Fragment(), OnItemClick {
     }
 
     private fun fetchCoursesData() {
-        lifecycleScope.launch {
-            val response = withContext(Dispatchers.IO) {
-                viewModel.getCourses(GetCourse(
-                    type = USER_TYPE,
-                    token = token!!
-                ))
-            }
-            Log.d("checkCoursesResponse", "Courses: ${response.body()}")
-        }
-
-
-        /*        val courseName = viewModel.getCourses(GetCourse(
-                    type = USER_TYPE,
-                    token = token!!,
-                    id = 1
-                ))*/
-
-
         /*        val batchCodes = PickerManager.allBatchesList!!.map { it.batchcode }
                 lifecycleScope.launch {
                     batchCodes.forEach { batch->
@@ -126,12 +107,13 @@ class AttendanceFragment : Fragment(), OnItemClick {
     }
 
     private fun setAttendanceObserver() {
-        viewModel.getAttendance.observe(viewLifecycleOwner) {
-            if (!it.isNullOrEmpty()) {
-                attendanceAdapter.setAttendanceList(it)
-                filteredData = it
+        viewModel.getAttendance.observe(viewLifecycleOwner) { attendance->
+            if (!attendance.isNullOrEmpty()) {
+                attendanceAdapter.setAttendanceList(attendance)
+                filteredData = attendance
             }
         }
+
     }
 
     private fun buttonClicks() {

@@ -54,8 +54,12 @@ class RetrofitRepository(private val apiService: ApiService) {
         return apiService.getBatchStudents(type, token, bcode)
     }
 
-    suspend fun getCourseTeacher(type: String, token: String, teacher: Int): Response<List<CourseTeacherResponse>> {
-        return apiService.getCourseTeacher(type, token, teacher)
+    suspend fun getTeacherCourses(type: String, token: String, teacher: Int): Response<List<CourseTeacherResponse>> {
+        return apiService.getTeacherCourses(type, token, teacher)
+    }
+
+    suspend fun getCourseTeachers(type: String, token: String, course: Int): Response<List<TeacherDetailsResponse>> {
+        return apiService.getCourseTeachers(type, token, course)
     }
 
     suspend fun markAttendance(attendanceModel: AttendanceModel): Response<AttendanceResponse> {

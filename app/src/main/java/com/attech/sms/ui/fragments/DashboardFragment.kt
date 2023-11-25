@@ -3,11 +3,13 @@ package com.attech.sms.ui.fragments
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,8 +19,11 @@ import com.attech.sms.adapters.NewsAdapter
 import com.attech.sms.callbacks.OnItemClick
 import com.attech.sms.databinding.FragmentDashboardBinding
 import com.attech.sms.models.GetAttendanceModel
+import com.attech.sms.models.GetCourse
+import com.attech.sms.models.GetCourseResponse
 import com.attech.sms.models.StudentClassAndCourses
 import com.attech.sms.models.StudentDetailsResponse
+import com.attech.sms.models.TeacherDetailsResponse
 import com.attech.sms.network.RetrofitClientInstance
 import com.attech.sms.repository.RetrofitRepository
 import com.attech.sms.repository.StudentRepository
@@ -32,6 +37,9 @@ import com.attech.sms.viewmodel.RetrofitViewModel
 import com.attech.sms.viewmodel.StudentViewModel
 import com.attech.sms.viewmodelfactory.RetrofitViewModelFactory
 import com.attech.sms.viewmodelfactory.StudentViewModelFactory
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.*
 import kotlin.concurrent.scheduleAtFixedRate
 
@@ -67,7 +75,6 @@ class DashboardFragment : Fragment(), OnItemClick {
         setObservers()
         setRecyclerView()
         setEvents()
-        callHandler()
     }
 
     private fun setEvents() {
@@ -105,6 +112,44 @@ class DashboardFragment : Fragment(), OnItemClick {
     private fun setViewModelObservers() {
         setStudentDataObserver()
         setLocalStudentDataObserver()
+        fetchAllCourseData()
+    }
+
+    private fun fetchAllCourseData() {
+        viewModel.getCourses(
+            GetCourse(
+                type = USER_TYPE,
+                token = token!!
+            )
+        )
+
+        viewModel.getCourses.observe(viewLifecycleOwner) { courses->
+            fetchCourseTeachers(courses)
+        }
+    }
+
+    private fun fetchCourseTeachers(courses: List<GetCourseResponse>?) {
+        courses?.forEach {course->
+            viewModel.getCourseTeachers(
+                type = USER_TYPE,
+                token = token!!,
+                course = course.id
+            )
+        }
+
+        viewModel.courseTeachers.observe(viewLifecycleOwner) { teacher ->
+            fetchTeacherCourses(teacher)
+        }
+    }
+
+    private fun fetchTeacherCourses(teachers: List<TeacherDetailsResponse>?) {
+        teachers?.forEach { teacher->
+            viewModel.getTeacherCourses(
+                type = USER_TYPE,
+                token = token!!,
+                teacher = teacher.id
+            )
+        }
     }
 
     private fun setLocalStudentDataObserver() {
@@ -116,7 +161,11 @@ class DashboardFragment : Fragment(), OnItemClick {
 
     private fun fetchStudentClassesAndCoursesObserver(studentId: Int) {
         viewModel.getStudentClassAndCourses(
-            StudentClassAndCourses(type = USER_TYPE, token = token!!, id= studentId)
+            StudentClassAndCourses(
+                type = USER_TYPE,
+                token = token!!,
+                id= studentId
+            )
         )
 
         viewModel.studentClassAndCoursesResponse.observe(viewLifecycleOwner) { batch->
@@ -133,6 +182,10 @@ class DashboardFragment : Fragment(), OnItemClick {
                 student = studentId
             )
         )
+
+        viewModel.getAttendance.observe(viewLifecycleOwner) {
+            callHandler()
+        }
     }
 
     private fun setStudentDataObserver() {
@@ -183,7 +236,7 @@ class DashboardFragment : Fragment(), OnItemClick {
 
     private fun showLoader() {
         loadingDialog = LoadingDialog(requireActivity())
-        loadingDialog.showLoadingDialog("loading, Please wait...")
+        loadingDialog.showLoadingDialog("Loading, Please wait...")
     }
 
     private fun hideLoader() {
@@ -219,8 +272,7 @@ class DashboardFragment : Fragment(), OnItemClick {
     private fun callHandler() {
         Handler(Looper.getMainLooper()).postDelayed({
             hideLoader()
-        }, 8000)
+        }, 1500)
     }
-
 
 }

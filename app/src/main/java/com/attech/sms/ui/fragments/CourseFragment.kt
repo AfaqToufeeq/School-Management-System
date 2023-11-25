@@ -27,7 +27,7 @@ class CourseFragment : Fragment() {
     private var title: String = ""
     private lateinit var loadingDialog: LoadingDialog
     private var argumentTitle: String? = null
-    private  var courseDetailsAdapter = CourseDetailsAdapter()
+    private lateinit var courseDetailsAdapter: CourseDetailsAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -68,6 +68,7 @@ class CourseFragment : Fragment() {
     private fun setAdapter() {
         binding.recyclerViewAttendance.apply {
             layoutManager = LinearLayoutManager(requireActivity())
+            courseDetailsAdapter = CourseDetailsAdapter(viewModel)
             adapter = courseDetailsAdapter
         }
     }
@@ -97,7 +98,7 @@ class CourseFragment : Fragment() {
 
     private fun showLoader() {
         loadingDialog = LoadingDialog(requireActivity())
-        loadingDialog.showLoadingDialog("loading, Please wait...")
+        loadingDialog.showLoadingDialog("Loading, Please wait...")
     }
 
     private fun hideLoader() {

@@ -1,79 +1,125 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:layout_marginVertical="16dp"
+    android:layout_marginHorizontal="12dp"
+    app:cardCornerRadius="8dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardElevation="4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <!-- Course No Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Course No: "
-            android:layout_weight="1"
-            android:textSize="18sp" />
+            android:orientation="horizontal"
+            android:padding="6dp"
+            android:layout_marginBottom="8dp">
 
-        <TextView
-            android:id="@+id/textCourseNo"
-            android:layout_width="wrap_content"
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Course No:"
+                android:textSize="18sp"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/textCourseNo"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Course No Value"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/darkGrey" />
+        </LinearLayout>
+
+        <!-- Course Name Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Course No Value"
-            android:layout_weight="1"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:orientation="horizontal"
+            android:padding="6dp"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Course Name:"
+                android:textSize="18sp"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/textCourseName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Course Name Value"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/darkGrey" />
+        </LinearLayout>
+
+        <!-- Teacher Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="6dp"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Teacher:"
+                android:textSize="18sp"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/textTeacher"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Teacher Value"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/darkGrey" />
+        </LinearLayout>
+
+        <!-- Marks Section -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="6dp"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Marks:"
+                android:textSize="18sp"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/textMarks"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Marks Value"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/darkGrey" />
+        </LinearLayout>
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Course Name: "
-            android:layout_weight="1"
-
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/textCourseName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Course Name Value"
-            android:layout_weight="1"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/textTeacher"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Teacher: "
-        android:visibility="gone"
-        android:textSize="18sp" />
-
-    <TextView
-        android:id="@+id/textClass"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Class: "
-        android:visibility="gone"
-        android:textSize="18sp" />
-
-    <Button
-        android:id="@+id/btnShowMarks"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Show Marks"
-
-        android:visibility="gone"
-        android:textSize="18sp" />
-</LinearLayout>
+</androidx.cardview.widget.CardView>

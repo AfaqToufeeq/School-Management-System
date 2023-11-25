@@ -48,14 +48,17 @@ class RetrofitViewModel(private val repository: RetrofitRepository) : ViewModel(
     private val _teacherCourses = MutableLiveData<List<CourseTeacherResponse>>()
     val teacherCourses: LiveData<List<CourseTeacherResponse>> get() = _teacherCourses
 
+    private val _courseTeachers = MutableLiveData<List<TeacherDetailsResponse>>()
+    val courseTeachers: LiveData<List<TeacherDetailsResponse>> get() = _courseTeachers
+
     private val _studentClassAndCoursesResponse = MutableLiveData<StudentClassAndCoursesResponse>()
     val studentClassAndCoursesResponse: LiveData<StudentClassAndCoursesResponse> get() = _studentClassAndCoursesResponse
 
     private val _getAttendance = MutableLiveData<List<GetAttendanceModelResponse>>()
     val getAttendance: LiveData<List<GetAttendanceModelResponse>> get() = _getAttendance
 
-    private val _getCourses = MutableLiveData<GetCourseResponse>()
-    val getCourses: LiveData<GetCourseResponse> get() = _getCourses
+    private val _getCourses = MutableLiveData<List<GetCourseResponse>>()
+    val getCourses: LiveData<List<GetCourseResponse>> get() = _getCourses
 
     private val _testMarks = MutableLiveData<TestMarksResponse>()
     val testMarks: LiveData<TestMarksResponse> get() = _testMarks
@@ -134,17 +137,17 @@ class RetrofitViewModel(private val repository: RetrofitRepository) : ViewModel(
     }
 
 
-    suspend fun getCourses(getCourse: GetCourse): Response<List<GetCourseResponse>>{
-        try {
-            val response = repository.getCourses(getCourse)
-            if (response.isSuccessful) {
-//                    _getCourses.value = response.body()
-                Log.d("Token", "Success ${response.body()}")
+    fun getCourses(getCourse: GetCourse) {
+        viewModelScope.launch {
+            try {
+                val response = repository.getCourses(getCourse)
+                if (response.isSuccessful) {
+                    _getCourses.value = response.body()
+                }
+            } catch (e: Exception) {
+                Log.d("Token", "Error: ${e.message}")
+                throw(e)
             }
-            return response
-        } catch (e: Exception) {
-            Log.d("Token", "Error: ${e.message}")
-            throw(e)
         }
     }
 
@@ -190,15 +193,28 @@ class RetrofitViewModel(private val repository: RetrofitRepository) : ViewModel(
     }
 
 
-    fun getCourseTeacher(type: String, token: String, teacher: Int) {
+    fun getTeacherCourses(type: String, token: String, teacher: Int) {
         viewModelScope.launch {
             try {
-                val response = repository.getCourseTeacher(type, token, teacher)
+                val response = repository.getTeacherCourses(type, token, teacher)
                 if (response.isSuccessful) {
                     _teacherCourses.value = response.body() ?: emptyList()
                 }
             } catch (e: Exception) {
-                Log.d("getCourseTeacher", "Error: ${e.message}")
+                Log.d("getTeacherCourses", "Error: ${e.message}")
+            }
+        }
+    }
+
+    fun getCourseTeachers(type: String, token: String, course: Int) {
+        viewModelScope.launch {
+            try {
+                val response = repository.getCourseTeachers(type, token, course)
+                if (response.isSuccessful) {
+                    _courseTeachers.value = response.body() ?: emptyList()
+                }
+            } catch (e: Exception) {
+                Log.d("getCourseTeachers", "Error: ${e.message}")
             }
         }
     }

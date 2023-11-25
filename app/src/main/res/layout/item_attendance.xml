@@ -3,17 +3,17 @@
     android:id="@+id/cardViewAttendance"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
+    android:layout_margin="4dp"
     android:foreground="?android:attr/selectableItemBackground"
     app:cardCornerRadius="8dp"
-    app:cardElevation="4dp"
-    app:cardUseCompatPadding="true">
+    app:cardElevation="4dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:paddingVertical="16dp"
+        android:paddingHorizontal="4dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -24,20 +24,21 @@
                 android:id="@+id/dateTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1.2"
+                android:layout_weight="0.5"
                 android:text="2023-09-01"
                 android:textStyle="bold"
+                android:layout_marginStart="4dp"
                 android:gravity="start"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/dayTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Monday"
+                android:layout_weight="0.3"
+                android:text="Mon"
                 android:gravity="center"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/textCourseName"
@@ -45,7 +46,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Course"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:gravity="center"
                 android:textSize="18sp" />
 
@@ -53,8 +54,8 @@
                 android:id="@+id/statusTextView"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Present"
+                android:layout_weight="0.2"
+                android:text="P"
                 android:gravity="center"
                 android:textSize="18sp" />
         </LinearLayout>

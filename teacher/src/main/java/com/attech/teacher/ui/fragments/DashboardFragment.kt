@@ -103,7 +103,6 @@ class DashboardFragment : Fragment(), OnItemClick {
             fetchTeacherCoursesBatchesData(teacher.id)
             getCourseTeacher(teacher.id)
             callHandler()
-
         }
     }
 
@@ -173,23 +172,15 @@ class DashboardFragment : Fragment(), OnItemClick {
             loaderShown = true
         }
         val repository = TeacherRepository()
-        studentViewModel =
-            ViewModelProvider(
-                this,
-                TeacherViewModelFactory(repository)
-            )[TeacherViewModel::class.java]
+        studentViewModel = ViewModelProvider(this, TeacherViewModelFactory(repository))[TeacherViewModel::class.java]
 
         val retrofitRepository = RetrofitRepository(RetrofitClientInstance.retrofit)
-        viewModel =
-            ViewModelProvider(
-                requireActivity(),
-                RetrofitViewModelFactory(retrofitRepository)
-            )[RetrofitViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity(), RetrofitViewModelFactory(retrofitRepository))[RetrofitViewModel::class.java]
     }
 
     private fun showLoader() {
         loadingDialog = LoadingDialog(requireActivity())
-        loadingDialog.showLoadingDialog("loading, Please wait...")
+        loadingDialog.showLoadingDialog("Loading, Please wait...")
     }
 
     private fun hideLoader() {
@@ -210,15 +201,10 @@ class DashboardFragment : Fragment(), OnItemClick {
 
     private fun setRecyclerView() {
         binding.apply {
-            dashboardRecyclerView.layoutManager = GridLayoutManager(requireActivity(), 3)
+            dashboardRecyclerView.layoutManager = GridLayoutManager(requireActivity(), 2)
 
-            setTimerToScroll(
-                LinearLayoutManager(
-                    requireActivity(),
-                    LinearLayoutManager.HORIZONTAL,
-                    false
-                ).also { viewPagerDashboard.layoutManager = it }
-
+            setTimerToScroll(LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
+                .also { viewPagerDashboard.layoutManager = it }
             )
 
             dashboardAdapter = DashboardAdapter(this@DashboardFragment)

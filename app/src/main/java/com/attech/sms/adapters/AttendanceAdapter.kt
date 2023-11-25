@@ -1,17 +1,11 @@
 package com.attech.sms.adapters
 
 import android.annotation.SuppressLint
-import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.attech.sms.databinding.ItemAttendanceBinding
-import com.attech.sms.models.AttendanceData
-import com.attech.sms.models.GetAttendanceModel
 import com.attech.sms.models.GetAttendanceModelResponse
-import com.attech.sms.models.GetCourse
-import com.attech.sms.utils.PickerManager.token
-import com.attech.sms.utils.USER_TYPE
 import com.attech.sms.viewmodel.RetrofitViewModel
 import java.text.SimpleDateFormat
 import java.util.*
@@ -30,12 +24,12 @@ class AttendanceAdapter(
         @SuppressLint("SetTextI18n")
         fun bind(attendanceData: GetAttendanceModelResponse) {
             val dayOfWeek = getDayOfWeek(attendanceData.date)
+            val course = getCourseAgainstID(attendanceData.course)
 
             binding.apply {
                 dayTextView.text = dayOfWeek
                 dateTextView.text = attendanceData.date
-                statusTextView.text = "Present"
-                textCourseName.text = ""
+                textCourseName.text = course
             }
         }
     }
@@ -68,11 +62,15 @@ class AttendanceAdapter(
     }
 
     private fun getDayOfWeek(date: String): String {
-        // Get the day of the week from the date string
+        //Get day of the week
         val inputFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
         val formattedDate: Date = inputFormat.parse(date)!!
         val calendar = Calendar.getInstance()
         calendar.time = formattedDate
-        return calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault())!!
+        return SimpleDateFormat("EEE", Locale.getDefault()).format(formattedDate)
+    }
+
+    private fun getCourseAgainstID(course: Int): String {
+      return viewModel.getCourses.value!!.firstOrNull { it.id == course }!!.name
     }
 }
