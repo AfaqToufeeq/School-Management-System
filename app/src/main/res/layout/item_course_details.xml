@@ -107,16 +107,16 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Marks:"
+                android:text="Subject Marks:"
                 android:textSize="18sp"
                 android:textColor="@color/black" />
 
             <TextView
-                android:id="@+id/textMarks"
+                android:id="@+id/textSubjectMarks"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Marks Value"
+                android:text="Subject Total Marks: "
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:textColor="@color/darkGrey" />

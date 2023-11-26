@@ -51,12 +51,9 @@
         android:name="com.attech.sms.ui.fragments.TestMarksFragment"
         android:label="TestMarksFragment"
         tools:layout="@layout/fragment_test_marks">
-        <action
-            android:id="@+id/action_testMarksFragment_to_dashboardFragment"
-            app:popUpTo="@id/dashboardFragment" />
-        <action
-            android:id="@+id/action_testMarksFragment_to_dashboardFragment2"
-            app:popUpTo="@id/dashboardFragment" />
+<!--        <action-->
+<!--            android:id="@+id/action_testMarksFragment_to_courseFragment"-->
+<!--            app:popUpTo="@id/courseFragment" />-->
     </fragment>
     <fragment
         android:id="@+id/pastPapersFragment"
@@ -94,5 +91,8 @@
         <action
             android:id="@+id/action_courseFragment_to_dashboardFragment"
             app:popUpTo="@id/dashboardFragment" />
+        <action
+            android:id="@+id/action_courseFragment_to_testMarksFragment"
+            app:destination="@id/testMarksFragment" />
     </fragment>
 </navigation>

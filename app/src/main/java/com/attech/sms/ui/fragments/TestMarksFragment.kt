@@ -12,34 +12,40 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.attech.sms.adapters.TestMarksAdapter
 import com.attech.sms.databinding.FragmentTestMarksBinding
+import com.attech.sms.models.CourseData
 import com.attech.sms.models.TestMarksRequest
+import com.attech.sms.models.TestMarksResponse
 import com.attech.sms.network.RetrofitClientInstance
 import com.attech.sms.repository.RetrofitRepository
 import com.attech.sms.utils.LoadingDialog
-import com.attech.sms.utils.MAIN_MENU
 import com.attech.sms.utils.PickerManager.token
+import com.attech.sms.utils.PickerManager.userIdData
 import com.attech.sms.utils.USER_TYPE
 import com.attech.sms.viewmodel.RetrofitViewModel
 import com.attech.sms.viewmodelfactory.RetrofitViewModelFactory
 
 class TestMarksFragment : Fragment() {
 
+    private lateinit var courseData: CourseData
     private var _binding: FragmentTestMarksBinding? = null
     private val binding get() = _binding!!
     private lateinit var viewModel: RetrofitViewModel
     private var loaderShown = false
-    private var title: String = ""
     private val testAdapter = TestMarksAdapter()
     private lateinit var loadingDialog: LoadingDialog
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        title = arguments?.getString(MAIN_MENU) ?: ""
+        getBundleValues()
         if (!loaderShown) {
             showLoader()
             loaderShown = true
         }
+    }
+
+    private fun getBundleValues() {
+        courseData = (arguments?.getParcelable("courseData") as? CourseData)!!
     }
 
     override fun onCreateView(
@@ -55,13 +61,11 @@ class TestMarksFragment : Fragment() {
 
         initializeViews()
         setAdapter()
-        setObservers()
         fetchMarksData()
-        setHandler()
+        setObservers()
     }
 
     private fun initializeViews() {
-        binding.smsText.text = title
         val retrofitRepository = RetrofitRepository(RetrofitClientInstance.retrofit)
         viewModel = ViewModelProvider(requireActivity(), RetrofitViewModelFactory(retrofitRepository))[RetrofitViewModel::class.java]
     }
@@ -74,36 +78,34 @@ class TestMarksFragment : Fragment() {
     }
 
     private fun fetchMarksData() {
-        viewModel.getMarks(TestMarksRequest(
-            type = USER_TYPE,
-            token = token!!,
-            course = 1,
-            student = 1,
-            bcode = "Class 5"
-        ))
+        viewModel.getMarks(
+            TestMarksRequest(
+                type = USER_TYPE,
+                token = token!!,
+                course = courseData.courseId,
+                student = userIdData.value!!,
+                bcode = courseData.batchCode
+            )
+        )
     }
 
     private fun setObservers() {
-        setStudentClassAndCoursesObserver()
         setTestMarksObserver()
     }
 
-    private fun setStudentClassAndCoursesObserver() {
-        viewModel.studentClassAndCoursesResponse.observe(viewLifecycleOwner) {
-            it?.let {  binding.classBatch.text = it.batchcode }
-        }
-    }
-
     private fun setTestMarksObserver() {
-        viewModel.testMarks.observe(viewLifecycleOwner) {
-            Log.d("checkMarks","Score: ${it.score}")
+        viewModel.testMarks.observe(viewLifecycleOwner) {testMarksResponse->
+            val testMarksList = listOf(testMarksResponse).toMutableList()
+            testAdapter.setTestMarksList(testMarksList, courseData)
+            Log.d("checkMarks","Score: ${testMarksResponse.score}")
+            setHandler()
         }
     }
 
     private fun setHandler() {
         Handler(Looper.getMainLooper()).postDelayed({
             hideLoader()
-        },2500)
+        },1500)
     }
 
     private fun showLoader() {

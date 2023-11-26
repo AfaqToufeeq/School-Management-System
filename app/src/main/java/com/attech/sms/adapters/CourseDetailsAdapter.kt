@@ -1,6 +1,5 @@
 package com.attech.sms.adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -8,7 +7,8 @@ import com.attech.sms.databinding.ItemCourseDetailsBinding
 import com.attech.sms.viewmodel.RetrofitViewModel
 
 class CourseDetailsAdapter(
-    private val viewModel: RetrofitViewModel
+    private val viewModel: RetrofitViewModel,
+    private val callback: (Int, String, String, String, Int)->Unit
 ) : RecyclerView.Adapter<CourseDetailsAdapter.CourseDetailsViewHolder>() {
 
     private val courseDetailsList: MutableList<String> = mutableListOf()
@@ -17,14 +17,18 @@ class CourseDetailsAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(courseName: String) = with(binding) {
-            val courseID = getCourseIDAgainstName(courseName)
-            val courseTotalMarks = getCourseMarksAgainstName(courseName)
+            val courseCode = getCourseCodeAgainstName(courseName)
+            val courseTotalMarks = getCourseTotalMarksAgainstName(courseName)
             val courseTeacher = getCourseTeacherAgainstName(courseName)
 
-            textCourseNo.text = courseID
+            textCourseNo.text = courseCode
             textCourseName.text = courseName
-            textMarks.text = courseTotalMarks
+            textSubjectMarks.text = courseTotalMarks.toString()
             textTeacher.text = courseTeacher
+
+            root.setOnClickListener {
+                callback.invoke( getCourseIDAgainstName(courseName), courseCode, courseName, courseTeacher, courseTotalMarks )
+            }
         }
     }
 
@@ -45,23 +49,31 @@ class CourseDetailsAdapter(
         notifyDataSetChanged()
     }
 
-    private fun getCourseIDAgainstName(course: String): String {
+    private fun getCourseIDAgainstName(course: String): Int {
+        return viewModel.getCourses.value!!.firstOrNull { it.name == course }!!.id
+    }
+
+    private fun getCourseCodeAgainstName(course: String): String {
         return viewModel.getCourses.value!!.firstOrNull { it.name == course }!!.code
     }
 
-    private fun getCourseMarksAgainstName(course: String): String {
-        return viewModel.getCourses.value!!.firstOrNull { it.name == course }!!.marks.toString()
+    private fun getCourseTotalMarksAgainstName(course: String): Int {
+        return viewModel.getCourses.value!!.firstOrNull { it.name == course }!!.max_marks
     }
 
     private fun getCourseTeacherAgainstName(course: String): String {
-        return viewModel.getCourses.value?.firstOrNull { it.name == course }?.id
+        val courses = viewModel.getCourses.value
+        val attendance = viewModel.getAttendance.value
+        val teachers = viewModel.courseTeachers.value
+
+        return courses?.firstOrNull { it.name == course }?.id
             ?.let { courseId ->
-                viewModel.getAttendance.value?.firstOrNull { it.course == courseId }?.marked_by
+                attendance?.firstOrNull { it.course == courseId }?.marked_by
                     ?.let { teacherId ->
-                        viewModel.courseTeachers.value?.firstOrNull { it.id == teacherId }?.let {
-                           "${it.firstname} ${it.lastname}"
+                        teachers?.firstOrNull { it.id == teacherId }?.let {
+                            "${it.firstname} ${it.lastname}"
                         }
-                    }?:""
+                    }
             } ?: ""
     }
 }

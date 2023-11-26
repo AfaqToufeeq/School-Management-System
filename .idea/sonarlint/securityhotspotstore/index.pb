@@ -279,3 +279,5 @@ h
 8app/src/main/java/com/attech/sms/models/CourseTeacher.kt,5\c\5c85e9e38206f6e3553c11385e7670fb5e040a88
 h
 8app/src/main/java/com/attech/sms/adapters/NewsAdapter.kt,a\9\a9ef908b521f4a2a157a790d3ad3e718377e23a7
+e
+5app/src/main/java/com/attech/sms/models/CourseData.kt,8\a\8a4edb303144bcb1e6f34d4a6f0442cace117143

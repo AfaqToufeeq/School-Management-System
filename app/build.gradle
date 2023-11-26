@@ -1,6 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'kotlin-parcelize'
+
 }
 
 android {
@@ -79,5 +81,9 @@ dependencies {
 
     //ShimmerEffect Android
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
+
+
+    // Kotlin Parcelize
+//    implementation "org.jetbrains.kotlin:kotlin-android-extensions:1.8.0"
 
 }

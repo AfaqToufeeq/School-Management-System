@@ -10,5 +10,5 @@ data class GetCourseResponse(
     val name: String,
     val code: String,
     val status: String,
-    val marks: Int
+    val max_marks: Int
 )

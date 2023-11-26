@@ -1,15 +1,14 @@
 package com.attech.sms.ui.fragments
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -37,9 +36,6 @@ import com.attech.sms.viewmodel.RetrofitViewModel
 import com.attech.sms.viewmodel.StudentViewModel
 import com.attech.sms.viewmodelfactory.RetrofitViewModelFactory
 import com.attech.sms.viewmodelfactory.StudentViewModelFactory
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.*
 import kotlin.concurrent.scheduleAtFixedRate
 
@@ -197,6 +193,7 @@ class DashboardFragment : Fragment(), OnItemClick {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun updateViews(it: StudentDetailsResponse) {
         if (it.image!=null)
             binding.personImageView.setImageBitmap(ImageUtil.decodeBase64ToBitmap(it.image))
@@ -263,7 +260,7 @@ class DashboardFragment : Fragment(), OnItemClick {
                 "Courses" -> navigate(R.id.action_dashboardFragment_to_courseFragment, bundle)
                 "Past Papers" -> navigate(R.id.action_dashboardFragment_to_pastPapersFragment, bundle)
                 "Performance" -> navigate(R.id.action_dashboardFragment_to_attendanceFragment, bundle)
-                "Marks" -> navigate(R.id.action_dashboardFragment_to_testMarksFragment, bundle)
+                "Marks" -> navigate(R.id.action_dashboardFragment_to_courseFragment, bundle)
                 "Fee Status" -> navigate(R.id.action_dashboardFragment_to_attendanceFragment, bundle)
             }
         }

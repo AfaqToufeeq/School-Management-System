@@ -1,58 +1,195 @@
-<!-- res/layout/item_test_mark.xml -->
-<LinearLayout
+<androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="16dp"
-    android:background="?android:attr/selectableItemBackground">
+    card_view:cardCornerRadius="12dp"
+    card_view:cardElevation="8dp"
+    android:layout_margin="16dp">
 
-    <TextView
-        android:id="@+id/textSubject"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Subject: Math"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:textColor="@color/royal_blue" />
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="@drawable/card_background">
 
-    <TextView
-        android:id="@+id/textTestName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Test Name: Midterm Exam"
-        android:textSize="16sp"
-        android:textColor="@color/royal_blue" />
+        <!-- Subject Code -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/textTeacher"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Teacher: Mr. Smith"
-        android:textSize="16sp"
-        android:textColor="@color/royal_blue" />
+            <TextView
+                android:id="@+id/textSubjectCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Subject Code:"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/royal_blue" />
 
-    <TextView
-        android:id="@+id/textTotalMarks"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Total Marks: 100"
-        android:textSize="16sp"
-        android:textColor="@color/royal_blue" />
+            <TextView
+                android:id="@+id/textSubjectCodeValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Code"
+                android:textSize="18sp"
+                android:textColor="@color/royal_blue"
+                android:layout_marginStart="8dp" />
+        </LinearLayout>
 
-    <TextView
-        android:id="@+id/textPercentage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Percentage: 85%"
-        android:textSize="16sp"
-        android:textColor="@color/royal_blue" />
+        <!-- Subject -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
 
-    <TextView
-        android:id="@+id/textDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Date: 2023-10-15"
-        android:textSize="16sp"
-        android:textColor="@color/royal_blue" />
-</LinearLayout>
+            <TextView
+                android:id="@+id/textSubject"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Subject:"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="@color/royal_blue" />
+
+            <TextView
+                android:id="@+id/textSubjectValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Math"
+                android:textSize="18sp"
+                android:textColor="@color/royal_blue"
+                android:layout_marginStart="8dp" />
+        </LinearLayout>
+
+        <!-- Test Name -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:id="@+id/textTestName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Test Name:"
+                android:textSize="16sp"
+                android:textColor="@color/royal_blue" />
+
+            <TextView
+                android:id="@+id/textTestNameValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Midterm Exam"
+                android:textSize="16sp"
+                android:textColor="@color/royal_blue"
+                android:layout_marginStart="8dp" />
+        </LinearLayout>
+
+        <!-- Teacher -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:id="@+id/textTeacher"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Teacher:"
+                android:textSize="16sp"
+                android:textColor="@color/royal_blue" />
+
+            <TextView
+                android:id="@+id/textTeacherValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mr. Smith"
+                android:textSize="16sp"
+                android:textColor="@color/royal_blue"
+                android:layout_marginStart="8dp" />
+        </LinearLayout>
+
+        <!-- Total Marks -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:id="@+id/textTotalMarks"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Total Marks:"
+                android:textSize="16sp"
+                android:textColor="@color/royal_blue" />
+
+            <TextView
+                android:id="@+id/textTotalMarksValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="100"
+                android:textSize="16sp"
+                android:textColor="@color/royal_blue"
+                android:layout_marginStart="8dp" />
+        </LinearLayout>
+
+        <!-- Obtained Marks -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:id="@+id/textObtainedMarks"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Obtained Marks:"
+                android:textSize="16sp"
+                android:textColor="@color/royal_blue" />
+
+            <TextView
+                android:id="@+id/textObtainedMarksValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="50"
+                android:textSize="16sp"
+                android:textColor="@color/royal_blue"
+                android:layout_marginStart="8dp" />
+        </LinearLayout>
+
+        <!-- Percentage -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:id="@+id/textPercentage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Percentage:"
+                android:textSize="16sp"
+                android:textColor="@color/royal_blue" />
+
+            <TextView
+                android:id="@+id/textPercentageValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="85%"
+                android:textSize="16sp"
+                android:textColor="@color/royal_blue"
+                android:layout_marginStart="8dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

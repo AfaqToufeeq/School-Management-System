@@ -66,7 +66,6 @@ class AttendanceFragment : Fragment(), OnItemClick {
 
         initializeViews()
         setAdapter()
-        fetchCoursesData()
         buttonClicks()
         setObservers()
         setHandler()
@@ -84,15 +83,6 @@ class AttendanceFragment : Fragment(), OnItemClick {
     private fun setAdapter() {
         attendanceAdapter = AttendanceAdapter(viewModel)
         binding!!.recyclerViewAttendance.adapter = attendanceAdapter
-    }
-
-    private fun fetchCoursesData() {
-        /*        val batchCodes = PickerManager.allBatchesList!!.map { it.batchcode }
-                lifecycleScope.launch {
-                    batchCodes.forEach { batch->
-                      viewModel.getBatchStudents(USER_TYPE, PickerManager.token!!, batch)
-                    }
-                }*/
     }
 
     private fun setObservers() {
@@ -113,7 +103,6 @@ class AttendanceFragment : Fragment(), OnItemClick {
                 filteredData = attendance
             }
         }
-
     }
 
     private fun buttonClicks() {
@@ -158,20 +147,9 @@ class AttendanceFragment : Fragment(), OnItemClick {
 
 
     override fun clickListener(position: Int, value: String) {
-        openFragment(value)
+//        openFragment(value)
     }
 
-    private fun openFragment(title: String) {
-        val bundle = Bundle().apply {
-            putString(MAIN_MENU, title)
-        }
-
-        findNavController().apply {
-            when (title) {
-                "Marks" -> navigate(R.id.action_dashboardFragment_to_testMarksFragment, bundle)
-            }
-        }
-    }
 
     private fun showLoader() {
         loadingDialog = LoadingDialog(requireActivity())

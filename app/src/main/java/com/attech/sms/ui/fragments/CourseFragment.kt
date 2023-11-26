@@ -10,8 +10,10 @@ import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.attech.sms.R
 import com.attech.sms.adapters.CourseDetailsAdapter
 import com.attech.sms.databinding.FragmentAttendanceBinding
+import com.attech.sms.models.CourseData
 import com.attech.sms.network.RetrofitClientInstance
 import com.attech.sms.repository.RetrofitRepository
 import com.attech.sms.utils.LoadingDialog
@@ -23,11 +25,11 @@ import com.attech.sms.viewmodelfactory.RetrofitViewModelFactory
 class CourseFragment : Fragment() {
     private lateinit var binding: FragmentAttendanceBinding
     private lateinit var viewModel: RetrofitViewModel
-    private var loaderShown = false
-    private var title: String = ""
-    private lateinit var loadingDialog: LoadingDialog
     private var argumentTitle: String? = null
+    private lateinit var loadingDialog: LoadingDialog
     private lateinit var courseDetailsAdapter: CourseDetailsAdapter
+    private var loaderShown = false
+    private var batchCode: String? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,7 +60,6 @@ class CourseFragment : Fragment() {
     }
 
     private fun initializeViews() {
-        binding.smsText.text = title
         binding.parentLL.visibility =View.GONE
 
         val retrofitRepository = RetrofitRepository(RetrofitClientInstance.retrofit)
@@ -68,9 +69,30 @@ class CourseFragment : Fragment() {
     private fun setAdapter() {
         binding.recyclerViewAttendance.apply {
             layoutManager = LinearLayoutManager(requireActivity())
-            courseDetailsAdapter = CourseDetailsAdapter(viewModel)
+            courseDetailsAdapter = CourseDetailsAdapter( viewModel ) {courseId, courseCode, courseName, teacherName, subjectTotalMarks ->
+                    if (argumentTitle == "Marks") {
+                        navigateToNextScreen(
+                            CourseData(
+                                courseId = courseId,
+                                courseCode = courseCode,
+                                courseName = courseName,
+                                teacherName = teacherName,
+                                subjectTotalMarks = subjectTotalMarks,
+                                batchCode = batchCode!!
+                            )
+                        )
+                    }
+
+            }
             adapter = courseDetailsAdapter
         }
+    }
+
+    private fun navigateToNextScreen(courseData: CourseData) {
+        val bundle = Bundle().apply {
+            putParcelable("courseData", courseData)
+        }
+        findNavController().navigate(R.id.action_courseFragment_to_testMarksFragment, bundle)
     }
 
     private fun setObserver() {
@@ -78,10 +100,13 @@ class CourseFragment : Fragment() {
     }
 
     private fun setStudentClassAndCoursesObserver() {
-        viewModel.studentClassAndCoursesResponse.observe(viewLifecycleOwner) {
-            it?.let {
-                binding.classBatch.text = it.batchcode
-                courseDetailsAdapter.setCourseDetailsList(it.courses)
+        viewModel.studentClassAndCoursesResponse.observe(viewLifecycleOwner) { response ->
+            response?.let {
+                with(binding) {
+                    classBatch.text = it.batchcode
+                    batchCode = it.batchcode
+                    courseDetailsAdapter.setCourseDetailsList(it.courses)
+                }
             }
         }
     }
