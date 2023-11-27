@@ -313,3 +313,17 @@ d
 4admin/src/main/java/com/app/admin/models/AddBatch.kt,5\f\5f5e61876c5b0c6d0479cf1352f0033f41adcf38
 l
 <admin/src/main/java/com/app/admin/adapters/BatchesAdapter.kt,7\9\79da899a8f2974fe4625a0f8fa3f1f6f96b9f4dc
+h
+8admin/src/main/java/com/app/admin/models/AddNewsModel.kt,2\c\2c87cb4c7205aadb76485f69a18e9720ed04b476
+h
+8admin/src/main/java/com/app/admin/models/GetNewsModel.kt,a\e\ae1b49e37f341f33a9fbc25697dc79fdc30a8f15
+o
+?app/src/main/java/com/attech/sms/models/GetNewsModelResponse.kt,b\6\b62bf5828b06f24ed23e72ee4dd6ac6d0cc6a6c2
+q
+Ateacher/src/main/java/com/attech/teacher/models/TeacherClasses.kt,9\e\9e045aa93799446e5ed9e0c124324a2c2d356d6f
+w
+Gteacher/src/main/java/com/attech/teacher/models/GetNewsModelResponse.kt,7\5\75697f3b2a22b9189bceb968391b1a963fa06241
+g
+7admin/src/main/java/com/app/admin/models/AdminAction.kt,3\8\38e49ac189287fcd5990420f68f85a6f16a01eff
+m
+=admin/src/main/java/com/app/admin/models/AdminRemoveAction.kt,f\0\f0334e15aca2604bc45df07a8b139eb9be8a57fc

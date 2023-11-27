@@ -6,10 +6,11 @@
     android:orientation="horizontal"
     android:padding="16dp">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imageView"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:padding="2dp"
         android:scaleType="centerCrop"
         android:src="@drawable/placeholder" />
 

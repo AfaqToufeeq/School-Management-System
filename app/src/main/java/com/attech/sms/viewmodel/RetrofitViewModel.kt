@@ -13,6 +13,7 @@ import com.attech.sms.models.GetAttendanceModel
 import com.attech.sms.models.GetAttendanceModelResponse
 import com.attech.sms.models.GetCourse
 import com.attech.sms.models.GetCourseResponse
+import com.attech.sms.models.GetNewsModelResponse
 import com.attech.sms.models.LoginResponse
 import com.attech.sms.models.LogoutResponse
 import com.attech.sms.models.MarksData
@@ -63,7 +64,8 @@ class RetrofitViewModel(private val repository: RetrofitRepository) : ViewModel(
     private val _testMarks = MutableLiveData<TestMarksResponse>()
     val testMarks: LiveData<TestMarksResponse> get() = _testMarks
 
-
+    private val _getNews = MutableLiveData<List<GetNewsModelResponse>>()
+    val getNews: LiveData<List<GetNewsModelResponse>> get() = _getNews
 
 
     suspend fun login(type: String, username: String, password: String): LoginResponse {
@@ -215,6 +217,20 @@ class RetrofitViewModel(private val repository: RetrofitRepository) : ViewModel(
                 }
             } catch (e: Exception) {
                 Log.d("getCourseTeachers", "Error: ${e.message}")
+            }
+        }
+    }
+
+
+    fun getNewsEvents(type: String, token: String) {
+        viewModelScope.launch {
+            try {
+                val response = repository.getNewsEvents(type, token)
+                if (response.isSuccessful) {
+                    _getNews.value = response.body() ?: emptyList()
+                }
+            } catch (e: Exception) {
+                Log.d("Token", "Error: ${e.message}")
             }
         }
     }

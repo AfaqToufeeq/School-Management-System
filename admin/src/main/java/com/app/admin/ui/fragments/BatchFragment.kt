@@ -73,20 +73,21 @@ class BatchFragment : Fragment() {
     }
 
     private fun init() {
-        if (argumentTitle == "Add Batch") {
-            binding.viewBatchParentView.visibility = View.GONE
-            binding.addBatchParentView.visibility = View.VISIBLE
-        }
-        else {
-            showLoader()
-            binding.addBatchParentView.visibility = View.GONE
-            binding.viewBatchParentView.visibility = View.VISIBLE
-        }
-
+        loadingDialog = LoadingDialog(requireActivity())
+        handleVisibility()
         binding.smsText.text = argumentTitle
 
         val retrofitRepository = RetrofitRepository(RetrofitClientInstance.retrofit)
         viewModel = ViewModelProvider(requireActivity(), RetrofitViewModelFactory(retrofitRepository))[RetrofitViewModel::class.java]
+    }
+
+    private fun handleVisibility() {
+        val isAddBatch = (argumentTitle == "Add Batch")
+        with(binding) {
+            viewBatchParentView.visibility = if (isAddBatch) View.GONE else View.VISIBLE
+            addBatchParentView.visibility = if (isAddBatch) View.VISIBLE else View.GONE
+        }
+        if (!isAddBatch) showLoader()
     }
 
 
@@ -110,7 +111,7 @@ class BatchFragment : Fragment() {
 
     private fun logResponse(response: Response<BatchResponse>) {
         if (response.isSuccessful) {
-            Utils.showToast(requireActivity(), "Successfully Uploaded")
+            Utils.showToast(requireActivity(), "Successfully Added")
             backNavigation()
         } else {
             Utils.showToast(requireActivity(), "Some Issues: ${response.errorBody()!!}")
@@ -129,7 +130,6 @@ class BatchFragment : Fragment() {
     }
 
     private fun showLoader() {
-        loadingDialog = LoadingDialog(requireActivity())
         loadingDialog.showLoadingDialog("loading, Please wait...")
     }
 

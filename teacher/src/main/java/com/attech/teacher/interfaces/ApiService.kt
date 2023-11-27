@@ -4,6 +4,7 @@ package com.attech.teacher.interfaces
 import com.attech.teacher.models.AttendanceResponse
 import com.attech.teacher.models.BatchesModel
 import com.attech.teacher.models.CourseTeacherResponse
+import com.attech.teacher.models.GetNewsModelResponse
 import com.attech.teacher.models.LoginResponse
 import com.attech.teacher.models.LogoutResponse
 import com.attech.teacher.models.StudentDetailsResponse
@@ -143,6 +144,14 @@ interface ApiService {
         @Field("token") token: String,
         @Field("id") id: Int
     ): Response<TeacherClassesResponse>
+
+
+    @POST("api/getNewsEvents")
+    @FormUrlEncoded
+    suspend fun getNewsEvents(
+        @Field("type") type: String,
+        @Field("token") token: String
+    ): Response<List<GetNewsModelResponse>>
 
 
 }

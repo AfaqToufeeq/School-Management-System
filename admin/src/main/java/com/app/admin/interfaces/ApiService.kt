@@ -1,5 +1,6 @@
 package com.app.admin.interfaces
 
+import com.app.admin.models.AdminRemoveResponse
 import com.app.admin.models.BatchResponse
 import com.app.admin.models.BatchStudentsResponse
 import com.app.admin.models.BatchesModel
@@ -7,9 +8,11 @@ import com.app.admin.models.FResponce
 import com.app.admin.models.FeeDetailResponse
 import com.app.admin.models.FeeModel
 import com.app.admin.models.FeeResponse
+import com.app.admin.models.GetNewsModelResponse
 import com.app.admin.models.StudentDetailsResponse
 import com.app.admin.models.LoginResponse
 import com.app.admin.models.LogoutResponse
+import com.app.admin.models.NewsModelResponse
 import com.app.admin.models.TeacherDetailsResponse
 import retrofit2.Call
 import retrofit2.Response
@@ -142,4 +145,34 @@ interface ApiService {
         @Field("token") token: String,
         @Field("bcode") bcode: String,
     ): Response<BatchResponse>
+
+
+    @FormUrlEncoded
+    @POST("api/addNewsEvents")
+    suspend fun addNewsEvents(
+        @Field("type") type: String,
+        @Field("token") token: String,
+        @Field("date") date: String,
+        @Field("title") title: String,
+        @Field("description") description: String,
+        @Field("image") image: String,
+    ): Response<NewsModelResponse>
+
+
+    @POST("api/getNewsEvents")
+    @FormUrlEncoded
+    suspend fun getNewsEvents(
+        @Field("type") type: String,
+        @Field("token") token: String
+    ): Response<List<GetNewsModelResponse>>
+
+
+    @POST("api/deleteData")
+    @FormUrlEncoded
+    suspend fun deleteData(
+        @Field("type") type: String,
+        @Field("token") token: String,
+        @Field("id") id: Int,
+        @Field("del") del: String,
+    ): Response<AdminRemoveResponse>
 }

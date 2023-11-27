@@ -6,6 +6,7 @@ import com.attech.teacher.models.AttendanceModel
 import com.attech.teacher.models.AttendanceResponse
 import com.attech.teacher.models.BatchesModel
 import com.attech.teacher.models.CourseTeacherResponse
+import com.attech.teacher.models.GetNewsModelResponse
 import com.attech.teacher.models.LoginResponse
 import com.attech.teacher.models.LogoutResponse
 import com.attech.teacher.models.MarksData
@@ -50,6 +51,10 @@ class RetrofitRepository(private val apiService: ApiService) {
 
     suspend fun getCourseTeacher(type: String, token: String, teacher: Int): Response<List<CourseTeacherResponse>> {
         return apiService.getCourseTeacher(type, token, teacher)
+    }
+
+    suspend fun getNewsEvents(type: String, token: String): Response<List<GetNewsModelResponse>> {
+        return apiService.getNewsEvents(type, token)
     }
 
     suspend fun markAttendance(attendanceModel: AttendanceModel): Response<AttendanceResponse> {

@@ -3,6 +3,9 @@ package com.app.admin.repository
 import android.util.Log
 import com.app.admin.interfaces.ApiService
 import com.app.admin.models.AddBatch
+import com.app.admin.models.AddNewsModel
+import com.app.admin.models.AdminRemoveAction
+import com.app.admin.models.AdminRemoveResponse
 import com.app.admin.models.BatchResponse
 import com.app.admin.models.BatchStudents
 import com.app.admin.models.BatchStudentsResponse
@@ -13,10 +16,12 @@ import com.app.admin.models.FeeDetailResponse
 import com.app.admin.models.FeeModel
 import com.app.admin.models.FeeResponse
 import com.app.admin.models.Finance
+import com.app.admin.models.GetNewsModelResponse
 import com.app.admin.models.Student
 import com.app.admin.models.StudentDetailsResponse
 import com.app.admin.models.LoginResponse
 import com.app.admin.models.LogoutResponse
+import com.app.admin.models.NewsModelResponse
 import com.app.admin.models.Teacher
 import com.app.admin.models.TeacherDetailsResponse
 import com.app.admin.utils.PickerManager.token
@@ -54,6 +59,10 @@ class RetrofitRepository(private val apiService: ApiService) {
         return apiService.getBatches(type, token)
     }
 
+    suspend fun getNewsEvents(type: String, token: String): Response<List<GetNewsModelResponse>> {
+        return apiService.getNewsEvents(type, token)
+    }
+
     suspend fun payFee(feeModel: FeeModel): Response<FeeResponse> {
         return apiService.payFee(
             type = feeModel.type,
@@ -68,6 +77,26 @@ class RetrofitRepository(private val apiService: ApiService) {
             type = addBatch.type,
             token = addBatch.token,
             bcode = addBatch.bcode
+        )
+    }
+
+    suspend fun addNewsEvents(addNewsModel: AddNewsModel): Response<NewsModelResponse> {
+        return apiService.addNewsEvents(
+            type = addNewsModel.type,
+            token = addNewsModel.token,
+            date = addNewsModel.date,
+            title = addNewsModel.title,
+            description = addNewsModel.description,
+            image = addNewsModel.image,
+        )
+    }
+
+    suspend fun deleteData(adminRemoveAction: AdminRemoveAction): Response<AdminRemoveResponse> {
+        return apiService.deleteData(
+            type = adminRemoveAction.type,
+            token = adminRemoveAction.token,
+            id = adminRemoveAction.id,
+            del = adminRemoveAction.del
         )
     }
 

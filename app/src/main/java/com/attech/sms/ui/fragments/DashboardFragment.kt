@@ -44,7 +44,7 @@ class DashboardFragment : Fragment(), OnItemClick {
     private lateinit var binding: FragmentDashboardBinding
     private lateinit var studentViewModel: StudentViewModel
     private lateinit var dashboardAdapter: DashboardAdapter
-    private lateinit var newsAdapter: NewsAdapter
+    private var newsAdapter = NewsAdapter()
     private val timer = Timer()
     private lateinit var viewModel: RetrofitViewModel
     private var loaderShown = false
@@ -68,13 +68,14 @@ class DashboardFragment : Fragment(), OnItemClick {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        fetchNews()
         setObservers()
         setRecyclerView()
         setEvents()
     }
 
     private fun setEvents() {
-        binding.profileCL.setOnClickListener {
+        binding.personInfoCard.setOnClickListener {
             findNavController().navigate(R.id.action_dashboardFragment_to_profileFragment,
                 Bundle().apply { putString(MAIN_MENU, "Profile View")})
         }
@@ -94,6 +95,7 @@ class DashboardFragment : Fragment(), OnItemClick {
     }
 
     private fun setObservers() {
+        newEventsObserver()
         setViewModelObservers()
         setStudentViewModelObservers()
     }
@@ -101,7 +103,6 @@ class DashboardFragment : Fragment(), OnItemClick {
     private fun setStudentViewModelObservers() {
         studentViewModel.apply {
             dashboardItemsLiveData.observe(viewLifecycleOwner) { dashboardAdapter.submitList(it) }
-            newsItemsLiveData.observe(viewLifecycleOwner) { newsAdapter.submitList(it) }
         }
     }
 
@@ -136,6 +137,19 @@ class DashboardFragment : Fragment(), OnItemClick {
         viewModel.courseTeachers.observe(viewLifecycleOwner) { teacher ->
             fetchTeacherCourses(teacher)
         }
+    }
+
+    private fun newEventsObserver() {
+        viewModel.getNews.observe(viewLifecycleOwner) { news->
+            if (!news.isNullOrEmpty()) {
+                newsAdapter.submitList(news)
+                callHandler()
+            }
+        }
+    }
+
+    private fun fetchNews() {
+        viewModel.getNewsEvents(USER_TYPE, token!! )
     }
 
     private fun fetchTeacherCourses(teachers: List<TeacherDetailsResponse>?) {
@@ -179,9 +193,6 @@ class DashboardFragment : Fragment(), OnItemClick {
             )
         )
 
-        viewModel.getAttendance.observe(viewLifecycleOwner) {
-            callHandler()
-        }
     }
 
     private fun setStudentDataObserver() {
@@ -224,7 +235,6 @@ class DashboardFragment : Fragment(), OnItemClick {
             )
 
             dashboardAdapter = DashboardAdapter(this@DashboardFragment)
-            newsAdapter = NewsAdapter()
             viewPagerDashboard.adapter = newsAdapter
             dashboardRecyclerView.adapter = dashboardAdapter
         }

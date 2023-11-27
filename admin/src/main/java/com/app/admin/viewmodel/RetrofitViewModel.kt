@@ -6,6 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.app.admin.models.AddBatch
+import com.app.admin.models.AddNewsModel
+import com.app.admin.models.AdminRemoveAction
+import com.app.admin.models.AdminRemoveResponse
 import com.app.admin.models.BatchResponse
 import com.app.admin.models.BatchStudents
 import com.app.admin.models.BatchStudentsResponse
@@ -16,10 +19,12 @@ import com.app.admin.models.FeeDetailResponse
 import com.app.admin.models.FeeModel
 import com.app.admin.models.FeeResponse
 import com.app.admin.models.Finance
+import com.app.admin.models.GetNewsModelResponse
 import com.app.admin.models.Student
 import com.app.admin.models.StudentDetailsResponse
 import com.app.admin.models.LoginResponse
 import com.app.admin.models.LogoutResponse
+import com.app.admin.models.NewsModelResponse
 import com.app.admin.models.Teacher
 import com.app.admin.models.TeacherDetailsResponse
 import com.app.admin.repository.RetrofitRepository
@@ -44,6 +49,9 @@ class RetrofitViewModel(private val repository: RetrofitRepository) : ViewModel(
     private val _allBatches = MutableLiveData<List<BatchesModel>>()
     val allBatches: LiveData<List<BatchesModel>> get() = _allBatches
 
+    private val _getNews = MutableLiveData<List<GetNewsModelResponse>>()
+    val getNews: LiveData<List<GetNewsModelResponse>> get() = _getNews
+
     private val _feeDetails = MutableLiveData<List<FeeDetailResponse>>()
     val feeDetails: LiveData<List<FeeDetailResponse>> get() = _feeDetails
 
@@ -67,6 +75,14 @@ class RetrofitViewModel(private val repository: RetrofitRepository) : ViewModel(
 
     suspend fun addBatch(addBatch: AddBatch): Response<BatchResponse> {
         return repository.addBatch(addBatch)
+    }
+
+    suspend fun addNewsEvents(addsNewsModel: AddNewsModel): Response<NewsModelResponse> {
+        return repository.addNewsEvents(addsNewsModel)
+    }
+
+    suspend fun deleteData(adminRemoveAction: AdminRemoveAction): Response<AdminRemoveResponse> {
+        return repository.deleteData(adminRemoveAction)
     }
 
     fun fetchFeeDetails(feeDetailModel: FeeDetailModel) {
@@ -95,6 +111,19 @@ class RetrofitViewModel(private val repository: RetrofitRepository) : ViewModel(
                 val response = repository.getBatches(type, token)
                 if (response.isSuccessful) {
                     _allBatches.value = response.body() ?: emptyList()
+                }
+            } catch (e: Exception) {
+                Log.d("Token", "Error: ${e.message}")
+            }
+        }
+    }
+
+    fun getNewsEvents(type: String, token: String) {
+        viewModelScope.launch {
+            try {
+                val response = repository.getNewsEvents(type, token)
+                if (response.isSuccessful) {
+                    _getNews.value = response.body() ?: emptyList()
                 }
             } catch (e: Exception) {
                 Log.d("Token", "Error: ${e.message}")

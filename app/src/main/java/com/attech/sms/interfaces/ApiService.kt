@@ -5,6 +5,7 @@ import com.attech.sms.models.BatchesModel
 import com.attech.sms.models.CourseTeacherResponse
 import com.attech.sms.models.GetAttendanceModelResponse
 import com.attech.sms.models.GetCourseResponse
+import com.attech.sms.models.GetNewsModelResponse
 import com.attech.sms.models.LoginResponse
 import com.attech.sms.models.LogoutResponse
 import com.attech.sms.models.StudentClassAndCoursesResponse
@@ -183,4 +184,14 @@ interface ApiService {
         @Field("course") course: Int,
         @Field("student") student: Int,
         @Field("bcode") bcode: String,
-    ): Response<TestMarksResponse>}
+    ): Response<TestMarksResponse>
+
+
+    @POST("api/getNewsEvents")
+    @FormUrlEncoded
+    suspend fun getNewsEvents(
+        @Field("type") type: String,
+        @Field("token") token: String
+    ): Response<List<GetNewsModelResponse>>
+
+}

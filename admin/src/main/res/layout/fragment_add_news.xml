@@ -103,15 +103,33 @@
                         android:hint="Description"
                         android:inputType="textMultiLine"
                         android:layout_marginTop="16dp" />
-
-                    <EditText
-                        android:id="@+id/dateEditText"
+                    <LinearLayout
+                        android:id="@+id/datePickerButton"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Date"
-                        android:inputType="date"
-                        android:layout_marginTop="16dp" />
+                        android:orientation="horizontal"
+                        android:layout_margin="16dp"
+                        android:layout_marginTop="10dp"
+                        android:gravity="center_vertical">
 
+                        <TextView
+                            android:id="@+id/selectedDate"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Select Date"
+                            android:textSize="18sp"
+                            android:gravity="start"
+                            android:textColor="#333333" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/down_arrow_icon"
+                            android:contentDescription="Arrow"
+                            android:layout_gravity="end"
+                            app:tint="#333333" />
+                    </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
@@ -125,4 +143,18 @@
                 android:layout_marginTop="32dp" />
         </LinearLayout>
     </ScrollView>
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="@style/CustomProgressBarStyle"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:elevation="20dp"
+        android:visibility="gone"
+        android:layout_centerInParent="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.37" />
+
 </RelativeLayout>

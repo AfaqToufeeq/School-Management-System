@@ -13,7 +13,7 @@ import com.app.admin.models.StudentDetailsResponse
 import com.app.admin.utils.ImageUtil
 
 class StudentAdapter : RecyclerView.Adapter<StudentAdapter.StudentViewHolder>() {
-    private var students = listOf<StudentDetailsResponse>()
+    private var students = mutableListOf<StudentDetailsResponse>()
     
     inner class StudentViewHolder(private val binding: ListItemStudentBinding) : RecyclerView.ViewHolder(binding.root) {
         @SuppressLint("SetTextI18n")
@@ -38,7 +38,13 @@ class StudentAdapter : RecyclerView.Adapter<StudentAdapter.StudentViewHolder>() 
 
                 root.setOnClickListener { toggleDetails(expandableLayout, arrowIcon) }
                 arrowIcon.setOnClickListener { toggleDetails(expandableLayout, arrowIcon) }
+                binding.removeIV.setOnClickListener { deleteItem() }
             }
+        }
+
+        private fun deleteItem() {
+            students.removeAt(adapterPosition)
+            notifyItemChanged(adapterPosition)
         }
 
         private fun toggleDetails(layout: LinearLayout, arrowIcon: ImageView) {
@@ -60,7 +66,7 @@ class StudentAdapter : RecyclerView.Adapter<StudentAdapter.StudentViewHolder>() 
     override fun getItemCount(): Int = students.size
 
     fun submitList(newStudents: List<StudentDetailsResponse>) {
-        students = newStudents
+        students = newStudents.toMutableList()
         notifyDataSetChanged()
     }
 }

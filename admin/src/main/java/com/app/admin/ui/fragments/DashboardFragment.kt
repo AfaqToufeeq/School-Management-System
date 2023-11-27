@@ -1,6 +1,8 @@
 package com.app.admin.ui.fragments
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +19,7 @@ import com.app.admin.callbacks.OnItemClick
 import com.app.admin.network.RetrofitClientInstance
 import com.app.admin.repository.AdminRepository
 import com.app.admin.repository.RetrofitRepository
+import com.app.admin.utils.LoadingDialog
 import com.app.admin.utils.MAIN_MENU
 import com.app.admin.utils.PickerManager
 import com.app.admin.utils.USER_TYPE
@@ -31,10 +34,16 @@ class DashboardFragment : Fragment(), OnItemClick {
     private lateinit var binding: FragmentDashboardBinding
     private lateinit var adminViewModel: AdminViewModel
     private lateinit var dashboardAdapter: DashboardAdapter
-    private lateinit var newsAdapter: NewsAdapter
+    private var  newsAdapter = NewsAdapter()
     private val timer = Timer()
     private lateinit var viewModel: RetrofitViewModel
+    private var loaderShown = false
+    private lateinit var loadingDialog: LoadingDialog
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        init()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,7 +56,6 @@ class DashboardFragment : Fragment(), OnItemClick {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        init()
         setObservers()
         fetchRepoData()
         setRecyclerView()
@@ -55,6 +63,11 @@ class DashboardFragment : Fragment(), OnItemClick {
     }
 
     private fun init() {
+        if (!loaderShown) {
+            showLoader()
+            loaderShown = true
+        }
+
         val adminRepository = AdminRepository()
         adminViewModel = ViewModelProvider(this, AdminViewModelFactory(adminRepository))[AdminViewModel::class.java]
 
@@ -64,6 +77,11 @@ class DashboardFragment : Fragment(), OnItemClick {
 
     private fun fetchRepoData() {
         fetchBadges()
+        fetchNews()
+    }
+
+    private fun fetchNews() {
+        viewModel.getNewsEvents(USER_TYPE, PickerManager.token!! )
     }
 
     private fun fetchBadges() {
@@ -81,12 +99,21 @@ class DashboardFragment : Fragment(), OnItemClick {
 
     private fun setObservers() {
         dashboardViewModelObserver()
+        newEventsObserver()
+    }
+
+    private fun newEventsObserver() {
+        viewModel.getNews.observe(viewLifecycleOwner) { news->
+            if (!news.isNullOrEmpty()) {
+                newsAdapter.submitList(news)
+                callHandler()
+            }
+        }
     }
 
     private fun dashboardViewModelObserver() {
         adminViewModel.apply {
             dashboardItemsLiveData.observe(viewLifecycleOwner) { dashboardAdapter.submitList(it) }
-            newsItemsLiveData.observe(viewLifecycleOwner) { newsAdapter.submitList(it) }
         }
     }
 
@@ -112,7 +139,6 @@ class DashboardFragment : Fragment(), OnItemClick {
             )
 
             dashboardAdapter = DashboardAdapter(this@DashboardFragment)
-            newsAdapter = NewsAdapter()
             viewPagerDashboard.adapter = newsAdapter
             dashboardRecyclerView.adapter = dashboardAdapter
         }
@@ -145,6 +171,22 @@ class DashboardFragment : Fragment(), OnItemClick {
                 else -> navigate(R.id.action_dashboardFragment_to_addStudentFragment)
             }
         }
+    }
+
+    private fun showLoader() {
+        loadingDialog = LoadingDialog(requireActivity())
+        loadingDialog.showLoadingDialog("Loading, Please wait...")
+    }
+
+    private fun hideLoader() {
+        loadingDialog.dismissLoadingDialog()
+    }
+
+
+    private fun callHandler() {
+        Handler(Looper.getMainLooper()).postDelayed({
+            hideLoader()
+        }, 1500)
     }
 
     private fun logout() {

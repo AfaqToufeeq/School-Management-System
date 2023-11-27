@@ -10,6 +10,7 @@ import com.attech.sms.models.GetAttendanceModel
 import com.attech.sms.models.GetAttendanceModelResponse
 import com.attech.sms.models.GetCourse
 import com.attech.sms.models.GetCourseResponse
+import com.attech.sms.models.GetNewsModelResponse
 import com.attech.sms.models.LoginResponse
 import com.attech.sms.models.LogoutResponse
 import com.attech.sms.models.MarksData
@@ -60,6 +61,10 @@ class RetrofitRepository(private val apiService: ApiService) {
 
     suspend fun getCourseTeachers(type: String, token: String, course: Int): Response<List<TeacherDetailsResponse>> {
         return apiService.getCourseTeachers(type, token, course)
+    }
+
+    suspend fun getNewsEvents(type: String, token: String): Response<List<GetNewsModelResponse>> {
+        return apiService.getNewsEvents(type, token)
     }
 
     suspend fun markAttendance(attendanceModel: AttendanceModel): Response<AttendanceResponse> {

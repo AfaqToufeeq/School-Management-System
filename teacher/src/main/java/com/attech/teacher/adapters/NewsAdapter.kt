@@ -4,11 +4,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.attech.teacher.databinding.ItemsNewsBinding
-import com.attech.teacher.models.NewsItem
+import com.attech.teacher.models.GetNewsModelResponse
+import com.attech.teacher.utils.ImageUtil
 
-class NewsAdapter() : RecyclerView.Adapter<NewsAdapter.ViewHolder>()
+
+class NewsAdapter : RecyclerView.Adapter<NewsAdapter.ViewHolder>()
 {
-    private var newsItems: List<NewsItem> = emptyList()
+    private var newsItems: List<GetNewsModelResponse> = emptyList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
@@ -21,7 +23,8 @@ class NewsAdapter() : RecyclerView.Adapter<NewsAdapter.ViewHolder>()
         holder.bind(newsItem)
     }
 
-    fun submitList(newItems: List<NewsItem>) {
+    fun submitList(newItems: List<GetNewsModelResponse>) {
+        newsItems = emptyList()
         newsItems = newItems
         notifyDataSetChanged()
     }
@@ -33,8 +36,8 @@ class NewsAdapter() : RecyclerView.Adapter<NewsAdapter.ViewHolder>()
     inner class ViewHolder(private val binding: ItemsNewsBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(newsItem: NewsItem) {
-            binding.imageView.setImageResource(newsItem.imageResource)
+        fun bind(newsItem: GetNewsModelResponse) {
+            binding.imageView.setImageBitmap(ImageUtil.decodeBase64ToBitmap(newsItem.image))
             binding.titleTextView.text = newsItem.title
             binding.descriptionTextView.text = newsItem.description
             binding.dateTextView.text = newsItem.date

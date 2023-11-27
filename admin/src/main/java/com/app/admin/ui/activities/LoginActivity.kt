@@ -41,12 +41,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun init() {
-//        val arrayAdapter = ArrayAdapter.createFromResource(this, R.array.user_roles, android.R.layout.simple_spinner_item)
-//        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-//        binding.spinnerUserRole.adapter = arrayAdapter
-//        binding.spinnerUserRole.setSelection(0)
-
-
         val repository = RetrofitRepository(RetrofitClientInstance.retrofit)
         viewModel = ViewModelProvider(this, RetrofitViewModelFactory(repository))[RetrofitViewModel::class.java]
 //        if (isLoggedIn())  //False

@@ -28,7 +28,7 @@ import com.attech.teacher.utils.MAIN_MENU
 import com.attech.teacher.utils.PickerManager
 import com.attech.teacher.utils.PickerManager.allBatchesList
 import com.attech.teacher.utils.PickerManager.getTeacherCourses
-import com.attech.teacher.utils.PickerManager.userIdData
+import com.attech.teacher.utils.PickerManager.token
 import com.attech.teacher.utils.USER_TYPE
 import com.attech.teacher.viewmodel.RetrofitViewModel
 import com.attech.teacher.viewmodel.TeacherViewModel
@@ -42,7 +42,7 @@ class DashboardFragment : Fragment(), OnItemClick {
     private lateinit var binding: FragmentDashboardBinding
     private lateinit var studentViewModel: TeacherViewModel
     private lateinit var dashboardAdapter: DashboardAdapter
-    private lateinit var newsAdapter: NewsAdapter
+    private var newsAdapter = NewsAdapter()
     private val timer = Timer()
     private lateinit var viewModel: RetrofitViewModel
     private var loaderShown = false
@@ -63,18 +63,23 @@ class DashboardFragment : Fragment(), OnItemClick {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        fetchNews()
         setObservers()
         setRecyclerView()
         setEvents()
     }
 
     private fun setEvents() {
-        binding.profileCL.setOnClickListener {
+        binding.personInfoCard.setOnClickListener {
             findNavController().navigate(
                 R.id.action_dashboardFragment_to_profileFragment,
                 Bundle().apply { putString(MAIN_MENU, "Profile View") }
             )
         }
+    }
+
+    private fun fetchNews() {
+        viewModel.getNewsEvents(USER_TYPE, token!! )
     }
 
     private fun setObservers() {
@@ -85,16 +90,25 @@ class DashboardFragment : Fragment(), OnItemClick {
     private fun setStudentViewModelObservers() {
         studentViewModel.apply {
             dashboardItemsLiveData.observe(viewLifecycleOwner) { dashboardAdapter.submitList(it) }
-            newsItemsLiveData.observe(viewLifecycleOwner) { newsAdapter.submitList(it) }
         }
     }
 
 
     private fun setViewModelObservers() {
+        newEventsObserver()
         setTeacherDataObserver()
         setAllBatchesObserver()
         setTeacherCoursesObserver()
         setLocalTeacherDataObserver()
+    }
+
+    private fun newEventsObserver() {
+        viewModel.getNews.observe(viewLifecycleOwner) { news->
+            if (!news.isNullOrEmpty()) {
+                newsAdapter.submitList(news)
+                callHandler()
+            }
+        }
     }
 
     private fun setLocalTeacherDataObserver() {
@@ -107,14 +121,14 @@ class DashboardFragment : Fragment(), OnItemClick {
     }
 
     private fun getCourseTeacher(id: Int) {
-        viewModel.getCourseTeacher(USER_TYPE, PickerManager.token!!, id)
+        viewModel.getCourseTeacher(USER_TYPE, token!!, id)
     }
 
     private fun fetchTeacherCoursesBatchesData(id: Int) {
         viewModel.getTeacherClasses(
             TeacherClasses(
                 type = USER_TYPE,
-                token = PickerManager.token!!,
+                token = token!!,
                 id= id
             )
         )
@@ -135,7 +149,7 @@ class DashboardFragment : Fragment(), OnItemClick {
 
     private fun setAllBatchesObserver() {
         with(viewModel) {
-            fetchBatches(USER_TYPE, PickerManager.token!!)
+            fetchBatches(USER_TYPE, token!!)
             allBatches.observe(viewLifecycleOwner) { batches ->
                 if (batches != null) {
                     allBatchesList = batches
@@ -149,7 +163,7 @@ class DashboardFragment : Fragment(), OnItemClick {
 
     private fun setTeacherDataObserver() {
         with(viewModel) {
-            fetchTeachers(USER_TYPE, PickerManager.token!!)
+            fetchTeachers(USER_TYPE, token!!)
             teachers.observe(viewLifecycleOwner) { teachers ->
                 PickerManager.setTeacherData(teachers.firstOrNull { it.username == PickerManager.userName })
             }
@@ -233,7 +247,7 @@ class DashboardFragment : Fragment(), OnItemClick {
                     R.id.action_dashboardFragment_to_attendanceFragment,
                     bundle
                 )
-//                "View Students" -> navigate(R.id.action_dashboardFragment_to_viewStudentsFragment, bundle)
+
                 "Upload Marks" -> navigate(
                     R.id.action_dashboardFragment_to_uploadMarksFragment,
                     bundle
