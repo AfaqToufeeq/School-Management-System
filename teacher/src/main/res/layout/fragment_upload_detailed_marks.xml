@@ -149,14 +149,14 @@
 
         </LinearLayout>
 
-=        <EditText
+        <EditText
             android:id="@+id/editTextScore"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Enter Marks"
             android:inputType="numberDecimal"
             android:layout_marginBottom="16dp"
-        android:padding="6dp"
+            android:padding="6dp"
             android:backgroundTint="@color/white"
             android:background="@drawable/rectangular_btn"/>
 

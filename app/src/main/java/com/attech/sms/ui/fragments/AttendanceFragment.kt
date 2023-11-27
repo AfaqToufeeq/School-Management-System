@@ -4,37 +4,28 @@ import android.app.DatePickerDialog
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.attech.sms.R
 import com.attech.sms.adapters.AttendanceAdapter
 import com.attech.sms.callbacks.OnItemClick
 import com.attech.sms.databinding.FragmentAttendanceBinding
 import com.attech.sms.models.GetAttendanceModelResponse
-import com.attech.sms.models.GetCourse
 import com.attech.sms.network.RetrofitClientInstance
 import com.attech.sms.repository.RetrofitRepository
 import com.attech.sms.utils.LoadingDialog
 import com.attech.sms.utils.MAIN_MENU
-import com.attech.sms.utils.PickerManager.token
-import com.attech.sms.utils.USER_TYPE
 import com.attech.sms.viewmodel.RetrofitViewModel
 import com.attech.sms.viewmodelfactory.RetrofitViewModelFactory
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.util.*
 
 
-class AttendanceFragment : Fragment(), OnItemClick {
+class AttendanceFragment : Fragment() {
     private var binding: FragmentAttendanceBinding? = null
     private var selectedDate: String = ""
     private var title: String = ""
@@ -74,13 +65,13 @@ class AttendanceFragment : Fragment(), OnItemClick {
     private fun initializeViews() {
         binding!!.smsText.text = title
         binding!!.parentLL.visibility = View.VISIBLE
-        binding!!.recyclerViewAttendance.layoutManager = LinearLayoutManager(requireActivity())
 
         val retrofitRepository = RetrofitRepository(RetrofitClientInstance.retrofit)
         viewModel = ViewModelProvider(requireActivity(), RetrofitViewModelFactory(retrofitRepository))[RetrofitViewModel::class.java]
     }
 
     private fun setAdapter() {
+        binding!!.recyclerViewAttendance.layoutManager = LinearLayoutManager(requireActivity())
         attendanceAdapter = AttendanceAdapter(viewModel)
         binding!!.recyclerViewAttendance.adapter = attendanceAdapter
     }
@@ -144,12 +135,6 @@ class AttendanceFragment : Fragment(), OnItemClick {
     private fun getFilteredData(selectedDate: String): List<GetAttendanceModelResponse> {
         return filteredData.filter { it.date == selectedDate }
     }
-
-
-    override fun clickListener(position: Int, value: String) {
-//        openFragment(value)
-    }
-
 
     private fun showLoader() {
         loadingDialog = LoadingDialog(requireActivity())

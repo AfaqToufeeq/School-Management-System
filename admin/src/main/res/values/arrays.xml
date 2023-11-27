@@ -1,0 +1,6 @@
+<resources>
+    <array name="user_roles">
+        <item>admin</item>
+        <item>finance</item>
+    </array>
+</resources>

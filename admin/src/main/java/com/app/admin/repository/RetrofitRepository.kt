@@ -2,20 +2,35 @@ package com.app.admin.repository
 
 import android.util.Log
 import com.app.admin.interfaces.ApiService
+import com.app.admin.models.AddBatch
+import com.app.admin.models.BatchResponse
+import com.app.admin.models.BatchStudents
+import com.app.admin.models.BatchStudentsResponse
+import com.app.admin.models.BatchesModel
 import com.app.admin.models.FResponce
+import com.app.admin.models.FeeDetailModel
+import com.app.admin.models.FeeDetailResponse
+import com.app.admin.models.FeeModel
+import com.app.admin.models.FeeResponse
 import com.app.admin.models.Finance
-import com.app.admin.models.FinanceResponse
 import com.app.admin.models.Student
 import com.app.admin.models.StudentDetailsResponse
 import com.app.admin.models.LoginResponse
 import com.app.admin.models.LogoutResponse
 import com.app.admin.models.Teacher
 import com.app.admin.models.TeacherDetailsResponse
+import com.app.admin.utils.PickerManager.token
+import com.app.admin.utils.USER_TYPE
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import kotlin.coroutines.resume
+
 
 class RetrofitRepository(private val apiService: ApiService) {
 
@@ -34,6 +49,79 @@ class RetrofitRepository(private val apiService: ApiService) {
     suspend fun logout(type: String, token: String): LogoutResponse {
         return apiService.logout(type, token)
     }
+
+    suspend fun getBatches(type: String, token: String): Response<List<BatchesModel>> {
+        return apiService.getBatches(type, token)
+    }
+
+    suspend fun payFee(feeModel: FeeModel): Response<FeeResponse> {
+        return apiService.payFee(
+            type = feeModel.type,
+            token = feeModel.token,
+            student = feeModel.student,
+            date = feeModel.date
+        )
+    }
+
+    suspend fun addBatch(addBatch: AddBatch): Response<BatchResponse> {
+        return apiService.addBatch(
+            type = addBatch.type,
+            token = addBatch.token,
+            bcode = addBatch.bcode
+        )
+    }
+
+    suspend fun getFeeDetails(feeDetailModel: FeeDetailModel): Response<List<FeeDetailResponse>> {
+        return apiService.getFeeDetails(
+            type = feeDetailModel.type,
+            token = feeDetailModel.token,
+            student = feeDetailModel.student
+        )
+    }
+
+//    suspend fun addBatchStudents(batchStudents: BatchStudents): Response<BatchStudentsResponse> {
+////        try {
+//            val response = apiService.addBatchStudents(
+//                type = batchStudents.type,
+//                token = batchStudents.token,
+//                bcode = batchStudents.bcode,
+//                students = listOf(3)
+//            )
+//        Log.d("CheckBatchResponse", "Body: ${response}")
+//return BatchStudentsResponse("")
+//
+////            if (response.isSuccessful) {
+////                Log.d("CheckBatchResponse", "Body: ${response.body()}")
+////                return response
+////            } else {
+////                // Handle unsuccessful response (e.g., parse error body)
+////                val errorBody = response.errorBody()?.string()
+////                Log.d("CheckBatchResponse", "Error Body: ${response.errorBody()!!} :: response code ${response.code()}")
+////                return Response.error(response.code(), response.errorBody()!!)
+////            }
+////        } catch (e: Exception) {
+////            Log.d("CheckBatchResponse", "Error22Body: ${e.message} ")
+////
+////            return Response.error(500, ResponseBody.create(null, "Internal Server Error"))
+////        }
+//
+//    }
+
+
+    suspend fun addBatchStudents(batchStudents: BatchStudents)  {
+        val bcode = "Class 4"
+        val students = listOf(3)
+        val teachers = listOf(2)
+        val response = apiService.addBatchStudents(USER_TYPE, token!!, bcode, students, teachers)
+        if (response.isSuccessful) {
+            Log.d("checkReponseAPI", "repsonse Body: ${response.body()}")
+        }
+        else {
+            Log.d("checkReponseAPI", "repsonse Erro: ${response.errorBody()} ${response.code()}")
+        }
+    }
+
+
 
     suspend fun addFinancePerson(finance: Finance): Response<FResponce> {
         try {
@@ -59,7 +147,7 @@ class RetrofitRepository(private val apiService: ApiService) {
         }
     }
 
-    suspend fun addStudent(type: String, token: String, student: Student): Boolean {
+    suspend fun addStudent(type: String, token: String, student: Student): Int? {
         return suspendCancellableCoroutine { continuation ->
             try {
                 val addStudentCall = apiService.addStudent(
@@ -82,24 +170,24 @@ class RetrofitRepository(private val apiService: ApiService) {
                         response: Response<StudentDetailsResponse>
                     ) {
                         if (response.isSuccessful) {
-                            continuation.resume(true)
+                            continuation.resume(response.body()?.id)
                         } else {
                             Log.e(
                                 "API_CALL",
                                 "Error code: ${response.code()}, Error body: ${response.errorBody()}"
                             )
-                            continuation.resume(false)
+                            continuation.resume(null)
                         }
                     }
 
                     override fun onFailure(call: Call<StudentDetailsResponse>, t: Throwable) {
                         handleCallFailure(t)
-                        continuation.resume(false)
+                        continuation.resume(null)
                     }
                 })
             } catch (e: Exception) {
                 Log.e("API_CALL", "Exception: ${e.message}")
-                continuation.resume(false)
+                continuation.resume(null)
             }
         }
     }

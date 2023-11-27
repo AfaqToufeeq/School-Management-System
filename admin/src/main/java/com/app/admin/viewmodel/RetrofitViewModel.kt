@@ -5,7 +5,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.app.admin.models.AddBatch
+import com.app.admin.models.BatchResponse
+import com.app.admin.models.BatchStudents
+import com.app.admin.models.BatchStudentsResponse
+import com.app.admin.models.BatchesModel
 import com.app.admin.models.FResponce
+import com.app.admin.models.FeeDetailModel
+import com.app.admin.models.FeeDetailResponse
+import com.app.admin.models.FeeModel
+import com.app.admin.models.FeeResponse
 import com.app.admin.models.Finance
 import com.app.admin.models.Student
 import com.app.admin.models.StudentDetailsResponse
@@ -23,14 +32,21 @@ class RetrofitViewModel(private val repository: RetrofitRepository) : ViewModel(
     private val _students = MutableLiveData<List<StudentDetailsResponse>>()
     val students: LiveData<List<StudentDetailsResponse>> get() = _students
 
-    private val _addStudentResult = MutableLiveData<Boolean?>()
-    val addStudentResult: LiveData<Boolean?> get() = _addStudentResult
+    private val _addStudentResult = MutableLiveData<Int>()
+    val addStudentResult: LiveData<Int> get() = _addStudentResult
 
     private val _teachers = MutableLiveData<List<TeacherDetailsResponse>>()
     val teachers: LiveData<List<TeacherDetailsResponse>> get() = _teachers
 
     private val _addTeacherResult = MutableLiveData<Boolean?>()
     val addTeacherResult: LiveData<Boolean?> get() = _addTeacherResult
+
+    private val _allBatches = MutableLiveData<List<BatchesModel>>()
+    val allBatches: LiveData<List<BatchesModel>> get() = _allBatches
+
+    private val _feeDetails = MutableLiveData<List<FeeDetailResponse>>()
+    val feeDetails: LiveData<List<FeeDetailResponse>> get() = _feeDetails
+
 
 
     suspend fun login(type: String, username: String, password: String): LoginResponse {
@@ -41,11 +57,50 @@ class RetrofitViewModel(private val repository: RetrofitRepository) : ViewModel(
         return repository.logout(type, token)
     }
 
-
     suspend fun addFinancePerson(finance: Finance): Response<FResponce> {
         return repository.addFinancePerson(finance)
     }
 
+    suspend fun payFee(feeModel: FeeModel): Response<FeeResponse> {
+        return repository.payFee(feeModel)
+    }
+
+    suspend fun addBatch(addBatch: AddBatch): Response<BatchResponse> {
+        return repository.addBatch(addBatch)
+    }
+
+    fun fetchFeeDetails(feeDetailModel: FeeDetailModel) {
+        viewModelScope.launch {
+            try {
+                val response = repository.getFeeDetails(feeDetailModel)
+                if (response.isSuccessful) {
+                    _feeDetails.value = response.body() ?: emptyList()
+                }
+            } catch (e: Exception) {
+                Log.d("Token", "Error: ${e.message}")
+            }
+        }
+    }
+
+    suspend fun addBatchStudents(batchStudents: BatchStudents): String {
+        viewModelScope.launch {
+             repository.addBatchStudents(batchStudents)
+        }
+        return ""
+    }
+
+    fun fetchBatches(type: String, token: String) {
+        viewModelScope.launch {
+            try {
+                val response = repository.getBatches(type, token)
+                if (response.isSuccessful) {
+                    _allBatches.value = response.body() ?: emptyList()
+                }
+            } catch (e: Exception) {
+                Log.d("Token", "Error: ${e.message}")
+            }
+        }
+    }
 
     fun fetchStudents(type: String, token: String) {
         viewModelScope.launch {
@@ -84,14 +139,13 @@ class RetrofitViewModel(private val repository: RetrofitRepository) : ViewModel(
         viewModelScope.launch {
             try {
                 val response = repository.addStudent(type, token, student)
-                _addStudentResult.value = response
+                _addStudentResult.value = response!!
             } catch (e: Exception) {
                 Log.d("API_ERROR", "View Model Failed ${e.message.toString()}")
-                _addStudentResult.value = false
+                _addStudentResult.value = 0
             }
         }
     }
-
 
     fun addTeacher(type: String, token: String, teacher: Teacher) {
         viewModelScope.launch {

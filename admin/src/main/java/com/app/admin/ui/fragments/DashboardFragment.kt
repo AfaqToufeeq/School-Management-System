@@ -14,19 +14,27 @@ import com.app.admin.databinding.FragmentDashboardBinding
 import com.app.admin.adapters.DashboardAdapter
 import com.app.admin.adapters.NewsAdapter
 import com.app.admin.callbacks.OnItemClick
+import com.app.admin.network.RetrofitClientInstance
 import com.app.admin.repository.AdminRepository
+import com.app.admin.repository.RetrofitRepository
 import com.app.admin.utils.MAIN_MENU
+import com.app.admin.utils.PickerManager
+import com.app.admin.utils.USER_TYPE
 import com.app.admin.viewmodel.AdminViewModel
+import com.app.admin.viewmodel.RetrofitViewModel
 import com.app.admin.viewmodelfactory.AdminViewModelFactory
+import com.app.admin.viewmodelfactory.RetrofitViewModelFactory
 import java.util.*
 import kotlin.concurrent.scheduleAtFixedRate
 
 class DashboardFragment : Fragment(), OnItemClick {
     private lateinit var binding: FragmentDashboardBinding
-    private lateinit var studentViewModel: AdminViewModel
+    private lateinit var adminViewModel: AdminViewModel
     private lateinit var dashboardAdapter: DashboardAdapter
     private lateinit var newsAdapter: NewsAdapter
     private val timer = Timer()
+    private lateinit var viewModel: RetrofitViewModel
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,32 +49,45 @@ class DashboardFragment : Fragment(), OnItemClick {
 
         init()
         setObservers()
+        fetchRepoData()
         setRecyclerView()
         events()
     }
 
+    private fun init() {
+        val adminRepository = AdminRepository()
+        adminViewModel = ViewModelProvider(this, AdminViewModelFactory(adminRepository))[AdminViewModel::class.java]
+
+        val repository = RetrofitRepository(RetrofitClientInstance.retrofit)
+        viewModel = ViewModelProvider(requireActivity(), RetrofitViewModelFactory(repository))[RetrofitViewModel::class.java]
+    }
+
+    private fun fetchRepoData() {
+        fetchBadges()
+    }
+
+    private fun fetchBadges() {
+        viewModel.fetchBatches(USER_TYPE, PickerManager.token!! )
+    }
+
     private fun events() {
-        binding.profileCL.setOnClickListener {
+       /* binding.profileCL.setOnClickListener {
             findNavController().navigate(R.id.action_dashboardFragment_to_profileFragment,
                 Bundle().apply { putString(MAIN_MENU, "Profile View")})
-        }
+        }*/
+
+        binding.logOut.setOnClickListener { logout() }
     }
 
     private fun setObservers() {
-        studentViewModel.apply {
-            dashboardItemsLiveData.observe(viewLifecycleOwner) {
-                dashboardAdapter.submitList(it)
-            }
-
-            newsItemsLiveData.observe(viewLifecycleOwner) {
-                newsAdapter.submitList(it)
-            }
-        }
+        dashboardViewModelObserver()
     }
 
-    private fun init() {
-        val repository = AdminRepository()
-        studentViewModel = ViewModelProvider(this, AdminViewModelFactory(repository))[AdminViewModel::class.java]
+    private fun dashboardViewModelObserver() {
+        adminViewModel.apply {
+            dashboardItemsLiveData.observe(viewLifecycleOwner) { dashboardAdapter.submitList(it) }
+            newsItemsLiveData.observe(viewLifecycleOwner) { newsAdapter.submitList(it) }
+        }
     }
 
     private fun setTimerToScroll(layoutManager: LinearLayoutManager) {
@@ -119,8 +140,14 @@ class DashboardFragment : Fragment(), OnItemClick {
                 "Add Events" -> navigate(R.id.action_dashboardFragment_to_addNewsFragment, bundle)
                 "View Teachers" -> navigate(R.id.action_dashboardFragment_to_viewTeachersFragment, bundle)
                 "View Students" -> navigate(R.id.action_dashboardFragment_to_studentListFragment, bundle)
+                "Add Batch" -> navigate(R.id.action_dashboardFragment_to_batchFragment, bundle)
+                "View Batch" -> navigate(R.id.action_dashboardFragment_to_batchFragment, bundle)
                 else -> navigate(R.id.action_dashboardFragment_to_addStudentFragment)
             }
         }
+    }
+
+    private fun logout() {
+        findNavController().navigate(R.id.action_profileFragment_to_loginActivity)
     }
 }

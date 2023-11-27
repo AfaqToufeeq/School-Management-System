@@ -33,6 +33,10 @@ class AdminRepository {
             DashboardItem(R.drawable.news_icon, "Add Events"),
             DashboardItem(R.drawable.news_icon, "View Teachers"),
             DashboardItem(R.drawable.student_icon, "View Students"),
+            DashboardItem(R.drawable.news_icon, "Add Batch"),
+            DashboardItem(R.drawable.news_icon, "View Batch"),
+            DashboardItem(R.drawable.student_icon, "Add Courses"),
+            DashboardItem(R.drawable.student_icon, "View Courses"),
         )
     }
 

@@ -10,7 +10,7 @@
         <item name="colorSecondaryVariant">@color/teal_700</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor" tools:targetApi="l">@color/main_green</item>
         <!-- Customize your theme here. -->
     </style>
     <style name="ArrowButtonStyle">
@@ -23,5 +23,10 @@
     <style name="CustomProgressBarStyle">
         <item name="android:indeterminateTint">@color/royal_blue</item>
         <item name="android:indeterminateDrawable">@drawable/custom_progress_bar</item>
+    </style>
+  <!-- Base application theme. -->
+    <style name="Base.Theme.SchoolManagementSystem" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 </resources>

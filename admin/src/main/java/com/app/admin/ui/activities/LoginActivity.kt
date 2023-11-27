@@ -5,8 +5,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.ArrayAdapter
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.app.admin.R
 import com.app.admin.databinding.ActivityLoginBinding
 import com.app.admin.network.RetrofitClientInstance
 import com.app.admin.repository.RetrofitRepository
@@ -39,10 +41,31 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun init() {
+//        val arrayAdapter = ArrayAdapter.createFromResource(this, R.array.user_roles, android.R.layout.simple_spinner_item)
+//        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+//        binding.spinnerUserRole.adapter = arrayAdapter
+//        binding.spinnerUserRole.setSelection(0)
+
+
         val repository = RetrofitRepository(RetrofitClientInstance.retrofit)
         viewModel = ViewModelProvider(this, RetrofitViewModelFactory(repository))[RetrofitViewModel::class.java]
 //        if (isLoggedIn())  //False
 //            navigateToMainActivity()
+    }
+
+    private fun handleUserRole(userRole: String) {
+        when (userRole) {
+            "admin" -> navigateToMainActivity()
+            "finance" -> navigateToMainActivity2()
+            else -> {
+                showToast(this@LoginActivity, "Unsupported user role")
+            }
+        }
+    }
+
+    private fun navigateToMainActivity2() {
+        startActivity(Intent(this@LoginActivity, FinanceActivity::class.java))
+        finish()
     }
 
     private fun buttonClicks() {
@@ -52,6 +75,7 @@ class LoginActivity : AppCompatActivity() {
     private fun login() {
         val username = binding.editTextEmail.text.toString()
         val password = binding.editTextPassword.text.toString()
+        val selectedUserRole = binding.spinnerUserRole.selectedItem.toString()
 
         if (username.isNotEmpty() && password.isNotEmpty()) {
             showLoading(true)
@@ -59,11 +83,11 @@ class LoginActivity : AppCompatActivity() {
             lifecycleScope.launch {
                 try {
                     val token = withContext(Dispatchers.IO) {
-                        viewModel.login(USER_TYPE, username, password)
+                        viewModel.login(selectedUserRole, username, password)
                     }
                     if (token.token.isNotEmpty()) {
                         saveUserLoggedInState(token.token, username)
-                        navigateToMainActivity()
+                        handleUserRole(selectedUserRole)
                         Log.d("Token",token.token)
                         showToast(this@LoginActivity,"Login successful")
                     } else {

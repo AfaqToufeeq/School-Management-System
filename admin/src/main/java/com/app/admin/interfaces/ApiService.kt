@@ -1,7 +1,12 @@
 package com.app.admin.interfaces
 
+import com.app.admin.models.BatchResponse
+import com.app.admin.models.BatchStudentsResponse
+import com.app.admin.models.BatchesModel
 import com.app.admin.models.FResponce
-import com.app.admin.models.FinanceResponse
+import com.app.admin.models.FeeDetailResponse
+import com.app.admin.models.FeeModel
+import com.app.admin.models.FeeResponse
 import com.app.admin.models.StudentDetailsResponse
 import com.app.admin.models.LoginResponse
 import com.app.admin.models.LogoutResponse
@@ -93,14 +98,48 @@ interface ApiService {
     ): Call<TeacherDetailsResponse>
 
 
-    @POST("api/markAttandance")
+    @POST("api/getBatches")
     @FormUrlEncoded
-    fun markAttendance(
+    suspend fun getBatches(
+        @Field("type") type: String,
+        @Field("token") token: String
+    ): Response<List<BatchesModel>>
+
+
+    @FormUrlEncoded
+    @POST("api/addBatchStudents")
+    suspend fun addBatchStudents(
         @Field("type") type: String,
         @Field("token") token: String,
-        @Field("batchCode") batchCode: String,
-        @Field("course") course: String,
-        @Field("student") student: String,
-        @Field("date") date: String
-    ): Call<TeacherDetailsResponse>
+        @Field("bcode") bcode: String,
+        @Field("students[]") students: List<Int>,
+        @Field("teachers[]") teachers: List<Int>,
+    ): Response<BatchStudentsResponse>
+
+    @FormUrlEncoded
+    @POST("api/payFee")
+    suspend fun payFee(
+        @Field("type") type: String,
+        @Field("token") token: String,
+        @Field("student") student: Int,
+        @Field("date") date: String,
+    ): Response<FeeResponse>
+
+
+    @FormUrlEncoded
+    @POST("api/getFeeDetails")
+    suspend fun getFeeDetails(
+        @Field("type") type: String,
+        @Field("token") token: String,
+        @Field("student") student: Int
+    ): Response<List<FeeDetailResponse>>
+
+
+    @FormUrlEncoded
+    @POST("api/addBatch")
+    suspend fun addBatch(
+        @Field("type") type: String,
+        @Field("token") token: String,
+        @Field("bcode") bcode: String,
+    ): Response<BatchResponse>
 }

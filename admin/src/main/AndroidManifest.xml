@@ -4,10 +4,10 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
-
 
     <application
         android:name=".application.MyApplication"
@@ -17,6 +17,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SchoolManagementSystem">
+        <activity android:name=".ui.activities.FinanceViewFeeActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".ui.activities.FinanceAddFeeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.FinanceActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.activities.MainActivity"
             android:exported="false">

@@ -24,6 +24,7 @@ import retrofit2.Response
 
 
 class RetrofitViewModel(private val repository: RetrofitRepository) : ViewModel() {
+
     private val _students = MutableLiveData<List<StudentDetailsResponse>>()
     val students: LiveData<List<StudentDetailsResponse>> get() = _students
 

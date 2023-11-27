@@ -4,17 +4,23 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.activity.result.ActivityResult
 import androidx.fragment.app.Fragment
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.app.admin.R
 import com.app.admin.databinding.FragmentAddStudentBinding
+import com.app.admin.models.BatchStudents
 import com.app.admin.models.Student
 import com.app.admin.network.RetrofitClientInstance
 import com.app.admin.repository.RetrofitRepository
@@ -25,6 +31,9 @@ import com.app.admin.utils.USER_TYPE
 import com.app.admin.utils.Utils.showToast
 import com.app.admin.viewmodel.RetrofitViewModel
 import com.app.admin.viewmodelfactory.RetrofitViewModelFactory
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class AddStudentFragment : Fragment() {
 
@@ -33,6 +42,9 @@ class AddStudentFragment : Fragment() {
     private lateinit var pickSingleMediaLauncher: ActivityResultLauncher<Intent>
     private lateinit var viewModel: RetrofitViewModel
     private var base64ImageString: String? = null
+    private var selectedClass: String = ""
+    private var studentId: Int? = 0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,37 +65,127 @@ class AddStudentFragment : Fragment() {
         base64ImageString = ImageUtil.bitmapToBase64(bitmap)
 
         initialize()
+        setObservers()
+        setupClassSpinner()
         setupEvents()
     }
 
     private fun initialize() {
         binding.smsText.text = argumentTitle
-
-        pickSingleMediaLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        pickSingleMediaLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()) { result ->
                 handleMediaPickerResult(result)
             }
 
         val repository = RetrofitRepository(RetrofitClientInstance.retrofit)
-        viewModel =
-            ViewModelProvider(requireActivity(), RetrofitViewModelFactory(repository))[RetrofitViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity(), RetrofitViewModelFactory(repository))[RetrofitViewModel::class.java]
     }
 
-    private fun setupEvents() {
-        binding.apply {
-            leftIcon.setOnClickListener {handleBackPressed()}
+    private fun setObservers() {
+        batchObserver()
+        addStudentObserver()
+    }
 
-            uploadImageButton.setOnClickListener {
-                launchMediaPicker()
+    private fun batchObserver() {
+        viewModel.allBatches.observe(viewLifecycleOwner) { batches ->
+            loadBatchesSpinner(batches.map { it.batchcode })
+        }
+    }
+
+    private fun loadBatchesSpinner(batches: List<String>) {
+        batches?.let {
+            val classAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, it)
+            classAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding.spinnerClass.adapter = classAdapter
+        }
+    }
+
+    private fun setupClassSpinner() {
+        binding.spinnerClass.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                view: View?,
+                position: Int,
+                id: Long
+            ) {
+                selectedClass = (parent?.getItemAtPosition(position) as? String)!!
             }
 
-            addStudentButton.setOnClickListener {
-               requireActivity().runOnUiThread {
-                   showLoading(true)
-               }
-                addStudent()
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+        }
+    }
+
+    private fun addStudentObserver() {
+        viewModel.addStudentResult.observe(viewLifecycleOwner) { studentResponse ->
+            if (studentResponse!=0) {
+                studentId = studentResponse
+                showLoading(false)
+            } else {
+                showLoading(false)
+                showToast(requireActivity(), "Failed to add student")
             }
         }
+    }
+
+    private fun addBatchStudents() {
+        lifecycleScope.launch {
+            try {
+               val student = arrayListOf<Int>()
+                student.add(3)
+                val response = withContext(Dispatchers.IO) {
+                    viewModel.addBatchStudents(
+                        BatchStudents(
+                            type = USER_TYPE,
+                            token = token!!,
+                            bcode = "Class 4",
+                            students = student,
+                            teachers = listOf(2)
+                        )
+                    )
+                }
+
+                showLoading(false)
+//                if (response.isSuccessful)
+//                    showToast(requireActivity(), "Student is added successfully")
+//                else
+//                    showToast(requireActivity(), "Failed to add student")
+
+            } catch (e: Exception) {
+                showLoading(false)
+                showToast(requireActivity(), "Failed to add: ${e.message}")
+            }
+        }
+    }
+
+
+    private fun setupEvents() = binding.apply {
+        leftIcon.setOnClickListener { handleBackPressed() }
+        uploadImageButton.setOnClickListener { launchMediaPicker() }
+
+        nextPageButton.setOnClickListener {
+            addBatchStudents()
+
+         /*   requireActivity().runOnUiThread {
+                showLoading(true)
+                addStudent()
+            }
+            Handler(Looper.getMainLooper()).postDelayed({
+                showLoading(false)
+                setPageVisibility(true)
+            }, 1000)*/
+        }
+
+        addStudentButton.setOnClickListener {
+            requireActivity().runOnUiThread {
+                showLoading(true)
+                addBatchStudents()
+            }
+        }
+    }
+
+    private fun setPageVisibility(flag: Boolean) {
+        binding.page1.visibility = if (flag) View.GONE else View.VISIBLE
+        binding.page2.visibility = if (flag) View.VISIBLE else View.GONE
     }
 
     private fun handleBackPressed() {
@@ -130,20 +232,8 @@ class AddStudentFragment : Fragment() {
             password,
             base64ImageString
         )
-
         viewModel.addStudent(type, authToken, student)
 
-        viewModel.addStudentResult.observe(viewLifecycleOwner) { studentResponse ->
-            if (studentResponse!!) {
-                showLoading(false)
-                showToast(requireActivity(), "Student added successfully")
-                handleBackPressed()
-            } else {
-                showLoading(false)
-                showToast(requireActivity(), "Failed to add student")
-            }
-
-        }
     }
 
     private fun showLoading(show: Boolean) {

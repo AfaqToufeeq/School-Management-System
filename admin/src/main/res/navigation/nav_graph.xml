@@ -11,6 +11,11 @@
         android:label="fragment_dashboard"
         tools:layout="@layout/fragment_dashboard" >
         <action
+            android:id="@+id/action_dashboard_to_loginActivity"
+            app:destination="@id/loginActivity"
+            app:popUpTo="@+id/dashboardFragment"
+            app:popUpToInclusive="true"/>
+        <action
             android:id="@+id/action_dashboardFragment_to_addTeacherFragment"
             app:destination="@id/addTeacherFragment" />
         <action
@@ -31,6 +36,9 @@
         <action
             android:id="@+id/action_dashboardFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_batchFragment"
+            app:destination="@id/batchFragment" />
     </fragment>
     <fragment
         android:id="@+id/addTeacherFragment"
@@ -106,5 +114,14 @@
         android:name="com.app.admin.ui.activities.LoginActivity"
         android:label="activity_login"
         tools:layout="@layout/activity_login" />
+    <fragment
+        android:id="@+id/batchFragment"
+        android:name="com.app.admin.ui.fragments.BatchFragment"
+        android:label="fragment_batch"
+        tools:layout="@layout/fragment_batch" >
+        <action
+            android:id="@+id/action_batchFragment_to_dashboardFragment"
+            app:popUpTo="@id/dashboardFragment" />
+    </fragment>
 
 </navigation>
