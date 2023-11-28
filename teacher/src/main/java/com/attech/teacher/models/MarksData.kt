@@ -6,7 +6,7 @@ data class MarksData(
     val course: Int,
     val student: Int,
     val bcode: String,
-    val score: Int
+    val score: String
 )
 
 data class UploadMarksResponse (

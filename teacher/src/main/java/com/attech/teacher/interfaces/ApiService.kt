@@ -10,6 +10,7 @@ import com.attech.teacher.models.LogoutResponse
 import com.attech.teacher.models.StudentDetailsResponse
 import com.attech.teacher.models.TeacherClassesResponse
 import com.attech.teacher.models.TeacherDetailsResponse
+import com.attech.teacher.models.TestMarksResponse
 import com.attech.teacher.models.UploadMarksResponse
 import retrofit2.Call
 import retrofit2.Response
@@ -132,9 +133,19 @@ interface ApiService {
         @Field("course") course: Int,
         @Field("student") student: Int,
         @Field("bcode") bcode: String,
-        @Field("score") score: Int,
+        @Field("score") score: String,
     ): Response<UploadMarksResponse>
 
+
+    @POST("api/getMarks")
+    @FormUrlEncoded
+    suspend fun getMarks(
+        @Field("type") type: String,
+        @Field("token") token: String,
+        @Field("course") course: Int,
+        @Field("student") student: Int,
+        @Field("bcode") bcode: String,
+    ): Response<TestMarksResponse>
 
 
     @POST("api/getTeacherClasses")

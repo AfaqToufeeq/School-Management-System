@@ -13,6 +13,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.attech.teacher.databinding.FragmentUploadDetailedMarksBinding
 import com.attech.teacher.models.MarksData
+import com.attech.teacher.models.TestMarksRequest
 import com.attech.teacher.models.UploadMarksResponse
 import com.attech.teacher.network.RetrofitClientInstance
 import com.attech.teacher.repository.RetrofitRepository
@@ -60,8 +61,21 @@ class UploadDetailedMarks : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initializeViews()
+        fetchMarksData()
         setViews()
         setEventListeners()
+    }
+
+    private fun fetchMarksData() {
+        viewModel.getMarks(
+            TestMarksRequest(
+                type = USER_TYPE,
+                token = token!!,
+                course = selectedCourseID,
+                student = studentId,
+                bcode = selectedClass
+            )
+        )
     }
 
 
@@ -77,7 +91,6 @@ class UploadDetailedMarks : Fragment() {
 
 
     private fun uploadData() {
-
         val getScore = binding.editTextScore.text.toString()
 
         lifecycleScope.launch {

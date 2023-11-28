@@ -16,6 +16,8 @@ import com.attech.teacher.models.Teacher
 import com.attech.teacher.models.TeacherClasses
 import com.attech.teacher.models.TeacherClassesResponse
 import com.attech.teacher.models.TeacherDetailsResponse
+import com.attech.teacher.models.TestMarksRequest
+import com.attech.teacher.models.TestMarksResponse
 import com.attech.teacher.models.UploadMarksResponse
 import kotlinx.coroutines.suspendCancellableCoroutine
 import retrofit2.Call
@@ -56,6 +58,22 @@ class RetrofitRepository(private val apiService: ApiService) {
     suspend fun getNewsEvents(type: String, token: String): Response<List<GetNewsModelResponse>> {
         return apiService.getNewsEvents(type, token)
     }
+
+    suspend fun getMarks(testMarks: TestMarksRequest): Response<TestMarksResponse> {
+        try {
+            return apiService.getMarks(
+                type = testMarks.type,
+                token = testMarks.token,
+                course = testMarks.course,
+                student = testMarks.student,
+                bcode = testMarks.bcode,
+            )
+        } catch (e: Exception) {
+            Log.e("ApiCallError", "HTTP ${e.message}")
+            throw e
+        }
+    }
+
 
     suspend fun markAttendance(attendanceModel: AttendanceModel): Response<AttendanceResponse> {
         try {

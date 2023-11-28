@@ -18,6 +18,8 @@ import com.attech.teacher.models.StudentDetailsResponse
 import com.attech.teacher.models.TeacherClasses
 import com.attech.teacher.models.TeacherClassesResponse
 import com.attech.teacher.models.TeacherDetailsResponse
+import com.attech.teacher.models.TestMarksRequest
+import com.attech.teacher.models.TestMarksResponse
 import com.attech.teacher.models.UploadMarksResponse
 import com.attech.teacher.repository.RetrofitRepository
 import kotlinx.coroutines.launch
@@ -51,6 +53,8 @@ class RetrofitViewModel(private val repository: RetrofitRepository) : ViewModel(
     private val _getNews = MutableLiveData<List<GetNewsModelResponse>>()
     val getNews: LiveData<List<GetNewsModelResponse>> get() = _getNews
 
+    private val _testMarks = MutableLiveData<TestMarksResponse>()
+    val testMarks: LiveData<TestMarksResponse> get() = _testMarks
 
 
     suspend fun login(type: String, username: String, password: String): LoginResponse {
@@ -70,6 +74,18 @@ class RetrofitViewModel(private val repository: RetrofitRepository) : ViewModel(
         return repository.uploadMarks(marksData)
     }
 
+    fun getMarks(testMarksRequest: TestMarksRequest){
+        viewModelScope.launch {
+            try {
+                val response = repository.getMarks(testMarksRequest)
+                if (response.isSuccessful) {
+                    _testMarks.value = response.body()
+                }
+            } catch (e: Exception) {
+                Log.d("Token", "Error: ${e.message}")
+            }
+        }
+    }
 
     fun fetchStudents(type: String, token: String) {
         viewModelScope.launch {
