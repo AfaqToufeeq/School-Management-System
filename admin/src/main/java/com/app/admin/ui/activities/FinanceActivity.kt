@@ -50,7 +50,7 @@ class FinanceActivity : AppCompatActivity() {
     }
 
     private fun fetchNews() {
-        viewModel.getNewsEvents(USER_TYPE, PickerManager.token!! )
+        viewModel.getNewsEvents(FINANCE_USER, PickerManager.token!! )
     }
 
 
@@ -121,7 +121,6 @@ class FinanceActivity : AppCompatActivity() {
             }
         }
     }
-
 
     private fun showLoader() {
         loadingDialog = LoadingDialog(this)

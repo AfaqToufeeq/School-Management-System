@@ -28,6 +28,8 @@ import com.app.admin.models.LoginResponse
 import com.app.admin.models.LogoutResponse
 import com.app.admin.models.NewsModelResponse
 import com.app.admin.models.Teacher
+import com.app.admin.models.TeacherCourseModel
+import com.app.admin.models.TeacherCourseResponse
 import com.app.admin.models.TeacherDetailsResponse
 import kotlinx.coroutines.suspendCancellableCoroutine
 import retrofit2.Call
@@ -135,6 +137,15 @@ class RetrofitRepository(private val apiService: ApiService) {
         )
     }
 
+    suspend fun addCourseTeacher(teacherCourseModel: TeacherCourseModel): Response<TeacherCourseResponse> {
+        return apiService.addCourseTeacher(
+            type = teacherCourseModel.type,
+            token = teacherCourseModel.token,
+            course = teacherCourseModel.course,
+            teacher = teacherCourseModel.teacher
+        )
+    }
+
     suspend fun addFinancePerson(finance: Finance): Response<FinanceResponse> {
         return apiService.addFinancePerson(
             type = finance.type,
@@ -175,95 +186,76 @@ class RetrofitRepository(private val apiService: ApiService) {
         }
     }
 
-//    suspend fun addStudent(student: Student): Int? {
+    suspend fun addTeacher(teacher: Teacher): Response<TeacherDetailsResponse> {
+        try {
+            val response = apiService.addTeacher(
+                type = teacher.type,
+                token = teacher.token,
+                firstname = teacher.firstname,
+                lastname = teacher.lastname,
+                contact = teacher.contact,
+                nic = teacher.nic,
+                address = teacher.address,
+                username = teacher.username,
+                password = teacher.password,
+                image = teacher.image!!
+            )
+            if (response.isSuccessful) {
+                Log.d("responseTeacher", "Success ${response.body()}")
+            } else {
+                Log.d("responseTeacher", "Not Success")
+            }
+            return response
+        } catch (e:Exception){
+            e.printStackTrace()
+            throw e
+        }
+    }
+
+//    suspend fun addTeacher(type: String, token: String, teacher: Teacher): Boolean {
 //        return suspendCancellableCoroutine { continuation ->
 //            try {
-//                val addStudentCall = apiService.addStudent(
-//                    type = student.type,
-//                    token = student.token,
-//                    firstname = student.firstname,
-//                    lastname = student.lastname,
-//                    rollno = student.rollno,
-//                    contact = student.contact,
-//                    nic = student.nic,
-//                    address = student.address,
-//                    username = student.username,
-//                    password = student.password,
-//                    image = student.image!!
+//                val addTeacherCall = apiService.addTeacher(
+//                    type = type,
+//                    token = token,
+//                    firstname = teacher.firstname,
+//                    lastname = teacher.lastname,
+//                    contact = teacher.contact,
+//                    nic = teacher.nic,
+//                    address = teacher.address,
+//                    username = teacher.username,
+//                    password = teacher.password,
+//                    image = teacher.image!!
 //                )
 //
-//                addStudentCall.enqueue(object : Callback<StudentDetailsResponse> {
+//                addTeacherCall.enqueue(object : Callback<TeacherDetailsResponse> {
 //                    override fun onResponse(
-//                        call: Call<StudentDetailsResponse>,
-//                        response: Response<StudentDetailsResponse>
+//                        call: Call<TeacherDetailsResponse>,
+//                        response: Response<TeacherDetailsResponse>
 //                    ) {
 //                        if (response.isSuccessful) {
-//                            continuation.resume(response.body()?.id)
+//                            continuation.resume(true)
 //                        } else {
 //                            Log.e(
 //                                "API_CALL",
 //                                "Error code: ${response.code()}, Error body: ${response.errorBody()}"
 //                            )
-//                            continuation.resume(null)
+//                            continuation.resume(false)
 //                        }
 //                    }
 //
-//                    override fun onFailure(call: Call<StudentDetailsResponse>, t: Throwable) {
+//                    override fun onFailure(call: Call<TeacherDetailsResponse>, t: Throwable) {
 //                        handleCallFailure(t)
-//                        continuation.resume(null)
+//                        continuation.resume(false)
 //                    }
 //                })
 //            } catch (e: Exception) {
 //                Log.e("API_CALL", "Exception: ${e.message}")
-//                continuation.resume(null)
+//                continuation.resume(false)
 //            }
 //        }
 //    }
-
-    suspend fun addTeacher(type: String, token: String, teacher: Teacher): Boolean {
-        return suspendCancellableCoroutine { continuation ->
-            try {
-                val addTeacherCall = apiService.addTeacher(
-                    type = type,
-                    token = token,
-                    firstname = teacher.firstname,
-                    lastname = teacher.lastname,
-                    contact = teacher.contact,
-                    nic = teacher.nic,
-                    address = teacher.address,
-                    username = teacher.username,
-                    password = teacher.password,
-                    image = teacher.image!!
-                )
-
-                addTeacherCall.enqueue(object : Callback<TeacherDetailsResponse> {
-                    override fun onResponse(
-                        call: Call<TeacherDetailsResponse>,
-                        response: Response<TeacherDetailsResponse>
-                    ) {
-                        if (response.isSuccessful) {
-                            continuation.resume(true)
-                        } else {
-                            Log.e(
-                                "API_CALL",
-                                "Error code: ${response.code()}, Error body: ${response.errorBody()}"
-                            )
-                            continuation.resume(false)
-                        }
-                    }
-
-                    override fun onFailure(call: Call<TeacherDetailsResponse>, t: Throwable) {
-                        handleCallFailure(t)
-                        continuation.resume(false)
-                    }
-                })
-            } catch (e: Exception) {
-                Log.e("API_CALL", "Exception: ${e.message}")
-                continuation.resume(false)
-            }
-        }
-    }
-
+//
 
     private fun handleCallFailure(t: Throwable, message: String = ":") {
         Log.e("API_CALL", "Error $message ${t.message}", t)

@@ -31,6 +31,8 @@ import com.app.admin.models.LoginResponse
 import com.app.admin.models.LogoutResponse
 import com.app.admin.models.NewsModelResponse
 import com.app.admin.models.Teacher
+import com.app.admin.models.TeacherCourseModel
+import com.app.admin.models.TeacherCourseResponse
 import com.app.admin.models.TeacherDetailsResponse
 import com.app.admin.repository.RetrofitRepository
 import kotlinx.coroutines.launch
@@ -51,8 +53,8 @@ class RetrofitViewModel(private val repository: RetrofitRepository) : ViewModel(
     private val _finance = MutableLiveData<List<FinanceModel>>()
     val finance: LiveData<List<FinanceModel>> get() = _finance
 
-    private val _addTeacherResult = MutableLiveData<Boolean?>()
-    val addTeacherResult: LiveData<Boolean?> get() = _addTeacherResult
+    private val _addTeacherResult = MutableLiveData<Int>()
+    val addTeacherResult: LiveData<Int> get() = _addTeacherResult
 
     private val _allBatches = MutableLiveData<List<BatchesModel>>()
     val allBatches: LiveData<List<BatchesModel>> get() = _allBatches
@@ -101,6 +103,10 @@ class RetrofitViewModel(private val repository: RetrofitRepository) : ViewModel(
 
     suspend fun addBatchStudents(batchStudents: BatchStudents): Response<BatchStudentsResponse> {
         return repository.addBatchStudents(batchStudents)
+    }
+
+    suspend fun addCourseTeacher(teacherCourseModel: TeacherCourseModel): Response<TeacherCourseResponse> {
+        return repository.addCourseTeacher(teacherCourseModel)
     }
 
     fun fetchFeeDetails(feeDetailModel: FeeDetailModel) {
@@ -217,14 +223,14 @@ class RetrofitViewModel(private val repository: RetrofitRepository) : ViewModel(
         }
     }
 
-    fun addTeacher(type: String, token: String, teacher: Teacher) {
+    fun addTeacher(teacher: Teacher) {
         viewModelScope.launch {
             try {
-                val response = repository.addTeacher(type, token, teacher)
-                _addTeacherResult.value = response
+                val response = repository.addTeacher(teacher)
+                _addTeacherResult.value = response.body()!!.id
             } catch (e: Exception) {
                 Log.d("API_ERROR", "View Model Failed ${e.message.toString()}")
-                _addTeacherResult.value = false
+                _addTeacherResult.value = 0
             }
         }
     }

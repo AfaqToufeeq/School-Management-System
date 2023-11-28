@@ -15,6 +15,7 @@ import com.app.admin.models.StudentDetailsResponse
 import com.app.admin.models.LoginResponse
 import com.app.admin.models.LogoutResponse
 import com.app.admin.models.NewsModelResponse
+import com.app.admin.models.TeacherCourseResponse
 import com.app.admin.models.TeacherDetailsResponse
 import org.json.JSONArray
 import retrofit2.Call
@@ -99,7 +100,7 @@ interface ApiService {
 
     @POST("api/addTeacher")
     @FormUrlEncoded
-    fun addTeacher(
+    suspend fun addTeacher(
         @Field("type") type: String,
         @Field("token") token: String,
         @Field("firstname") firstname: String,
@@ -110,7 +111,7 @@ interface ApiService {
         @Field("username") username: String,
         @Field("password") password: String,
         @Field("image") image: String
-    ): Call<TeacherDetailsResponse>
+    ): Response<TeacherDetailsResponse>
 
 
     @POST("api/getBatches")
@@ -130,6 +131,16 @@ interface ApiService {
         @Field("students") students: JSONArray,
         @Field("teachers") teachers: JSONArray
     ): Response<BatchStudentsResponse>
+
+
+    @FormUrlEncoded
+    @POST("api/addCourseTeacher")
+    suspend fun addCourseTeacher(
+        @Field("type") type: String,
+        @Field("token") token: String,
+        @Field("course") course: Int,
+        @Field("teacher") teacher: Int
+    ): Response<TeacherCourseResponse>
 
 
     @FormUrlEncoded

@@ -216,18 +216,18 @@ class AddStudentFragment : Fragment() {
 
         viewModel.addStudent(
             Student(
-            USER_TYPE,
-            token!!,
-            firstName,
-            lastName,
-            rollNo,
-            contact,
-            nic,
-            address,
-            username,
-            password,
-            base64ImageString
-        )
+                USER_TYPE,
+                token!!,
+                firstName,
+                lastName,
+                rollNo,
+                contact,
+                nic,
+                address,
+                username,
+                password,
+                base64ImageString
+            )
         )
 
     }

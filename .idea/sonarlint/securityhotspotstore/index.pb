@@ -335,3 +335,9 @@ h
 8admin/src/main/java/com/app/admin/models/FinanceModel.kt,c\6\c6baaecf3064cf70230a6b592617c8a159440b14
 u
 Eadmin/src/main/java/com/app/admin/ui/fragments/ViewFinanceFragment.kt,5\5\557342b6610010778b6e2ba540559359c0579cd3
+j
+:admin/src/main/java/com/app/admin/models/AddCourseModel.kt,8\0\807c38d7c4fc4f95fdcee86bb8fa6d4f1ebb31ef
+k
+;admin/src/main/java/com/app/admin/models/AddTeacherModel.kt,f\a\face88af8af8b055af1985d8d1b05c015ee3f360
+n
+>admin/src/main/java/com/app/admin/models/TeacherCourseModel.kt,7\8\78d92852aa74f1cc876064e6fe4ad019f76c16b9

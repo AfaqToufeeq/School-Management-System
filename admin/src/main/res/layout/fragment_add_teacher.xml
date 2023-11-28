@@ -46,6 +46,7 @@
             app:cardElevation="8dp">
 
             <RelativeLayout
+                android:id="@+id/page1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="16dp">
@@ -148,10 +149,10 @@
 
                 <!-- Add Student Button -->
                 <Button
-                    android:id="@+id/addTeacherButton"
+                    android:id="@+id/nextPageButton"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Add Teacher"
+                    android:text="Next"
                     android:background="@drawable/round_button"
                     android:textColor="#ffffff"
                     android:layout_below="@id/passwordEditText"
@@ -170,6 +171,42 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/page2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:padding="16dp">
+                <TextView
+                    android:id="@+id/selectBatch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:text="Select Course: "/>
+
+                <Spinner
+                    android:id="@+id/spinnerCourses"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="16dp"
+                    android:layout_marginTop="5dp"
+                    android:paddingEnd="16dp"
+                    android:layout_below="@id/selectBatch"
+                    android:layout_marginBottom="16dp" />
+
+                <Button
+                    android:id="@+id/addTeacherButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Add Teacher"
+                    android:background="@drawable/round_button"
+                    android:textColor="#ffffff"
+                    android:layout_below="@id/spinnerCourses"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="32dp"/>
+
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
     </RelativeLayout>
