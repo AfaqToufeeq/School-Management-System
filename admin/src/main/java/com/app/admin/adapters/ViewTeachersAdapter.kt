@@ -9,10 +9,13 @@ import android.widget.LinearLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.app.admin.R
 import com.app.admin.databinding.ItemTeachersBinding
+import com.app.admin.models.StudentDetailsResponse
 import com.app.admin.models.TeacherDetailsResponse
 import com.app.admin.utils.ImageUtil.decodeBase64ToBitmap
 
-class ViewTeachersAdapter : RecyclerView.Adapter<ViewTeachersAdapter.TeacherViewHolder>() {
+class ViewTeachersAdapter(
+    private val callback:(TeacherDetailsResponse) -> Unit
+) : RecyclerView.Adapter<ViewTeachersAdapter.TeacherViewHolder>() {
     private var teachers = listOf<TeacherDetailsResponse>()
 
     inner class TeacherViewHolder(private val binding: ItemTeachersBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -36,6 +39,7 @@ class ViewTeachersAdapter : RecyclerView.Adapter<ViewTeachersAdapter.TeacherView
 
                 root.setOnClickListener { toggleDetails(expandableLayout, arrowIcon) }
                 arrowIcon.setOnClickListener { toggleDetails(expandableLayout, arrowIcon) }
+                binding.removeIV.setOnClickListener { callback.invoke(teacher) }
             }
         }
 

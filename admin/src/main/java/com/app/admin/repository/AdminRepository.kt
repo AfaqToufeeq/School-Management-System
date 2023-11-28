@@ -22,13 +22,14 @@ class AdminRepository {
         return mutableListOf(
             DashboardItem(R.drawable.teacher_icon, "Add Teachers"),
             DashboardItem(R.drawable.student_icon, "Add Students"),
-            DashboardItem(R.drawable.teacher_icon, "Add Finance"),
+            DashboardItem(R.drawable.finance_icon, "Add Finance"),
             DashboardItem(R.drawable.news_icon, "Add Events"),
-            DashboardItem(R.drawable.news_icon, "View Teachers"),
-            DashboardItem(R.drawable.student_icon, "View Students"),
             DashboardItem(R.drawable.news_icon, "Add Batch"),
-            DashboardItem(R.drawable.news_icon, "View Batch"),
             DashboardItem(R.drawable.student_icon, "Add Courses"),
+            DashboardItem(R.drawable.teacher_icon, "View Teachers"),
+            DashboardItem(R.drawable.student_icon, "View Students"),
+            DashboardItem(R.drawable.finance_icon, "View Finance"),
+            DashboardItem(R.drawable.news_icon, "View Batch"),
             DashboardItem(R.drawable.student_icon, "View Courses"),
         )
     }

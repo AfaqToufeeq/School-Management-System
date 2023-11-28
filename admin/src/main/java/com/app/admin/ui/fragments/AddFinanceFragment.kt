@@ -8,7 +8,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.fragment.app.Fragment
 import androidx.activity.result.ActivityResultLauncher
@@ -18,24 +17,23 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.app.admin.R
 import com.app.admin.databinding.FragmentAddFinanceBinding
-import com.app.admin.models.FResponce
 import com.app.admin.models.Finance
 import com.app.admin.models.FinanceResponse
-import com.app.admin.models.Student
 import com.app.admin.network.RetrofitClientInstance
 import com.app.admin.repository.RetrofitRepository
 import com.app.admin.utils.ImageUtil
 import com.app.admin.utils.MAIN_MENU
-import com.app.admin.utils.PickerManager
 import com.app.admin.utils.PickerManager.token
 import com.app.admin.utils.USER_TYPE
 import com.app.admin.utils.Utils
+import com.app.admin.utils.Utils.showToast
 import com.app.admin.viewmodel.RetrofitViewModel
 import com.app.admin.viewmodelfactory.RetrofitViewModelFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Response
+
 
 class AddFinanceFragment : Fragment() {
 
@@ -71,8 +69,7 @@ class AddFinanceFragment : Fragment() {
     private fun initialize() {
         binding.smsText.text = argumentTitle
 
-        pickSingleMediaLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        pickSingleMediaLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 handleMediaPickerResult(result)
             }
 
@@ -86,10 +83,7 @@ class AddFinanceFragment : Fragment() {
             leftIcon.setOnClickListener { findNavController().popBackStack() }
 
             uploadImageButton.setOnClickListener {
-                pickSingleMediaLauncher.launch(
-                    Intent(Intent.ACTION_PICK)
-                        .setType("image/*")
-                )
+               launchMediaPicker()
             }
             addFinanceMemberButton.setOnClickListener {
                 requireActivity().runOnUiThread {
@@ -112,66 +106,54 @@ class AddFinanceFragment : Fragment() {
         if (result.resultCode == Activity.RESULT_OK) {
             val uri = result.data?.data
             base64ImageString = uri?.let { ImageUtil.convertUriToBase64(requireActivity(), it) }
+            if (base64ImageString!=null)
+                binding.financeIcon.setImageURI(uri)
         } else {
-            Utils.showToast(requireActivity(), "Failed picking media.")
+            showToast(requireActivity(), "Failed picking media.")
         }
     }
 
     private fun addFinance() {
-//        val type = USER_TYPE
-//        val authToken = PickerManager.token
-//        val financeMemberName = binding.financeMemberNameEditText.text.toString()
-//        val financeMemberEmail = binding.financeMemberEmailEditText.text.toString()
-//        val financeMemberRole = binding.financeMemberRoleEditText.text.toString()
-//        val usernameEditText = binding.usernameEditText.text.toString()
-//        val passwordEditText = binding.passwordEditText.text.toString()
-//        val uploadImageButtonText = binding.uploadImageButton.text.toString()
+        val financeMemberName = binding.financeMemberNameEditText.text.toString()
+        val financeMemberEmail = binding.financeMemberEmailEditText.text.toString()
+        val usernameEditText = binding.usernameEditText.text.toString()
+        val passwordEditText = binding.passwordEditText.text.toString()
 
-//        val finance = Finance(
-//            type,
-//            authToken!!,
-//            financeMemberName,
-//            financeMemberEmail,
-//            financeMemberRole,
-//            usernameEditText,
-//            passwordEditText
-//        )
-
-        val type = USER_TYPE
-        val authToken = token
-        val financeMemberName = "John Doe"
-        val financeMemberEmail = "john.doe@example.com"
-        val financeMemberRole = "Finance Manager"
-        val username = "john_doe_user"
-        val password = "secure_password"
-
-
-        lifecycleScope.launch {
-            val response = withContext(Dispatchers.IO) {
-                viewModel.addFinancePerson(Finance(
-                    type = type,
-                    token = authToken!!,
-                    name = financeMemberName,
-                    email = financeMemberEmail,
-                    role = financeMemberRole,
-                    username = username,
-                    password = password
-                ))
+        if (financeMemberName.isNotEmpty() && financeMemberEmail.isNotEmpty() &&
+            usernameEditText.isNotEmpty() && passwordEditText.isNotEmpty()
+        ) {
+            lifecycleScope.launch {
+                val response = withContext(Dispatchers.IO) {
+                    viewModel.addFinancePerson(
+                        Finance(
+                            type = USER_TYPE,
+                            token = token!!,
+                            name = financeMemberName,
+                            email = financeMemberEmail,
+                            role = "Finance",
+                            username = usernameEditText,
+                            password = passwordEditText,
+                            image = base64ImageString!!
+                        )
+                    )
+                }
+                logResponse(response)
             }
-            logResponse(response)
+        } else {
+            showToast(requireActivity(), "Please fill in all fields")
         }
 
     }
 
-    private fun logResponse(response: Response<FResponce>) {
+    private fun logResponse(response: Response<FinanceResponse>) {
         if (response.isSuccessful) {
             showLoading(false)
-            Utils.showToast(requireActivity(), "Finance added successfully")
+            showToast(requireActivity(), "Finance added successfully")
             handleBackPressed()
         } else {
             Log.d("ErrorLogResponse", "Some Issues: ${response.errorBody()!!} ${response.code()}")
             showLoading(false)
-            Utils.showToast(requireActivity(), "Failed to add finance")
+            showToast(requireActivity(), "Failed to add finance")
         }
 
     }

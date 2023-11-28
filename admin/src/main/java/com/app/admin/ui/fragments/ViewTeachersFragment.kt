@@ -6,22 +6,29 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.app.admin.adapters.StudentAdapter
 import com.app.admin.adapters.ViewTeachersAdapter
 import com.app.admin.databinding.FragmentViewTeachersBinding
+import com.app.admin.models.AdminRemoveAction
 import com.app.admin.network.RetrofitClientInstance
 import com.app.admin.repository.RetrofitRepository
 import com.app.admin.utils.MAIN_MENU
 import com.app.admin.utils.PickerManager
 import com.app.admin.utils.USER_TYPE
+import com.app.admin.utils.Utils
 import com.app.admin.viewmodel.RetrofitViewModel
 import com.app.admin.viewmodelfactory.RetrofitViewModelFactory
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class ViewTeachersFragment : Fragment() {
 
     private lateinit var binding: FragmentViewTeachersBinding
-    private var teacherAdapter = ViewTeachersAdapter()
+    private lateinit var teacherAdapter: ViewTeachersAdapter
     private var argumentTitle: String? = null
     private lateinit var viewModel: RetrofitViewModel
 
@@ -43,8 +50,20 @@ class ViewTeachersFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         init()
+        setAdapter()
         setObserver()
         events()
+    }
+
+    private fun setAdapter() {
+        with(binding) {
+            teacherRecyclerView.layoutManager = LinearLayoutManager(requireActivity())
+            teacherAdapter =  ViewTeachersAdapter { teacherModel->
+                removeData(teacherModel.id)
+                viewModel.deleteValue(teacherModel)
+            }
+            teacherRecyclerView.adapter = teacherAdapter
+        }
     }
 
     private fun init() {
@@ -52,10 +71,30 @@ class ViewTeachersFragment : Fragment() {
             smsText.text = argumentTitle
             teacherRecyclerView.visibility = View.GONE
             showLoading(true)
-            teacherRecyclerView.layoutManager = LinearLayoutManager(requireActivity())
             val repository = RetrofitRepository(RetrofitClientInstance.retrofit)
             viewModel = ViewModelProvider(requireActivity(), RetrofitViewModelFactory(repository))[RetrofitViewModel::class.java]
-            teacherRecyclerView.adapter = teacherAdapter
+
+        }
+    }
+
+    private fun removeData(teacherID: Int) {
+        lifecycleScope.launch {
+            try {
+                val response = withContext(Dispatchers.IO) {
+                    viewModel.deleteData(
+                        AdminRemoveAction(USER_TYPE, PickerManager.token!!, teacherID, "teacher")
+                    )
+                }
+                if (response.isSuccessful) {
+                    Utils.showToast(requireActivity(), "Teacher is removed")
+                } else {
+                    Utils.showToast(requireActivity(), "Failed to remove")
+                }
+            } catch (e: Exception) {
+                Utils.showToast(requireActivity(), "Failed to remove: ${e.message}")
+            } finally {
+                showLoading(false)
+            }
         }
     }
 
@@ -70,14 +109,11 @@ class ViewTeachersFragment : Fragment() {
     }
 
     private fun setObserver() {
-        with(viewModel) {
-            fetchTeachers(USER_TYPE, PickerManager.token!!)
-
-            teachers.observe(viewLifecycleOwner) { teachers ->
-                showLoading(false)
-                teacherAdapter.submitList(teachers)
-                binding.teacherRecyclerView.visibility = View.VISIBLE
-            }
+        viewModel.teachers.observe(viewLifecycleOwner) { teachers ->
+            showLoading(false)
+            teacherAdapter.submitList(teachers)
+            binding.teacherRecyclerView.visibility = View.VISIBLE
         }
     }
+
 }

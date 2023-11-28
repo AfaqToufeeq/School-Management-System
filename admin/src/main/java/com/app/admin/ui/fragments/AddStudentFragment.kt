@@ -34,6 +34,7 @@ import com.app.admin.viewmodelfactory.RetrofitViewModelFactory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.json.JSONArray
 
 class AddStudentFragment : Fragment() {
 
@@ -119,7 +120,10 @@ class AddStudentFragment : Fragment() {
         viewModel.addStudentResult.observe(viewLifecycleOwner) { studentResponse ->
             if (studentResponse!=0) {
                 studentId = studentResponse
-                showLoading(false)
+                Handler(Looper.getMainLooper()).postDelayed({
+                    showLoading(false)
+                    setPageVisibility(true)
+                }, 1000)
             } else {
                 showLoading(false)
                 showToast(requireActivity(), "Failed to add student")
@@ -130,29 +134,28 @@ class AddStudentFragment : Fragment() {
     private fun addBatchStudents() {
         lifecycleScope.launch {
             try {
-               val student = arrayListOf<Int>()
-                student.add(3)
                 val response = withContext(Dispatchers.IO) {
                     viewModel.addBatchStudents(
                         BatchStudents(
                             type = USER_TYPE,
                             token = token!!,
-                            bcode = "Class 4",
-                            students = student,
-                            teachers = listOf(2)
+                            bcode = selectedClass,
+                            students = JSONArray().put(studentId),
+                            teachers = JSONArray()
                         )
                     )
                 }
 
-                showLoading(false)
-//                if (response.isSuccessful)
-//                    showToast(requireActivity(), "Student is added successfully")
-//                else
-//                    showToast(requireActivity(), "Failed to add student")
+                if (response.isSuccessful)
+                    showToast(requireActivity(), "Student is added successfully")
+                else
+                    showToast(requireActivity(), "Failed to add student")
 
             } catch (e: Exception) {
-                showLoading(false)
                 showToast(requireActivity(), "Failed to add: ${e.message}")
+            } finally {
+                showLoading(false)
+                handleBackPressed()
             }
         }
     }
@@ -163,16 +166,10 @@ class AddStudentFragment : Fragment() {
         uploadImageButton.setOnClickListener { launchMediaPicker() }
 
         nextPageButton.setOnClickListener {
-            addBatchStudents()
-
-         /*   requireActivity().runOnUiThread {
+            requireActivity().runOnUiThread {
                 showLoading(true)
                 addStudent()
             }
-            Handler(Looper.getMainLooper()).postDelayed({
-                showLoading(false)
-                setPageVisibility(true)
-            }, 1000)*/
         }
 
         addStudentButton.setOnClickListener {
@@ -208,8 +205,6 @@ class AddStudentFragment : Fragment() {
     }
 
     private fun addStudent() {
-        val type = USER_TYPE
-        val authToken = token
         val firstName = binding.firstNameEditText.text.toString()
         val lastName = binding.lastNameEditText.text.toString()
         val rollNo = binding.rollNoEditText.text.toString()
@@ -219,9 +214,10 @@ class AddStudentFragment : Fragment() {
         val username = binding.usernameEditText.text.toString()
         val password = binding.passwordEditText.text.toString()
 
-        val student = Student(
-            type,
-            authToken!!,
+        viewModel.addStudent(
+            Student(
+            USER_TYPE,
+            token!!,
             firstName,
             lastName,
             rollNo,
@@ -232,7 +228,7 @@ class AddStudentFragment : Fragment() {
             password,
             base64ImageString
         )
-        viewModel.addStudent(type, authToken, student)
+        )
 
     }
 

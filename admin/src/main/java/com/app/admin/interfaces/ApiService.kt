@@ -4,16 +4,19 @@ import com.app.admin.models.AdminRemoveResponse
 import com.app.admin.models.BatchResponse
 import com.app.admin.models.BatchStudentsResponse
 import com.app.admin.models.BatchesModel
-import com.app.admin.models.FResponce
+import com.app.admin.models.CoursesResponse
 import com.app.admin.models.FeeDetailResponse
-import com.app.admin.models.FeeModel
 import com.app.admin.models.FeeResponse
+import com.app.admin.models.FinanceModel
+import com.app.admin.models.FinanceResponse
+import com.app.admin.models.GetCourseResponse
 import com.app.admin.models.GetNewsModelResponse
 import com.app.admin.models.StudentDetailsResponse
 import com.app.admin.models.LoginResponse
 import com.app.admin.models.LogoutResponse
 import com.app.admin.models.NewsModelResponse
 import com.app.admin.models.TeacherDetailsResponse
+import org.json.JSONArray
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.Field
@@ -55,9 +58,17 @@ interface ApiService {
     ): Response<List<TeacherDetailsResponse>>
 
 
+    @POST("api/getFinancePerson")
+    @FormUrlEncoded
+    suspend fun getFinancePerson(
+        @Field("type") type: String,
+        @Field("token") token: String
+    ): Response<List<FinanceModel>>
+
+
     @POST("api/addStudent")
     @FormUrlEncoded
-    fun addStudent(
+    suspend fun addStudent(
         @Field("type") type: String,
         @Field("token") token: String,
         @Field("firstname") firstname: String,
@@ -69,12 +80,12 @@ interface ApiService {
         @Field("username") username: String,
         @Field("password") password: String,
         @Field("image") image: String
-    ): Call<StudentDetailsResponse>
+    ): Response<StudentDetailsResponse>
 
 
     @POST("api/addFinancePerson")
     @FormUrlEncoded
-    fun addFinancePerson(
+    suspend fun addFinancePerson(
         @Field("type") type: String,
         @Field("token") token: String,
         @Field("name") name: String,
@@ -82,7 +93,8 @@ interface ApiService {
         @Field("username") username: String,
         @Field("password") password: String,
         @Field("role") role: String,
-    ): Response<FResponce>
+        @Field("image") image: String
+    ): Response<FinanceResponse>
 
 
     @POST("api/addTeacher")
@@ -115,9 +127,10 @@ interface ApiService {
         @Field("type") type: String,
         @Field("token") token: String,
         @Field("bcode") bcode: String,
-        @Field("students[]") students: List<Int>,
-        @Field("teachers[]") teachers: List<Int>,
+        @Field("students") students: JSONArray,
+        @Field("teachers") teachers: JSONArray
     ): Response<BatchStudentsResponse>
+
 
     @FormUrlEncoded
     @POST("api/payFee")
@@ -175,4 +188,25 @@ interface ApiService {
         @Field("id") id: Int,
         @Field("del") del: String,
     ): Response<AdminRemoveResponse>
+
+
+    @POST("api/addCourse")
+    @FormUrlEncoded
+    suspend fun addCourse(
+        @Field("type") type: String,
+        @Field("token") token: String,
+        @Field("name") name: String,
+        @Field("code") code: String,
+        @Field("max_marks") max_marks: Int,
+    ): Response<CoursesResponse>
+
+
+    @POST("api/getCourses")
+    @FormUrlEncoded
+    suspend fun getCourses(
+        @Field("type") type: String,
+        @Field("token") token: String,
+    ): Response<List<GetCourseResponse>>
+
+
 }

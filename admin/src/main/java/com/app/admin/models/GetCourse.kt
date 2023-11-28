@@ -2,8 +2,7 @@ package com.app.admin.models
 
 data class GetCourse(
     val type: String,
-    val toke: String,
-    val id: Int
+    val token: String
 )
 
 data class GetCourseResponse(
@@ -11,5 +10,5 @@ data class GetCourseResponse(
     val name: String,
     val code: String,
     val status: String,
-    val marks: Int
+    val max_marks: Int
 )

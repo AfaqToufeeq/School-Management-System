@@ -6,24 +6,19 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.app.admin.R
-import com.app.admin.adapters.StudentFinanceAdapter
 import com.app.admin.databinding.ActivityFinanceAddFeeBinding
-import com.app.admin.models.FResponce
 import com.app.admin.models.FeeModel
 import com.app.admin.models.FeeResponse
 import com.app.admin.models.FeeStudent
-import com.app.admin.models.Finance
 import com.app.admin.network.RetrofitClientInstance
 import com.app.admin.repository.RetrofitRepository
 import com.app.admin.utils.FINANCE_USER
 import com.app.admin.utils.ImageUtil
 import com.app.admin.utils.LoadingDialog
 import com.app.admin.utils.PickerManager.token
-import com.app.admin.utils.Utils
 import com.app.admin.utils.Utils.showToast
 import com.app.admin.viewmodel.RetrofitViewModel
 import com.app.admin.viewmodelfactory.RetrofitViewModelFactory
@@ -104,11 +99,7 @@ class FinanceAddFeeActivity : AppCompatActivity() {
 
     private fun init() {
         val repository = RetrofitRepository(RetrofitClientInstance.retrofit)
-        viewModel = ViewModelProvider(
-            this,
-            RetrofitViewModelFactory(repository)
-        )[RetrofitViewModel::class.java]
-
+        viewModel = ViewModelProvider(this, RetrofitViewModelFactory(repository))[RetrofitViewModel::class.java]
     }
 
     private fun addFee() {
@@ -131,13 +122,13 @@ class FinanceAddFeeActivity : AppCompatActivity() {
 
     private fun logResponse(response: Response<FeeResponse>) {
         if (response.isSuccessful) {
-            Utils.showToast(this, "Fee Status Updated")
+            showToast(this, "Fee Status Updated")
             callHandler()
         } else {
             callHandler()
             Log.d("ErrorLogResponse", "Some Issues: ${response.errorBody()!!} ${response.code()}")
             callHandler()
-            Utils.showToast(this, "Failed to change fee status")
+            showToast(this, "Failed to change fee status")
         }
     }
 

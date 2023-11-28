@@ -16,12 +16,13 @@ import com.app.admin.databinding.FragmentDashboardBinding
 import com.app.admin.adapters.DashboardAdapter
 import com.app.admin.adapters.NewsAdapter
 import com.app.admin.callbacks.OnItemClick
+import com.app.admin.models.GetCourse
 import com.app.admin.network.RetrofitClientInstance
 import com.app.admin.repository.AdminRepository
 import com.app.admin.repository.RetrofitRepository
 import com.app.admin.utils.LoadingDialog
 import com.app.admin.utils.MAIN_MENU
-import com.app.admin.utils.PickerManager
+import com.app.admin.utils.PickerManager.token
 import com.app.admin.utils.USER_TYPE
 import com.app.admin.viewmodel.AdminViewModel
 import com.app.admin.viewmodel.RetrofitViewModel
@@ -78,22 +79,37 @@ class DashboardFragment : Fragment(), OnItemClick {
     private fun fetchRepoData() {
         fetchBadges()
         fetchNews()
+        fetchStudents()
+        fetchTeacher()
+        fetchAllCourseData()
+        fetchFinanceMembers()
+    }
+
+    private fun fetchAllCourseData() {
+        viewModel.getCourses(GetCourse(type = USER_TYPE, token = token!!))
+    }
+
+    private fun fetchStudents() {
+        viewModel.fetchStudents(USER_TYPE, token!!)
+    }
+
+    private fun fetchTeacher() {
+        viewModel.fetchTeachers(USER_TYPE, token!!)
+    }
+
+    private fun fetchFinanceMembers() {
+        viewModel.fetchFinanceMembers(USER_TYPE, token!!)
     }
 
     private fun fetchNews() {
-        viewModel.getNewsEvents(USER_TYPE, PickerManager.token!! )
+        viewModel.getNewsEvents(USER_TYPE, token!! )
     }
 
     private fun fetchBadges() {
-        viewModel.fetchBatches(USER_TYPE, PickerManager.token!! )
+        viewModel.fetchBatches(USER_TYPE, token!! )
     }
 
     private fun events() {
-       /* binding.profileCL.setOnClickListener {
-            findNavController().navigate(R.id.action_dashboardFragment_to_profileFragment,
-                Bundle().apply { putString(MAIN_MENU, "Profile View")})
-        }*/
-
         binding.logOut.setOnClickListener { logout() }
     }
 
@@ -166,8 +182,11 @@ class DashboardFragment : Fragment(), OnItemClick {
                 "Add Events" -> navigate(R.id.action_dashboardFragment_to_addNewsFragment, bundle)
                 "View Teachers" -> navigate(R.id.action_dashboardFragment_to_viewTeachersFragment, bundle)
                 "View Students" -> navigate(R.id.action_dashboardFragment_to_studentListFragment, bundle)
+                "View Finance" -> navigate(R.id.action_dashboardFragment_to_viewFinanceFragment, bundle)
                 "Add Batch" -> navigate(R.id.action_dashboardFragment_to_batchFragment, bundle)
                 "View Batch" -> navigate(R.id.action_dashboardFragment_to_batchFragment, bundle)
+                "Add Courses" -> navigate(R.id.action_dashboardFragment_to_coursesFragment, bundle)
+                "View Courses" -> navigate(R.id.action_dashboardFragment_to_viewCoursesFragments, bundle)
                 else -> navigate(R.id.action_dashboardFragment_to_addStudentFragment)
             }
         }

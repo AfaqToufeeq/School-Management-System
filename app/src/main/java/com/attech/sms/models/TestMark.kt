@@ -14,7 +14,7 @@ data class TestMarksResponse(
     val id :Int,
     val student: Int,
     val course: Int,
-    val score: Int,
+    val score: String,
     val marked_by: Int
 )
 

@@ -45,6 +45,25 @@
             android:layout_height="wrap_content"
             android:padding="16dp">
 
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/financeIcon"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:src="@drawable/finance_icon"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="16dp" />
+            <Button
+                android:id="@+id/uploadImageButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Upload Image"
+                android:background="@drawable/rectangular_btn"
+                android:textColor="#ffffff"
+                android:layout_below="@id/financeIcon"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="16dp"/>
+
+
             <!-- Finance Member Name -->
             <EditText
                 android:id="@+id/financeMemberNameEditText"
@@ -52,6 +71,7 @@
                 android:layout_height="wrap_content"
                 android:hint="Finance Member Name"
                 android:inputType="text"
+                android:layout_below="@id/uploadImageButton"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="16dp"/>
 
@@ -67,12 +87,13 @@
                 android:layout_marginTop="16dp"/>
 
             <!-- Finance Member Role -->
-            <EditText
+            <TextView
                 android:id="@+id/financeMemberRoleEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Finance Member Role"
+                android:text="Finance Member Role"
                 android:inputType="text"
+                android:visibility="gone"
                 android:layout_below="@id/financeMemberEmailEditText"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="16dp"/>
@@ -98,17 +119,6 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="16dp"/>
 
-            <Button
-                android:id="@+id/uploadImageButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Upload Image"
-                android:visibility="gone"
-                android:background="@drawable/rectangular_btn"
-                android:textColor="#ffffff"
-                android:layout_below="@id/passwordEditText"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="16dp"/>
 
             <Button
                 android:id="@+id/addFinanceMemberButton"
@@ -117,7 +127,7 @@
                 android:text="Add Finance Member"
                 android:background="@drawable/rectangular_btn"
                 android:textColor="#ffffff"
-                android:layout_below="@id/uploadImageButton"
+                android:layout_below="@id/passwordEditText"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="32dp"/>
             <ProgressBar

@@ -321,3 +321,17 @@ m
 =admin/src/main/java/com/app/admin/models/AdminRemoveAction.kt,f\0\f0334e15aca2604bc45df07a8b139eb9be8a57fc
 s
 Cteacher/src/main/java/com/attech/teacher/models/TestMarksRequest.kt,b\a\ba6f33ceec50159936ac2997d5730d7e5d8cebcb
+b
+2admin/src/main/java/com/app/admin/models/Course.kt,3\a\3a235ed2fae48a2b90306740e1e2b7af368c6d0b
+m
+=admin/src/main/java/com/app/admin/adapters/CourseAdapter.java,7\4\746b5a9c08e642f485fe285baaeec0b7d582890d
+v
+Fadmin/src/main/java/com/app/admin/ui/fragments/ViewCoursesFragments.kt,4\0\401c5c90cc2d72bc971bf5cd456dbdd24bf0cf76
+k
+;admin/src/main/java/com/app/admin/adapters/CourseAdapter.kt,0\e\0e48d438f2acdabc9d155d4e452835a1bd1a8800
+l
+<admin/src/main/java/com/app/admin/adapters/FinanceAdapter.kt,e\2\e27f2b1bf963eea3aabb19e31f735f0653061f58
+h
+8admin/src/main/java/com/app/admin/models/FinanceModel.kt,c\6\c6baaecf3064cf70230a6b592617c8a159440b14
+u
+Eadmin/src/main/java/com/app/admin/ui/fragments/ViewFinanceFragment.kt,5\5\557342b6610010778b6e2ba540559359c0579cd3

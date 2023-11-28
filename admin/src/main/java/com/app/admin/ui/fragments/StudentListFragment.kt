@@ -27,7 +27,7 @@ import kotlinx.coroutines.withContext
 class StudentListFragment : Fragment() {
     private lateinit var binding: FragmentStudentListBinding
     private var argumentTitle: String? = null
-    private val studentAdapter = StudentAdapter()
+    private lateinit var studentAdapter: StudentAdapter
     private lateinit var viewModel: RetrofitViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,27 +48,36 @@ class StudentListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         init()
+        setAdapter()
         setObserver()
         events()
+    }
+
+    private fun setAdapter() {
+        binding.studentsRecyclerView.layoutManager = LinearLayoutManager(requireActivity())
+        studentAdapter =  StudentAdapter { studentModel->
+            removeData(studentModel.id)
+            viewModel.deleteValue(studentModel)
+        }
+        binding.studentsRecyclerView.adapter = studentAdapter
     }
 
     private fun init() {
         binding.apply {
             smsText.text = argumentTitle
             showLoading(true)
-            studentsRecyclerView.layoutManager = LinearLayoutManager(requireActivity())
+
             val repository = RetrofitRepository(RetrofitClientInstance.retrofit)
             viewModel = ViewModelProvider(requireActivity(), RetrofitViewModelFactory(repository))[RetrofitViewModel::class.java]
-            studentsRecyclerView.adapter = studentAdapter
         }
     }
 
-    private fun removeData() {
+    private fun removeData(studentID: Int) {
         lifecycleScope.launch {
             try {
                 val response = withContext(Dispatchers.IO) {
                     viewModel.deleteData(
-                        AdminRemoveAction(USER_TYPE, token!!, 4, "student")
+                        AdminRemoveAction(USER_TYPE, token!!, studentID, "student")
                     )
                 }
                 if (response.isSuccessful) {
@@ -96,14 +105,10 @@ class StudentListFragment : Fragment() {
 
 
     private fun setObserver() {
-        with(viewModel) {
-            fetchStudents(USER_TYPE, token!!)
-
-            students.observe(viewLifecycleOwner) { students ->
-                showLoading(false)
-                studentAdapter.submitList(students)
-                binding.studentsRecyclerView.visibility = View.VISIBLE
-            }
+        viewModel.students.observe(viewLifecycleOwner) { students ->
+            showLoading(false)
+            studentAdapter.submitList(students)
+            binding.studentsRecyclerView.visibility = View.VISIBLE
         }
     }
 }

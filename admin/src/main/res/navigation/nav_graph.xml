@@ -39,6 +39,15 @@
         <action
             android:id="@+id/action_dashboardFragment_to_batchFragment"
             app:destination="@id/batchFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_coursesFragment"
+            app:destination="@id/coursesFragment" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_viewCoursesFragments"
+            app:destination="@id/viewCoursesFragments" />
+        <action
+            android:id="@+id/action_dashboardFragment_to_viewFinanceFragment"
+            app:destination="@id/viewFinanceFragment" />
     </fragment>
     <fragment
         android:id="@+id/addTeacherFragment"
@@ -121,6 +130,33 @@
         tools:layout="@layout/fragment_batch" >
         <action
             android:id="@+id/action_batchFragment_to_dashboardFragment"
+            app:popUpTo="@id/dashboardFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/coursesFragment"
+        android:name="com.app.admin.ui.fragments.CoursesFragment"
+        android:label="fragment_courses"
+        tools:layout="@layout/fragment_courses" >
+        <action
+            android:id="@+id/action_coursesFragment_to_dashboardFragment"
+            app:popUpTo="@id/dashboardFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/viewCoursesFragments"
+        android:name="com.app.admin.ui.fragments.ViewCoursesFragments"
+        android:label="fragment_view_courses_fragments"
+        tools:layout="@layout/fragment_view_courses_fragments" >
+        <action
+            android:id="@+id/action_viewCoursesFragments_to_dashboardFragment"
+            app:popUpTo="@id/dashboardFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/viewFinanceFragment"
+        android:name="com.app.admin.ui.fragments.ViewFinanceFragment"
+        android:label="ViewFinanceFragment"
+        tools:layout="@layout/fragment_view_finance">
+        <action
+            android:id="@+id/action_viewFinanceFragment_to_dashboardFragment"
             app:popUpTo="@id/dashboardFragment" />
     </fragment>
 

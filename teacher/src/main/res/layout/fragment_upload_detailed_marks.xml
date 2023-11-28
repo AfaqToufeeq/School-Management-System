@@ -131,6 +131,34 @@
                 android:background="@color/black"/>
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="6dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Test Name"
+                android:textSize="18sp"
+                android:textColor="@color/black" />
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/editTextName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Test Name"
+            android:inputType="text"
+            android:layout_marginBottom="16dp"
+            android:padding="6dp"
+            android:backgroundTint="@color/white"
+            android:background="@drawable/rectangular_btn"/>
+
         <!-- Marks Section -->
         <LinearLayout
             android:layout_width="match_parent"

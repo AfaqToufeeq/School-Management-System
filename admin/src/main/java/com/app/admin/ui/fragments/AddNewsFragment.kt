@@ -63,7 +63,7 @@ class AddNewsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val bitmap = BitmapFactory.decodeResource(requireActivity().resources, R.drawable.placeholder)
+        val bitmap = BitmapFactory.decodeResource(requireActivity().resources, R.drawable.logo)
         base64ImageString = ImageUtil.bitmapToBase64(bitmap)
 
         init()

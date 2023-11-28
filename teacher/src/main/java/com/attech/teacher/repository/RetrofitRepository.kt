@@ -94,7 +94,6 @@ class RetrofitRepository(private val apiService: ApiService) {
 
     suspend fun uploadMarks(marksData: MarksData): Response<UploadMarksResponse> {
         try {
-
             return apiService.uploadMarks(
                 type = marksData.type,
                 token = marksData.token,

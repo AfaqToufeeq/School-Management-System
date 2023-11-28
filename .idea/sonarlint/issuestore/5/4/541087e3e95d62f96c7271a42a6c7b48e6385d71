@@ -1,9 +1,3 @@
 
->kotlin:S125”"Remove this commented out code.(¤ûĞ‹8ŒéèÀ1
-=kotlin:S125¨"Remove this commented out code.(òèİ18•ŠçÀ1
-<kotlin:S6310‡"Avoid hardcoded dispatchers.(âßî™8˜ŠçÀ1
-[kotlin:S1144º"6Remove this unused private "setPageVisibility" method.(ã¯€°ùÿÿÿÿ8›ŠçÀ1
-Mkotlin:S1481‡"-Remove this unused "response" local variable.(âßî™8»éèÀ1
->kotlin:S1128"Remove this unused import.(ü‘»¡ıÿÿÿÿ8¤ŠçÀ1
-9kotlin:S1128"Remove this unused import.(åå8¤ŠçÀ1
-ykotlin:S1186r"ZAdd a nested comment explaining why this function is empty or complete the implementation.(µ‰äî8¨ŠçÀ1
+<kotlin:S6310‰"Avoid hardcoded dispatchers.(âßî™8®ı¢«Á1
+ykotlin:S1186s"ZAdd a nested comment explaining why this function is empty or complete the implementation.(µ‰äî8¾Š«Á1

@@ -64,32 +64,6 @@
                 android:layout_marginStart="8dp" />
         </LinearLayout>
 
-        <!-- Test Name -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:visibility="gone"
-            android:layout_marginTop="8dp">
-
-            <TextView
-                android:id="@+id/textTestName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Test Name:"
-                android:textSize="16sp"
-                android:textColor="@color/royal_blue" />
-
-            <TextView
-                android:id="@+id/textTestNameValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Midterm Exam"
-                android:textSize="16sp"
-                android:textColor="@color/royal_blue"
-                android:layout_marginStart="8dp" />
-        </LinearLayout>
-
         <!-- Teacher -->
         <LinearLayout
             android:layout_width="match_parent"
@@ -110,6 +84,30 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Mr. Smith"
+                android:textSize="16sp"
+                android:textColor="@color/royal_blue"
+                android:layout_marginStart="8dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:id="@+id/textTestName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Test Name:"
+                android:textSize="16sp"
+                android:textColor="@color/royal_blue" />
+
+            <TextView
+                android:id="@+id/textTestNameValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Assignment 1"
                 android:textSize="16sp"
                 android:textColor="@color/royal_blue"
                 android:layout_marginStart="8dp" />

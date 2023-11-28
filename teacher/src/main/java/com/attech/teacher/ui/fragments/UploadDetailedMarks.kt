@@ -21,6 +21,7 @@ import com.attech.teacher.utils.MAIN_MENU
 import com.attech.teacher.utils.PickerManager.token
 import com.attech.teacher.utils.USER_TYPE
 import com.attech.teacher.utils.Utils
+import com.attech.teacher.utils.Utils.showToast
 import com.attech.teacher.viewmodel.RetrofitViewModel
 import com.attech.teacher.viewmodelfactory.RetrofitViewModelFactory
 import kotlinx.coroutines.Dispatchers
@@ -30,6 +31,7 @@ import retrofit2.Response
 
 
 class UploadDetailedMarks : Fragment() {
+    private var previousMarks: String? = null
     private lateinit var selectedClass: String
     private lateinit var selectedCourse: String
     private lateinit var name: String
@@ -62,8 +64,15 @@ class UploadDetailedMarks : Fragment() {
 
         initializeViews()
         fetchMarksData()
+        setObserver()
         setViews()
         setEventListeners()
+    }
+
+    private fun setObserver() {
+        viewModel.testMarks.observe(viewLifecycleOwner) {
+            previousMarks = it.score
+        }
     }
 
     private fun fetchMarksData() {
@@ -92,8 +101,17 @@ class UploadDetailedMarks : Fragment() {
 
     private fun uploadData() {
         val getScore = binding.editTextScore.text.toString()
+        val getTestName = binding.editTextName.text.toString()
 
-        lifecycleScope.launch {
+        if (!getScore.isNullOrEmpty() && !getTestName.isNullOrEmpty())
+        {
+            if (previousMarks.isNullOrEmpty()) {
+                previousMarks = "$getTestName: $getScore, "
+            } else {
+                previousMarks += "$getTestName: $getScore, "
+            }
+
+            lifecycleScope.launch {
                 val response = withContext(Dispatchers.IO) {
                     viewModel.uploadMarks(
                         MarksData(
@@ -102,11 +120,14 @@ class UploadDetailedMarks : Fragment() {
                             course = selectedCourseID,
                             student = studentId,
                             bcode = selectedClass,
-                            score = getScore.toInt()
+                            score = previousMarks!!
                         )
                     )
                 }
-            logResponse(response)
+                logResponse(response)
+            }
+        } else {
+            showToast(requireActivity(),"Please fill all fields")
         }
 
     }
@@ -129,10 +150,10 @@ class UploadDetailedMarks : Fragment() {
 
     private fun logResponse(response: Response<UploadMarksResponse>) {
         if (response.isSuccessful) {
-            Utils.showToast(requireActivity(), "Successfully Uploaded")
+            showToast(requireActivity(), "Successfully Uploaded")
             backNavigation()
         } else {
-            Utils.showToast(requireActivity(), "Some Issues: ${response.errorBody()!!}")
+            showToast(requireActivity(), "Some Issues: ${response.errorBody()!!}")
             Log.d("ErrorLogResponse", "Some Issues: ${response.errorBody()!!} ${response.code()}")
         }
 

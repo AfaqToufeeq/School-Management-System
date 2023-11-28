@@ -7,7 +7,8 @@ data class Finance(
     val email: String,
     val role: String,
     val username: String,
-    val password: String
+    val password: String,
+    val image: String
 )
 
 

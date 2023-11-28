@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.attech.sms.adapters.TestMarksAdapter
 import com.attech.sms.databinding.FragmentTestMarksBinding
@@ -60,9 +61,14 @@ class TestMarksFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initializeViews()
-        setAdapter()
         fetchMarksData()
+        setAdapter()
         setObservers()
+        events()
+    }
+
+    private fun events() {
+        binding.leftIcon.setOnClickListener { findNavController().popBackStack() }
     }
 
     private fun initializeViews() {
@@ -94,12 +100,33 @@ class TestMarksFragment : Fragment() {
     }
 
     private fun setTestMarksObserver() {
-        viewModel.testMarks.observe(viewLifecycleOwner) {testMarksResponse->
+        viewModel.testMarks.observe(viewLifecycleOwner) { testMarksResponse->
             val testMarksList = listOf(testMarksResponse).toMutableList()
-            testAdapter.setTestMarksList(testMarksList, courseData)
-            Log.d("checkMarks","Score: ${testMarksResponse.score}")
+            testAdapter.setTestMarksList(filterAssignmentMarks(testMarksList), courseData)
             setHandler()
         }
+    }
+
+    private fun filterAssignmentMarks(testMarksList: MutableList<TestMarksResponse>): MutableList<TestMarksResponse> {
+        val modifiedList = mutableListOf<TestMarksResponse>()
+        testMarksList.forEach { testMarksResponse ->
+            val scoreString = testMarksResponse.score
+            val scores = scoreString.split(", ") // Splitting the score string by ", "
+
+            scores.forEachIndexed { index, score ->
+                // Building a new TestMarksResponse for each assignment score
+                val newTestMarksResponse = TestMarksResponse(
+                    testMarksResponse.id,
+                    testMarksResponse.student,
+                    testMarksResponse.course,
+                    score,
+                    testMarksResponse.marked_by
+                )
+
+                modifiedList.add(newTestMarksResponse)
+            }
+        }
+        return modifiedList
     }
 
     private fun setHandler() {

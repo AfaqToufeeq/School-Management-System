@@ -4,17 +4,16 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@android:color/background_light"
+    android:background="@android:color/white"
     tools:context=".ui.fragments.CoursesFragment">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/toolbar"
-        app:titleTextColor="@color/royal_blue">
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/main_green">
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <ImageView
             android:id="@+id/left_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -22,14 +21,15 @@
             android:layout_gravity="start"
             android:src="@drawable/back_icon" />
 
-        <androidx.appcompat.widget.AppCompatTextView
+        <TextView
             android:id="@+id/sms_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:text="Toolbar" />
+            android:textColor="@android:color/white"
+            android:text="Add Courses" />
 
     </androidx.appcompat.widget.Toolbar>
 
@@ -40,8 +40,8 @@
         android:orientation="vertical"
         android:layout_margin="20dp"
         android:padding="16dp"
-        android:backgroundTint="#1A28C2A0"
-        android:background="@drawable/rectangular_btn">
+        android:backgroundTint="#F6F6F6"
+        android:background="@drawable/round_button">
 
         <!-- Course Section -->
         <LinearLayout
@@ -51,51 +51,98 @@
             android:padding="6dp"
             android:layout_marginBottom="8dp">
 
+            <!-- Student Section -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="6dp"
+                android:layout_marginBottom="8dp">
+
+                <TextView
+                    android:id="@+id/courseCodeTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Course Code"
+                    android:textSize="18sp"
+                    android:textColor="@color/black" />
+
+                <EditText
+                    android:id="@+id/editCourseCode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Course code"
+                    android:inputType="text"
+                    android:layout_marginBottom="16dp"
+                    android:padding="6dp"
+                    android:backgroundTint="@color/light_gray"
+                    android:background="@drawable/edittext_bg"/>
+
+            </LinearLayout>
+
             <TextView
                 android:id="@+id/courseTV"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Add Batch in number format -> 1"
+                android:text="Course Name"
                 android:textSize="18sp"
-                android:textColor="@color/royal_blue" />
+                android:textColor="@color/black" />
+
+            <EditText
+                android:id="@+id/editCourseName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter course name"
+                android:inputType="text"
+                android:layout_marginBottom="16dp"
+                android:padding="6dp"
+                android:backgroundTint="@color/light_gray"
+                android:background="@drawable/edittext_bg"/>
+
+            <!-- Separator -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/light_gray"/>
         </LinearLayout>
 
+        <!-- Roll No Section -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="6dp"
-            android:layout_marginTop="16dp"
             android:layout_marginBottom="8dp">
 
             <TextView
+                android:id="@+id/maxmarksTv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Batch"
+                android:text="Total Marks"
                 android:textSize="18sp"
                 android:textColor="@color/black" />
 
+            <EditText
+                android:id="@+id/editMaxmarks"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Marks"
+                android:inputType="numberDecimal"
+                android:layout_marginBottom="16dp"
+                android:padding="6dp"
+                android:backgroundTint="@color/light_gray"
+                android:background="@drawable/edittext_bg"/>
+
         </LinearLayout>
 
-        <EditText
-        android:id="@+id/editTextBatch"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter Batch"
-        android:inputType="number"
-        android:layout_marginBottom="16dp"
-        android:padding="6dp"
-        android:backgroundTint="@color/white"
-        android:background="@drawable/rectangular_btn"/>
-
         <Button
-            android:id="@+id/buttonAdd"
+            android:id="@+id/buttonUpload"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Add"
             android:layout_gravity="center"
             android:textColor="@android:color/white"
-            android:background="@drawable/rectangular_btn"/>
+            android:background="@drawable/edittext_bg"/>
     </LinearLayout>
 
 </LinearLayout>

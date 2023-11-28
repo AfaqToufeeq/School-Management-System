@@ -13,12 +13,17 @@ import com.app.admin.models.BatchResponse
 import com.app.admin.models.BatchStudents
 import com.app.admin.models.BatchStudentsResponse
 import com.app.admin.models.BatchesModel
-import com.app.admin.models.FResponce
+import com.app.admin.models.Course
+import com.app.admin.models.CoursesResponse
 import com.app.admin.models.FeeDetailModel
 import com.app.admin.models.FeeDetailResponse
 import com.app.admin.models.FeeModel
 import com.app.admin.models.FeeResponse
 import com.app.admin.models.Finance
+import com.app.admin.models.FinanceModel
+import com.app.admin.models.FinanceResponse
+import com.app.admin.models.GetCourse
+import com.app.admin.models.GetCourseResponse
 import com.app.admin.models.GetNewsModelResponse
 import com.app.admin.models.Student
 import com.app.admin.models.StudentDetailsResponse
@@ -43,6 +48,9 @@ class RetrofitViewModel(private val repository: RetrofitRepository) : ViewModel(
     private val _teachers = MutableLiveData<List<TeacherDetailsResponse>>()
     val teachers: LiveData<List<TeacherDetailsResponse>> get() = _teachers
 
+    private val _finance = MutableLiveData<List<FinanceModel>>()
+    val finance: LiveData<List<FinanceModel>> get() = _finance
+
     private val _addTeacherResult = MutableLiveData<Boolean?>()
     val addTeacherResult: LiveData<Boolean?> get() = _addTeacherResult
 
@@ -55,6 +63,8 @@ class RetrofitViewModel(private val repository: RetrofitRepository) : ViewModel(
     private val _feeDetails = MutableLiveData<List<FeeDetailResponse>>()
     val feeDetails: LiveData<List<FeeDetailResponse>> get() = _feeDetails
 
+    private val _getCourses = MutableLiveData<List<GetCourseResponse>>()
+    val getCourses: LiveData<List<GetCourseResponse>> get() = _getCourses
 
 
     suspend fun login(type: String, username: String, password: String): LoginResponse {
@@ -65,7 +75,7 @@ class RetrofitViewModel(private val repository: RetrofitRepository) : ViewModel(
         return repository.logout(type, token)
     }
 
-    suspend fun addFinancePerson(finance: Finance): Response<FResponce> {
+    suspend fun addFinancePerson(finance: Finance): Response<FinanceResponse> {
         return repository.addFinancePerson(finance)
     }
 
@@ -85,6 +95,14 @@ class RetrofitViewModel(private val repository: RetrofitRepository) : ViewModel(
         return repository.deleteData(adminRemoveAction)
     }
 
+    suspend fun addCourse(course: Course): Response<CoursesResponse> {
+        return repository.addCourse(course)
+    }
+
+    suspend fun addBatchStudents(batchStudents: BatchStudents): Response<BatchStudentsResponse> {
+        return repository.addBatchStudents(batchStudents)
+    }
+
     fun fetchFeeDetails(feeDetailModel: FeeDetailModel) {
         viewModelScope.launch {
             try {
@@ -98,12 +116,21 @@ class RetrofitViewModel(private val repository: RetrofitRepository) : ViewModel(
         }
     }
 
-    suspend fun addBatchStudents(batchStudents: BatchStudents): String {
+
+    fun getCourses(getCourse: GetCourse) {
         viewModelScope.launch {
-             repository.addBatchStudents(batchStudents)
+            try {
+                val response = repository.getCourses(getCourse)
+                if (response.isSuccessful) {
+                    _getCourses.value = response.body()
+                }
+            } catch (e: Exception) {
+                Log.d("Token", "Error: ${e.message}")
+                throw(e)
+            }
         }
-        return ""
     }
+
 
     fun fetchBatches(type: String, token: String) {
         viewModelScope.launch {
@@ -137,7 +164,6 @@ class RetrofitViewModel(private val repository: RetrofitRepository) : ViewModel(
                 val response = repository.getStudents(type, token)
                 if (response.isSuccessful) {
                     _students.value = response.body() ?: emptyList()
-                    Log.d("Token", "Success ${response.body()}")
                 } else {
                     Log.d("Token", "Error")
                 }
@@ -154,7 +180,6 @@ class RetrofitViewModel(private val repository: RetrofitRepository) : ViewModel(
                 val response = repository.getTeachers(type, token)
                 if (response.isSuccessful) {
                     _teachers.value = response.body() ?: emptyList()
-                    Log.d("Token", "Success ${response.body()}")
                 } else {
                     Log.d("Token", "Error")
                 }
@@ -164,11 +189,27 @@ class RetrofitViewModel(private val repository: RetrofitRepository) : ViewModel(
         }
     }
 
-    fun addStudent(type: String, token: String, student: Student) {
+
+    fun fetchFinanceMembers(type: String, token: String) {
         viewModelScope.launch {
             try {
-                val response = repository.addStudent(type, token, student)
-                _addStudentResult.value = response!!
+                val response = repository.getFinancePerson(type, token)
+                if (response.isSuccessful) {
+                    _finance.value = response.body() ?: emptyList()
+                } else {
+                    Log.d("Token", "Error")
+                }
+            } catch (e: Exception) {
+                Log.d("Token", "Error: ${e.message}")
+            }
+        }
+    }
+
+    fun addStudent(student: Student) {
+        viewModelScope.launch {
+            try {
+                val response = repository.addStudent(student)
+                _addStudentResult.value = response.body()!!.id
             } catch (e: Exception) {
                 Log.d("API_ERROR", "View Model Failed ${e.message.toString()}")
                 _addStudentResult.value = 0
@@ -186,5 +227,23 @@ class RetrofitViewModel(private val repository: RetrofitRepository) : ViewModel(
                 _addTeacherResult.value = false
             }
         }
+    }
+
+    fun deleteValue(studentModel: StudentDetailsResponse) {
+        val currentList = _students.value?.toMutableList() ?: mutableListOf()
+        currentList.remove(studentModel)
+        _students.postValue(currentList)
+    }
+
+    fun deleteValue(teacherModel: TeacherDetailsResponse) {
+        val currentList = _teachers.value?.toMutableList() ?: mutableListOf()
+        currentList.remove(teacherModel)
+        _teachers.postValue(currentList)
+    }
+
+    fun deleteValue(financeModel: FinanceModel) {
+        val currentList = _finance.value?.toMutableList() ?: mutableListOf()
+        currentList.remove(financeModel)
+        _finance.postValue(currentList)
     }
 }
